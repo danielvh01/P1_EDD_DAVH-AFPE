@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,10 +10,11 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
     {
         private readonly static Singleton _instance = new Singleton();
         public Tree<PacientModel> index;
-
+        public Hashtable Data;
         private Singleton()
         {
             index = new Tree<PacientModel>();
+            Data = new Hashtable();
         }
         public static Singleton Instance
         {
