@@ -45,7 +45,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     municipality = collection["municipality"],
                     priority = Convert.ToInt32(collection["priority"]),                    
                 };
-
+                int key = Singleton.Instance.keyGen(newPacient.Name);
+                Singleton.Instance.Data.Add(newPacient,key);
                 return RedirectToAction(nameof(Index));
             }
             catch

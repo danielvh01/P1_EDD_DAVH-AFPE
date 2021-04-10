@@ -34,5 +34,12 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 return _instance;
             }
         }
+
+        public int keyGen(string name)
+        {
+            char c = char.Parse(name.Substring(0, 1));
+            int key = Convert.ToInt32(c);
+            return key % maxLength;
+        }
     }
 }
