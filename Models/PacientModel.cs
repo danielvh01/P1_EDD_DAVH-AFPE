@@ -21,6 +21,8 @@ namespace P1_EDD_DAVH_AFPE.Models
         public string municipality { get; set; }
         [Required]
         public int priority { get; set; }
+        [Required]
+        public string schedule { get; set; }
 
         #endregion
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace P1_EDD_DAVH_AFPE.Controllers
 {
@@ -26,6 +27,13 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Configuration(IFormCollection collection)
+        {
+            return RedirectToAction(nameof(Index), ("Pacient"));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
