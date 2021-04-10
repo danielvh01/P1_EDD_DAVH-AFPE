@@ -20,6 +20,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         // GET: PacientController/Details/5
         public ActionResult Details(int id)
         {
+            PacientModel detailsPacient = null;
             return View();
         }
 
@@ -43,7 +44,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     DPI = Convert.ToInt32(collection["DPI"]),
                     Department = collection["Department"],
                     municipality = collection["municipality"],
-                    priority = Convert.ToInt32(collection["priority"]),                    
+                    priority = Singleton.Instance.priorities.GetPositionOf(collection["priority"]),                    
                 };
                 int key = Singleton.Instance.keyGen(newPacient.Name);
                 Singleton.Instance.Data.Add(newPacient,key);
