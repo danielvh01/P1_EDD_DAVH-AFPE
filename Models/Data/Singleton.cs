@@ -12,11 +12,16 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public int maxPacient;
         public int schedule;
         private readonly static Singleton _instance = new Singleton();
-        public Tree<PacientModel> index;
+        public DoubleLinkedList<string> priorities;
         public Hashtable Data;
         private Singleton()
         {
-            index = new Tree<PacientModel>();
+            priorities = new DoubleLinkedList<string>();
+            priorities.InsertAtEnd("Health personnel");
+            priorities.InsertAtEnd("Older than 70 years");
+            priorities.InsertAtEnd("Older than 50 years");
+            priorities.InsertAtEnd("Essential workers");
+            priorities.InsertAtEnd("People between 18 and 50 years old");
             Data = new Hashtable();
             maxLength = 15;
             maxPacient = 3;
