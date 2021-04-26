@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace P1_EDD_DAVH_AFPE.Models.Data
+namespace DataStructures
 {
     public class HashTable<T, K> where T : IComparable where K : IComparable
     {
@@ -25,19 +25,27 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
 
         public bool existsKey(K key)
         {
-            HashNode<T, K> temp = start;
-            while(temp.next != null)
+            if(Length > 0)
             {
-                if(temp.key.CompareTo(key) == 0)
+                HashNode<T, K> temp = start;
+                
+                while (temp != null)
                 {
-                    return true;
+                    if (temp.key.CompareTo(key) == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        temp = temp.next;
+                    }
                 }
-                else
-                {
-                    temp = temp.next;
-                }
+                return false;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         public void Add(T value, K key)
@@ -48,7 +56,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 newnode.key = key;
                 newnode.value.InsertAtEnd(value);
                 start = newnode;
-                end = newnode;
+                end = newnode; 
             }
             else {
                 if(!existsKey(key))
@@ -56,12 +64,13 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                     newnode.key = key;
                     newnode.value.InsertAtEnd(value);
                     end.next = newnode;
+                    newnode.prev = end;
                     end = end.next;
                 }
                 else
                 {
                     HashNode<T, K> temp = start;
-                    while (temp.key.CompareTo(key) < 0)
+                    while (temp.key.CompareTo(key) != 0)
                     {
                         temp = temp.next;
                     }
@@ -76,7 +85,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             if (existsKey(key))
             {
                 HashNode<T, K> temp = start;
-                while (temp.key.CompareTo(key) < 0)
+                while (temp.key.CompareTo(key) != 0)
                 {
                     temp = temp.next;
                 }
@@ -87,19 +96,40 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 return default;
             }
         }
+        public T Get( Func<T,int> comparer, K key)
+        {
+            if (existsKey(key))
+            {
+                HashNode<T, K> temp = start;
+                while (temp.key.CompareTo(key) != 0)
+                {
+                    temp = temp.next;
+                }
+                return temp.value.Find(comparer);
+            }
+            else
+            {
+                return default;
+            }
+        }
+
+
 
         public T Delete(T value, K key)
         {
             if (existsKey(key))
             {
                 HashNode<T, K> temp = start;
-                while (temp.key.CompareTo(key) < 0)
+                while (temp.key.CompareTo(key) != 0)
                 {
                     temp = temp.next;
                 }
                 int idx = temp.value.GetPositionOf(value);
                 T val = temp.value.Find(value);
-                temp.value.Delete(idx);
+                if (idx >= 0)
+                {
+                    temp.value.Delete(idx);
+                }
                 if(temp.value.Length == 0)
                 {
                     DeleteKey(key);
@@ -115,7 +145,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
 
         private void DeleteKey (K key)
         {
-            if (Length > 0)
+            if (Length > 0 && existsKey(key))
             {
                 if (Length == 1)
                 {
@@ -124,18 +154,32 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 }
                 else
                 {
-                    HashNode<T, K> pretemp = start;
-                    HashNode<T, K> temp = start;
-                    while (temp.key.CompareTo(key) < 0)
+                    if (start.key.CompareTo(key) == 0)
                     {
-                        pretemp = temp;
-                        temp = temp.next;
+                        start = start.next;
+                        start.prev = null;
                     }
-                    pretemp.next = temp.next;
-                    temp.next.prev = pretemp;
-                    temp = null;
+                    else if (end.key.CompareTo(key) == 0)
+                    {
+                        end = end.prev;
+                        end.next = null;
+                    }
+                    else
+                    {
+                        HashNode<T, K> pretemp = start;
+                        HashNode<T, K> temp = start.next;
+                        while (temp.key.CompareTo(key) != 0)
+                        {
+                            pretemp = temp;
+                            temp = temp.next;
+                        }
+                        pretemp.next = temp.next;
+                        if (temp.next != null)
+                        {
+                            temp.next.prev = pretemp;
+                        }
+                    }
                 }
-                Length--;
             }
         }
         #endregion

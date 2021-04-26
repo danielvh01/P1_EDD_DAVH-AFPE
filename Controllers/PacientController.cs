@@ -37,6 +37,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         {
             try
             {
+                string pr = collection["priority"];
                 var newPacient = new PacientModel
                 {
                     Name = collection["Name"],
@@ -44,10 +45,21 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     DPI = Convert.ToInt32(collection["DPI"]),
                     Department = collection["Department"],
                     municipality = collection["municipality"],
-                    priority = Singleton.Instance.priorities.GetPositionOf(collection["priority"]),                    
+                    priority = (collection["priority"]),                    
                 };
-                int key = Singleton.Instance.keyGen(newPacient.Name);
-                Singleton.Instance.Data.Add(newPacient,key);
+                int P = priorityAssign(pr);                
+                var newPacientAVL = new PacientModel
+                {
+                    Name = collection["Name"],
+                    LastName = collection["LastName"],
+                    DPI = Convert.ToInt32(collection["DPI"]),
+                };
+                Singleton.Instance.PriorityPacient.insertKey(newPacientAVL, P);
+                Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.Name));
+                for (int i = 0; i < Singleton.Instance.PriorityPacient.Length(); i++)
+                {
+                    Singleton.Instance.index.Insert(Singleton.Instance.PriorityPacient.heapArray.Get(i).value,Singleton.Instance.index.Root);
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -95,6 +107,34 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             catch
             {
                 return View();
+            }
+        }
+
+        public int priorityAssign(string pa)
+        {
+            if (pa == "Health staff")
+            {
+                return 1;
+            }
+            if (pa  == "Older than 70 years")
+            {
+                return 2;
+            }
+            if (pa  == "Older than 50 years")
+            {
+                return 3;
+            }
+            if (pa  == "Essential workers")
+            {
+                return 4;
+            }
+            if (pa  == "People between 18 and 50 years old")
+            {
+                return 5;
+            }
+            else
+            {
+                return default;
             }
         }
     }

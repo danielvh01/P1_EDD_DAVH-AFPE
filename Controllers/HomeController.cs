@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using P1_EDD_DAVH_AFPE.Models;
+using P1_EDD_DAVH_AFPE.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using DataStructures;
 
 namespace P1_EDD_DAVH_AFPE.Controllers
 {
@@ -33,7 +35,9 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Configuration(IFormCollection collection)
         {
-            return RedirectToAction(nameof(Index), ("Pacient"));
+            Singleton.Instance.PriorityPacient = new Heap<string>(Singleton.Instance.heapCapacity);
+            Singleton.Instance.Data = new HashTable<PacientModel, int>(Singleton.Instance.hashCapacity);
+            return RedirectToAction(nameof(Index));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -38,9 +38,14 @@
                 <span asp-validation-for="municipality" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="priority" class="control-label"></label>
-                <input asp-for="priority" class="form-control" />
-                <span asp-validation-for="priority" class="text-danger"></span>
+                <select class="form-select" asp-for="priority">
+                    @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.priorities)
+                    {
+
+                        <option value="@item">@Html.DisplayFor(modelItem => item)</option>
+
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

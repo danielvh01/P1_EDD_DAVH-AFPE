@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace P1_EDD_DAVH_AFPE.Models.Data
+namespace DataStructures
 {
     public class HashNode<T, K> where T : IComparable where K : IComparable
     {
