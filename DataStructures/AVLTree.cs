@@ -8,10 +8,14 @@ namespace DataStructures
     public class AVLTree<T> where T : IComparable
     {
         #region Variables and instances
+        //Node pointers
         public AVLTreeNode<T> Root { get; set; }
         public AVLTreeNode<T> Work { get; set; }
 
-        public int lenght = 0;
+        //Properties
+        public int Length = 0;
+
+        //Constructor
         public AVLTree()
         {
             Root = null;
@@ -24,7 +28,7 @@ namespace DataStructures
         {
             if (pNode == null)
             {
-                lenght++;
+                Length++;
                 return new AVLTreeNode<T>(newvalue);
             }
             if (newvalue.CompareTo(pNode.value) > 0)
@@ -149,6 +153,7 @@ namespace DataStructures
                     node.value = FindMinimum(node.right).value;
                     node.right = Delete(node.right, node.value);
                 }
+                Length--;
             }
             node.height = max(height(node.left), height(node.right)) + 1;
 

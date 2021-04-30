@@ -8,8 +8,10 @@ namespace DataStructures
     public class HashTable<T, K> where T : IComparable where K : IComparable
     {
         #region Variables
+        //Propertires
         int Length;
         int maxKeys;
+        //Pointers
         HashNode<T, K> start;
         HashNode<T, K> end;
         #endregion
@@ -61,11 +63,14 @@ namespace DataStructures
             else {
                 if(!existsKey(key))
                 {
-                    newnode.key = key;
-                    newnode.value.InsertAtEnd(value);
-                    end.next = newnode;
-                    newnode.prev = end;
-                    end = end.next;
+                    if(Length < maxKeys)
+                    {
+                        newnode.key = key;
+                        newnode.value.InsertAtEnd(value);
+                        end.next = newnode;
+                        newnode.prev = end;
+                        end = end.next;
+                    }
                 }
                 else
                 {

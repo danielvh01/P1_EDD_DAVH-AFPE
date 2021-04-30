@@ -9,8 +9,10 @@ namespace DataStructures
     public class DoubleLinkedList<T> : IEnumerable<T> where T : IComparable
     {
         #region Variables
+        //Pointers
         public Node<T> First;
         Node<T> End;
+        //Properties
         public int Length = 0;
         #endregion
 

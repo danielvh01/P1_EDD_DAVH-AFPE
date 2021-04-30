@@ -133,7 +133,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 {
                     if (i == 0)
                     {
-                        for (int j = 0; j < Singleton.Instance.index.lenght; j++)
+                        for (int j = 0; j < Singleton.Instance.index.Length; j++)
                         {
                             Singleton.Instance.index = new AVLTree<PacientModel>();
                             Singleton.Instance.WaitingList = new DoubleLinkedList<PacientModel>();
