@@ -296,6 +296,36 @@ namespace DataStructures
                 return default;
             }
         }
+        public T Find(Func<T, bool> comparer)
+        {
+            Node<T> temp = First;
+            while (temp != null && comparer.Invoke(temp.value))
+            {
+                temp = temp.next;
+            }
+            if (temp != null)
+            {
+                return temp.value;
+            }
+            else
+            {
+                return default;
+            }
+        }
+        public IEnumerable<T> GetAllElementsBy(Func<T, bool> comparer)
+        {
+            DoubleLinkedList<T> result = new DoubleLinkedList<T>();
+            var node = First;
+            while (node != null)
+            {
+                if (comparer.Invoke(node.value))
+                {
+                    result.InsertAtEnd(node.value);
+                }
+                node = node.next;
+            }
+            return result;
+        }
         public IEnumerator<T> GetEnumerator()
         {
             var node = First;
@@ -305,6 +335,7 @@ namespace DataStructures
                 node = node.next;
             }
         }
+        
 
         IEnumerator IEnumerable.GetEnumerator()
         {

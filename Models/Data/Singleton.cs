@@ -25,7 +25,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public string database;
         //Data structures
         public DoubleLinkedList<string> priorities;
-        public HashTable<string,string> municipalities;
+        public DoubleLinkedList<string> municipalities;
         public DoubleLinkedList<PacientModel> WaitingList;
         public DoubleLinkedList<PacientModel> VaccinatedList;
         public HashTable<PacientModel, int> Data;
@@ -62,7 +62,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             priorities.InsertAtEnd("Essential workers");
             priorities.InsertAtEnd("People between 18 and 50 years old");
             #endregion
-            municipalities = new HashTable<string, string>(22);
+            municipalities = new DoubleLinkedList<string>();
 
 
         }
