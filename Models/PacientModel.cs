@@ -29,6 +29,8 @@ namespace P1_EDD_DAVH_AFPE.Models
         #endregion
 
         #region METHOD
+
+        //
         public int CompareTo(object obj)
         {
             var comparer = ((PacientModel)obj).DPI;
