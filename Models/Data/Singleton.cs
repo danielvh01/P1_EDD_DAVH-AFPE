@@ -8,7 +8,9 @@ using DataStructures;
 namespace P1_EDD_DAVH_AFPE.Models.Data
 {
     public sealed class Singleton
-    {        
+    {
+        public bool verif = false;
+        public int Cont;
         public int maxLength;
         public int maxPacient;
         public int schedule;
@@ -16,11 +18,16 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public int hashCapacity;
         private readonly static Singleton _instance = new Singleton();
         public DoubleLinkedList<string> priorities;
+        public DoubleLinkedList<PacientModel> WaitingList;
+        public DoubleLinkedList<PacientModel> VaccinatedList;
         public HashTable<PacientModel, int> Data;
-        public Tree<PacientModel> index;
-        public Heap<PacientModel> PriorityPacient;
+        public AVLTree<PacientModel> index;
+        public Heap<PacientModel> HeapPacient;
         private Singleton()
         {
+            index = new AVLTree<PacientModel>();
+            WaitingList = new DoubleLinkedList<PacientModel>();
+            VaccinatedList = new DoubleLinkedList<PacientModel>();
             priorities = new DoubleLinkedList<string>();
             priorities.InsertAtEnd("Health staff");
             priorities.InsertAtEnd("Older than 70 years");
@@ -39,11 +46,9 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             }
         }
 
-        public int keyGen(string name)
+        public int keyGen(int dpi)
         {
-            char c = char.Parse(name.Substring(0, 1));
-            int key = Convert.ToInt32(c);
-            return key % maxLength;
+            return dpi % maxLength;
         }
     }
 }

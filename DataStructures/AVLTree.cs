@@ -15,6 +15,7 @@ namespace DataStructures
         public AVLTree()
         {
             Root = null;
+            Work = null;
         }
         #endregion
 
@@ -24,13 +25,13 @@ namespace DataStructures
             if (pNode == null)
             {
                 lenght++;
-                return new AVLTreeNode<T>(newvalue); ;
+                return new AVLTreeNode<T>(newvalue);
             }
-            if (newvalue.CompareTo(pNode.value) < 0)
+            if (newvalue.CompareTo(pNode.value) > 0)
             {
                 pNode.left = Insert(newvalue, pNode.left);
             }
-            else if (newvalue.CompareTo(pNode.value) > 0)
+            else if (newvalue.CompareTo(pNode.value) < 0)
             {
                 pNode.right = Insert(newvalue, pNode.right);
             }
@@ -43,22 +44,22 @@ namespace DataStructures
             int balance = getBalance(pNode);
 
             //Left Left Case
-            if (balance > 1 && newvalue.CompareTo(pNode.left.value) < 0)
+            if (balance > 1 && newvalue.CompareTo(pNode.left.value) > 0)
                 return rightRotate(pNode);
 
             // Right Right Case
-            if (balance < -1 && newvalue.CompareTo(pNode.right.value) > 0)
+            if (balance < -1 && newvalue.CompareTo(pNode.right.value) < 0)
                 return leftRotate(pNode);
 
             // Left Right Case
-            if (balance > 1 && newvalue.CompareTo(pNode.left.value) > 0)
+            if (balance > 1 && newvalue.CompareTo(pNode.left.value) < 0)
             {
                 pNode.left = leftRotate(pNode.left);
                 return rightRotate(pNode);
             }
 
             // Right Left Case
-            if (balance < -1 && newvalue.CompareTo(pNode.right.value) < 0)
+            if (balance < -1 && newvalue.CompareTo(pNode.right.value) > 0)
             {
                 pNode.right = rightRotate(pNode.right);
                 return leftRotate(pNode);
@@ -66,25 +67,25 @@ namespace DataStructures
             return pNode;
 
         }
-        public AVLTreeNode<T> Find(T value, AVLTreeNode<T> node)
+        public T Find(Func<T, int> comparer, AVLTreeNode<T> node)
         {
             if (node != null)
             {
-                if (value.CompareTo(node.value) == 0)
+                if (comparer.Invoke(node.value) == 0)
                 {
-                    return node;
+                    return node.value;
                 }
-                if (value.CompareTo(node.value) < 0)
+                if (comparer.Invoke(node.value) > 0)
                 {
-                    return Find(value, node.left);
+                    return Find(comparer, node.left);
                 }
                 else
                 {
-                    return Find(value, node.right);
+                    return Find(comparer, node.right);
                 }
             }
 
-            return null;
+            return default;
         }
         public AVLTreeNode<T> SearchParent(AVLTreeNode<T> node, AVLTreeNode<T> parent)
         {
@@ -108,11 +109,11 @@ namespace DataStructures
                 }
             }
 
-            if (node.value.CompareTo(parent.value) < 0 && parent.left != null)
+            if (node.value.CompareTo(parent.value) > 0 && parent.left != null)
             {
                 temp = SearchParent(node, parent.left);
             }
-            if (node.value.CompareTo(parent.value) > 0 && parent.right != null)
+            if (node.value.CompareTo(parent.value) < 0 && parent.right != null)
             {
                 temp = SearchParent(node, parent.right);
             }
@@ -125,11 +126,11 @@ namespace DataStructures
             {
                 return node;
             }
-            if (value.CompareTo(node.value) < 0)
+            if (value.CompareTo(node.value) > 0)
             {
                 node.left = Delete(node.left, value);
             }
-            else if (value.CompareTo(node.value) > 0)
+            else if (value.CompareTo(node.value) < 0)
             {
                 node.right = Delete(node.right, value);
             }
@@ -153,21 +154,21 @@ namespace DataStructures
 
             int balance = getBalance(node);
 
-            if (balance > 1 && getBalance(node.left) >= 0) //If node becomes with desbalance, it will be compared with the 4 possible cases of rotations.
-                                                           //Left->Left
+            if (balance > 1 && getBalance(node.left) <= 0) //If node becomes with desbalance, it will be compared with the 4 possible cases of rotations.
+                                                          //Left->Left
             {
                 return rightRotate(node);
             }
-            if (balance > 1 && getBalance(node.left) < 0) // Left->Right case
+            if (balance > 1 && getBalance(node.left) > 0) // Left->Right case
             {
                 node.left = leftRotate(node.left);
                 return rightRotate(node);
             }
-            if (balance < -1 && getBalance(node.right) <= 0)// Right->Right Case
+            if (balance < -1 && getBalance(node.right) >= 0)// Right->Right Case
             {
                 return leftRotate(node);
             }
-            if (balance < -1 && getBalance(node.right) > 0)  // Right->Left Case
+            if (balance < -1 && getBalance(node.right) < 0)  // Right->Left Case
             {
                 node.right = rightRotate(node.right);
                 return leftRotate(node);

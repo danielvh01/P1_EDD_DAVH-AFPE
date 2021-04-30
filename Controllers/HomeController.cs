@@ -26,6 +26,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return View();
         }
 
+        
+
         public IActionResult Privacy()
         {
             return View();
@@ -35,9 +37,9 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Configuration(IFormCollection collection)
         {
-            Singleton.Instance.PriorityPacient = new Heap<string>(Singleton.Instance.heapCapacity);
-            Singleton.Instance.Data = new HashTable<PacientModel, int>(Singleton.Instance.hashCapacity);
-            return RedirectToAction(nameof(Index));
+            Singleton.Instance.HeapPacient = new Heap<PacientModel>(Singleton.Instance.maxPacient);
+            Singleton.Instance.Data = new HashTable<PacientModel, int>(Singleton.Instance.maxLength);
+            return RedirectToAction(nameof(Index),"Pacient");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

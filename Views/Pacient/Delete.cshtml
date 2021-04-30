@@ -12,43 +12,43 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Name:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+            Last Name:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DPI)
+        <dt class="col-sm-2">
+            DPI / Birth certificate
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DPI)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
+            Department:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Department)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.municipality)
+        <dt class="col-sm-2">
+            Municipality:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.municipality)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.priority)
+            Priority:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.priorities.Get(model.priority))
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.schedule)
+            Schedule:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.schedule)
@@ -56,7 +56,7 @@
     </dl>
     
     <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="submit" value="Delete for waiting list" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

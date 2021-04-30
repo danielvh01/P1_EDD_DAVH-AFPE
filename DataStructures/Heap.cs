@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
-using P1_EDD_DAVH_AFPE.Models;
-using P1_EDD_DAVH_AFPE.Models.Data;
 
 namespace DataStructures
 {
-    public class Heap<T> : IEnumerable<HeapNode<T>> where T : IComparable 
+    public class Heap<T> : IEnumerable<HeapNode<T>> where T : IComparable
     {
         #region Variables
 
@@ -165,11 +163,9 @@ namespace DataStructures
                     HeapNode<T> temp = sorted.Get(0);
                     sorted.Delete(0);
                     insertKey(temp.value, temp.priority);
-                }                
-            }            
+                }
+            }
         }
-
-        
 
         public IEnumerable<HeapNode<T>> Search(Func<T, int> Comparer)
         {
