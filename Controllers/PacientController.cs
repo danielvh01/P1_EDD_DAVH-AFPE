@@ -117,7 +117,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     DPI = Convert.ToInt32(collection["DPI"]),
                     Department = collection["Department"],
                     municipality = collection["municipality"],
-                    priority = priorityAssign(pr),
+                    priority = Singleton.Instance.priorityAssign(pr),
                     age = Convert.ToInt32(collection["age"]),
                     schedule = "Not scheduled yet"
                 };               
@@ -126,7 +126,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     Name = collection["Name"],
                     LastName = collection["LastName"],
                     DPI = Convert.ToInt32(collection["DPI"]),
-                    priority = priorityAssign(pr)
+                    priority = Singleton.Instance.priorityAssign(pr)
                 };
                 Singleton.Instance.HeapPacient.insertKey(newPacient, newPacient.priority);
                 Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
@@ -134,11 +134,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 {
                     if (i == 0)
                     {
-                        for (int j = 0; j < Singleton.Instance.PacientsTree.Length; j++)
-                        {
-                            Singleton.Instance.PacientsTree = new AVLTree<PacientModel>();
-                            Singleton.Instance.WaitingList = new DoubleLinkedList<PacientModel>();
-                        }
+                         Singleton.Instance.PacientsTree = new AVLTree<PacientModel>();
+                         Singleton.Instance.WaitingList = new DoubleLinkedList<PacientModel>();
                     }
                     Singleton.Instance.PacientsTree.Insert(Singleton.Instance.HeapPacient.heapArray.Get(i).value,Singleton.Instance.PacientsTree.Root);
                     Singleton.Instance.WaitingList.InsertAtEnd(Singleton.Instance.HeapPacient.heapArray.Get(i).value);
@@ -195,34 +192,6 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             }
         }
 
-        public int priorityAssign(string pa)
-        {
-            if (pa == "Health staff" || pa == "Health Sciences Students" || 
-                pa == "Relief corps" || pa == "Interned or admitted in an elderly institution person")
-            {
-                return 1;
-            }
-            if (pa  == "Older than 70 years")
-            {
-                return 2;
-            }
-            if (pa  == "Older than 50 years" || pa == "National Security Staff" 
-                || pa == "Education Staff" || pa == "Justice Staff")
-            {
-                return 3;
-            }
-            if (pa  == "Essential workers")
-            {
-                return 4;
-            }
-            if (pa  == "People between 18 and 50 years old")
-            {
-                return 5;
-            }
-            else
-            {
-                return default;
-            }
-        }
+        
     }
 }

@@ -70,6 +70,35 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 return _instance;
             }
         }
+        public int priorityAssign(string pa)
+        {
+            if (pa == "Health staff" || pa == "Health Sciences Students" ||
+                pa == "Relief corps" || pa == "Interned or admitted in an elderly institution person")
+            {
+                return 1;
+            }
+            if (pa == "Older than 70 years")
+            {
+                return 2;
+            }
+            if (pa == "Older than 50 years" || pa == "National Security Staff"
+                || pa == "Education Staff" || pa == "Justice Staff")
+            {
+                return 3;
+            }
+            if (pa == "Essential workers")
+            {
+                return 4;
+            }
+            if (pa == "People between 18 and 50 years old")
+            {
+                return 5;
+            }
+            else
+            {
+                return default;
+            }
+        }
 
         public int keyGen(int dpi)
         {
