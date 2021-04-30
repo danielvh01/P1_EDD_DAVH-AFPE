@@ -31,17 +31,9 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             StreamReader sr = new StreamReader("Municipios.txt");
             string result = sr.ReadToEnd();
             string[] lines = result.Split("\n");
-            string depa = "";
             for (int i = 0; i < lines.Length; i++)
             {
-                if (lines[i].StartsWith("-"))
-                {
-                    depa = lines[i].Remove(0, 1);
-                }
-                else
-                {
-                    Singleton.Instance.municipalities.Add(lines[i], depa);
-                }
+                Singleton.Instance.municipalities.InsertAtEnd(lines[i]);
             }
             return View();
         }

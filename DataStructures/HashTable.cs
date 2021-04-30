@@ -201,18 +201,6 @@ namespace DataStructures
                 }
             }
         }
-
-        public IEnumerable<K> getKeys()
-        {
-            DoubleLinkedList<K> result = new DoubleLinkedList<K>();
-            var node = start;
-            while(node != null)
-            {
-                result.InsertAtEnd(node.key);
-                node = node.next;
-            }
-            return result;
-        }
         #endregion
     }
 }

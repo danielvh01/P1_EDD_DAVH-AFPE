@@ -4,36 +4,18 @@
 }
 
 <h1>Login</h1>
+@using P1_EDD_DAVH_AFPE.Models.Data;
 
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Login">
+    <div class="col-6">
+        <form asp-action="Create">
             <div class="form-group">
-                @{ 
-                    bool a = false;
-                    string departament = "";
-                } 
-                <select class="form-select" name="department" id="department">
-                    @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.municipalities.getKeys())
+                <select class="form-control" name="municipality">
+                    @foreach(var item in Singleton.Instance.municipalities)
                     {
-
-                        <option value="@item" onclick="@{a = true; departament = item;} ">@Html.DisplayFor(modelItem => item)</option>
-
+                        <option value="@item">@Html.DisplayText(item)></option>
                     }
                 </select>
-            </div>
-            <div class="form-group">
-                <select class="form-select" name="municipality" id="municipality" ng-disabled="@a">
-                    @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.municipalities.GetItemsOf(departament))
-                    {
-
-                        <option value="@item">@Html.DisplayFor(modelItem => item)</option>
-
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
             </div>
         </form>
     </div>
