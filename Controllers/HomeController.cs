@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using DataStructures;
-using System.IO;
+using System;
 
 namespace P1_EDD_DAVH_AFPE.Controllers
 {
@@ -50,18 +50,12 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(IFormCollection collection)
         {
+            Singleton.Instance.department = collection["department"];
             Singleton.Instance.muni = collection["municipality"];
-            return RedirectToAction(nameof(Login), "Pacient");
+            return RedirectToAction(nameof(Index), "Pacient");
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Configuration(IFormCollection collection)
+        public IActionResult Configuration()
         {
             if (System.IO.File.Exists("./Database.txt"))
             {
@@ -73,15 +67,15 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     int spacer = obj[i].IndexOf(":");
                     if (obj[i].Substring(0, spacer) == "heapCapacity")
                     {
-                        Singleton.Instance.maxPacient = Convert.ToInt32(obj[i].Substring(spacer + 1));
-                        Singleton.Instance.HeapPacient = new Heap<PacientModel>(Singleton.Instance.maxPacient);
+                        Singleton.Instance.heapCapacity = Convert.ToInt32(obj[i].Substring(spacer + 1));
+                        Singleton.Instance.HeapPacient = new Heap<PacientModel>(Singleton.Instance.heapCapacity);
                     }
                     if (obj[i].Substring(0, spacer) == "hashCapacity")
                     {
-                        Singleton.Instance.maxLength = Convert.ToInt32(obj[i].Substring(spacer + 1));
-                        Singleton.Instance.Data = new HashTable<PacientModel, int>(Singleton.Instance.maxLength);
+                        Singleton.Instance.hashCapacity = Convert.ToInt32(obj[i].Substring(spacer + 1));
+                        Singleton.Instance.Data = new HashTable<PacientModel, int>(Singleton.Instance.hashCapacity);
                     }
-                    if (obj[i].Substring(0, spacer) == "tasks")
+                    if (obj[i].Substring(0, spacer) == "pacients")
                     {
                         string[] tasks = obj[i].Substring(spacer + 1).Split(";");
 
@@ -93,7 +87,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                 var newPacient = new PacientModel
                                 {
                                     Name = obj2[0],
-                                    LastName = obj2[1],                                    
+                                    LastName = obj2[1],
                                     DPI = Convert.ToInt32(obj2[2]),
                                     Department = obj2[4],
                                     municipality = obj2[3],
@@ -101,7 +95,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                     age = Convert.ToInt32(obj2[6]),
                                     schedule = obj2[7]
                                 };
-                                Singleton.Instance.HeapPacient.insertKey(newPacient,Singleton.Instance.keyGen(newPacient.DPI));
+                                Singleton.Instance.HeapPacient.insertKey(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
                                 Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
                                 for (int a = 0; a < Singleton.Instance.HeapPacient.Length(); a++)
                                 {
@@ -125,8 +119,20 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             {
                 return RedirectToAction(nameof(Configuration));
             }
-            Singleton.Instance.HeapPacient = new Heap<PacientModel>(Singleton.Instance.maxPacient);
-            Singleton.Instance.Data = new HashTable<PacientModel, int>(Singleton.Instance.maxLength);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Configuration(IFormCollection collection)
+        {
+            Singleton.Instance.HeapPacient = new Heap<PacientModel>(Singleton.Instance.heapCapacity);
+            Singleton.Instance.Data = new HashTable<PacientModel, int>(Singleton.Instance.hashCapacity);
+            FileStream fs = new FileStream("./Database.txt", FileMode.Create, FileAccess.Write);
+            Singleton.Instance.BuildData();
+            StreamWriter sw = new StreamWriter(fs);
+            sw.Write(Singleton.Instance.database);
+            sw.Close();
+            fs.Close();
             return RedirectToAction(nameof(Login));
         }
 

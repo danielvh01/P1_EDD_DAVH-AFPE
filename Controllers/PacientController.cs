@@ -115,8 +115,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     Name = collection["Name"],
                     LastName = collection["LastName"],
                     DPI = Convert.ToInt32(collection["DPI"]),
-                    Department = collection["Department"],
-                    municipality = collection["municipality"],
+                    Department = Singleton.Instance.department,
+                    municipality = Singleton.Instance.muni,
                     priority = Singleton.Instance.priorityAssign(pr),
                     age = Convert.ToInt32(collection["age"]),
                     schedule = "Not scheduled yet"

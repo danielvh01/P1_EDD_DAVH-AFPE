@@ -15,13 +15,14 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public bool verif = false;
         //Integer variables
         public int Cont;
-        public int maxLength;
-        public int maxPacient;
-        public int schedule;
-        public int heapCapacity;
         public int hashCapacity;
+        public int heapCapacity;
+        public int schedule;
         //String Variables
-        public string muni = "";
+        public string department;
+        public string muni;
+        //DATA STORAGE//
+        public string database;
         //Data structures
         public DoubleLinkedList<string> priorities;
         public HashTable<string,string> municipalities;
@@ -39,9 +40,11 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         #endregion
         private Singleton()
         {
-            maxLength = 15;
-            maxPacient = 3;
-            schedule = 30;                    
+            hashCapacity = 15;
+            heapCapacity = 3;
+            schedule = 30;
+            department = "";
+            muni = "";
             PacientsTree = new AVLTree<PacientModel>();
             WaitingList = new DoubleLinkedList<PacientModel>();
             VaccinatedList = new DoubleLinkedList<PacientModel>();
@@ -102,7 +105,40 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
 
         public int keyGen(int dpi)
         {
-            return dpi % maxLength;
+            return dpi % hashCapacity;
+        }
+
+        public void BuildData()
+        {
+            database = "";
+            database += "heapCapacity:" + heapCapacity + "\n";
+            database += "hashCapacity:" + hashCapacity + "\n";
+            string tasks = recorrido();
+            if (tasks.Length > 0)
+            {
+                tasks = tasks.Remove(tasks.Length - 1);
+            }
+            database += "pacients:" + tasks;
+        }
+
+        public string recorrido()
+        {
+            //Write all the content of the HashTable.
+            string result = "";
+            for (int i = 0; i < HeapPacient.Length(); i++)
+            {
+                int PacientParam = HeapPacient.heapArray.Get(i).value.DPI;
+                var Pacient = Data.Get(x => x.Name.CompareTo(PacientParam), keyGen(PacientParam));
+                result += Pacient.Name + ",";
+                result += Pacient.LastName + ",";
+                result += Pacient.DPI + ",";
+                result += Pacient.Department + ",";
+                result += Pacient.municipality + ",";
+                result += Pacient.priority + ",";
+                result += Pacient.age + ",";
+                result += Pacient.schedule + ";";
+            }
+            return result;
         }
     }
 }

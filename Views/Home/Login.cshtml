@@ -7,13 +7,13 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Login">
             <div class="form-group">
                 @{ 
                     bool a = false;
                     string departament = "";
                 } 
-                <select class="form-select" name="Departament" id="Departament">
+                <select class="form-select" name="department" id="department">
                     @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.municipalities.getKeys())
                     {
 
@@ -23,7 +23,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <select class="form-select" ng-disabled="@a">
+                <select class="form-select" name="municipality" id="municipality" ng-disabled="@a">
                     @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.municipalities.GetItemsOf(departament))
                     {
 
@@ -33,7 +33,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Login" class="btn btn-primary" />
             </div>
         </form>
     </div>

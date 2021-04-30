@@ -1,9 +1,13 @@
-﻿
+﻿@using P1_EDD_DAVH_AFPE.Models.Data
 @{
     ViewData["Title"] = "MainMenu";
 }
 
+
 <h1>COVID-19 Vaccination System</h1>
+<div class="form-group">
+    <label class="control-label text-xl-left">Current vaccination center: @Html.DisplayFor(model => Singleton.Instance.department),@Html.DisplayFor(model => Singleton.Instance.muni) </label>
+</div>
 
 <h4>What would you like to do?</h4>
 
