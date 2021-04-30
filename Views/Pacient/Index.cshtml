@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "MainMenu";
+}
+
+<h1>COVID-19 Vaccination System</h1>
+
+<h4>What would you like to do?</h4>
+
+<div>
+    <div>
+
+        <a class="btn btn-info" asp-action="Create">Add register of person to waiting List.</a>
+        <a class="btn btn-info" asp-action="Schedule">Schedule Vaccination</a>
+        <a class="btn btn-info" asp-action="CurrentTask">Reschedule vaccination</a>
+        <a class="btn btn-info" asp-action="SIndex">Waiting List</a>
+        <a class="btn btn-info" asp-action="VaccinatedList">Vaccinated List</a>
+        <a class="btn btn-info" asp-action="Percentage">Percentage of vaccinated</a>
+    </div>
+
+</div>
+
+@if (TempData["testmsg"] != null)
+{
+    <script type="text/javascript">
+       alert("@TempData["testmsg"]");
+    </script>
+}
+

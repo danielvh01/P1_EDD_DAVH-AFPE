@@ -1,0 +1,68 @@
+﻿@model P1_EDD_DAVH_AFPE.Models.PacientModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>PacientModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DPI" class="control-label"></label>
+                <input asp-for="DPI" class="form-control" />
+                <span asp-validation-for="DPI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Department" class="control-label"></label>
+                <input asp-for="Department" class="form-control" />
+                <span asp-validation-for="Department" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="municipality" class="control-label"></label>
+                <input asp-for="municipality" class="form-control" />
+                <span asp-validation-for="municipality" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select class="form-select" asp-for="priority">
+                    @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.priorities)
+                    {
+
+                        <option value="@item" ng-selected="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.priorities.Get(Model.priority) == item">@Html.DisplayFor(modelItem => item)</option>
+
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="schedule" class="control-label"></label>
+                <input asp-for="schedule" class="form-control" />
+                <span asp-validation-for="schedule" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -3,34 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace P1_EDD_DAVH_AFPE.Models.Data
+namespace DataStructures
 {
-    public class Tree<T> where T : IComparable
+    public class AVLTree<T> where T : IComparable
     {
         #region Variables and instances
-        public TreeNode<T> Root { get; set; }
-        public TreeNode<T> Work { get; set; }
+        public AVLTreeNode<T> Root { get; set; }
+        public AVLTreeNode<T> Work { get; set; }
 
         public int lenght = 0;
-        public Tree()
+        public AVLTree()
         {
             Root = null;
+            Work = null;
         }
         #endregion
 
         #region Methods
-        public TreeNode<T> Insert(T newvalue, TreeNode<T> pNode)
+        public AVLTreeNode<T> Insert(T newvalue, AVLTreeNode<T> pNode)
         {
             if (pNode == null)
             {
                 lenght++;
-                return new TreeNode<T>(newvalue); ;
+                return new AVLTreeNode<T>(newvalue);
             }
-            if (newvalue.CompareTo(pNode.value) < 0)
+            if (newvalue.CompareTo(pNode.value) > 0)
             {
                 pNode.left = Insert(newvalue, pNode.left);
             }
-            else if (newvalue.CompareTo(pNode.value) > 0)
+            else if (newvalue.CompareTo(pNode.value) < 0)
             {
                 pNode.right = Insert(newvalue, pNode.right);
             }
@@ -43,22 +44,22 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             int balance = getBalance(pNode);
 
             //Left Left Case
-            if (balance > 1 && newvalue.CompareTo(pNode.left.value) < 0)
+            if (balance > 1 && newvalue.CompareTo(pNode.left.value) > 0)
                 return rightRotate(pNode);
 
             // Right Right Case
-            if (balance < -1 && newvalue.CompareTo(pNode.right.value) > 0)
+            if (balance < -1 && newvalue.CompareTo(pNode.right.value) < 0)
                 return leftRotate(pNode);
 
             // Left Right Case
-            if (balance > 1 && newvalue.CompareTo(pNode.left.value) > 0)
+            if (balance > 1 && newvalue.CompareTo(pNode.left.value) < 0)
             {
                 pNode.left = leftRotate(pNode.left);
                 return rightRotate(pNode);
             }
 
             // Right Left Case
-            if (balance < -1 && newvalue.CompareTo(pNode.right.value) < 0)
+            if (balance < -1 && newvalue.CompareTo(pNode.right.value) > 0)
             {
                 pNode.right = rightRotate(pNode.right);
                 return leftRotate(pNode);
@@ -66,29 +67,29 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             return pNode;
 
         }
-        public TreeNode<T> Find(T value, TreeNode<T> node)
+        public T Find(Func<T, int> comparer, AVLTreeNode<T> node)
         {
             if (node != null)
             {
-                if (value.CompareTo(node.value) == 0)
+                if (comparer.Invoke(node.value) == 0)
                 {
-                    return node;
+                    return node.value;
                 }
-                if (value.CompareTo(node.value) < 0)
+                if (comparer.Invoke(node.value) > 0)
                 {
-                    return Find(value, node.left);
+                    return Find(comparer, node.left);
                 }
                 else
                 {
-                    return Find(value, node.right);
+                    return Find(comparer, node.right);
                 }
             }
 
-            return null;
+            return default;
         }
-        public TreeNode<T> SearchParent(TreeNode<T> node, TreeNode<T> parent)
+        public AVLTreeNode<T> SearchParent(AVLTreeNode<T> node, AVLTreeNode<T> parent)
         {
-            TreeNode<T> temp = null;
+            AVLTreeNode<T> temp = null;
             if (node == null)
             {
                 return null;
@@ -108,28 +109,28 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 }
             }
 
-            if (node.value.CompareTo(parent.value) < 0 && parent.left != null)
+            if (node.value.CompareTo(parent.value) > 0 && parent.left != null)
             {
                 temp = SearchParent(node, parent.left);
             }
-            if (node.value.CompareTo(parent.value) > 0 && parent.right != null)
+            if (node.value.CompareTo(parent.value) < 0 && parent.right != null)
             {
                 temp = SearchParent(node, parent.right);
             }
             return temp;
         }
 
-        public TreeNode<T> Delete(TreeNode<T> node, T value)
+        public AVLTreeNode<T> Delete(AVLTreeNode<T> node, T value)
         {
             if (node == null)
             {
                 return node;
             }
-            if (value.CompareTo(node.value) < 0)
+            if (value.CompareTo(node.value) > 0)
             {
                 node.left = Delete(node.left, value);
             }
-            else if (value.CompareTo(node.value) > 0)
+            else if (value.CompareTo(node.value) < 0)
             {
                 node.right = Delete(node.right, value);
             }
@@ -153,21 +154,21 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
 
             int balance = getBalance(node);
 
-            if (balance > 1 && getBalance(node.left) >= 0) //If node becomes with desbalance, it will be compared with the 4 possible cases of rotations.
-                                                           //Left->Left
+            if (balance > 1 && getBalance(node.left) <= 0) //If node becomes with desbalance, it will be compared with the 4 possible cases of rotations.
+                                                          //Left->Left
             {
                 return rightRotate(node);
             }
-            if (balance > 1 && getBalance(node.left) < 0) // Left->Right case
+            if (balance > 1 && getBalance(node.left) > 0) // Left->Right case
             {
                 node.left = leftRotate(node.left);
                 return rightRotate(node);
             }
-            if (balance < -1 && getBalance(node.right) <= 0)// Right->Right Case
+            if (balance < -1 && getBalance(node.right) >= 0)// Right->Right Case
             {
                 return leftRotate(node);
             }
-            if (balance < -1 && getBalance(node.right) > 0)  // Right->Left Case
+            if (balance < -1 && getBalance(node.right) < 0)  // Right->Left Case
             {
                 node.right = rightRotate(node.right);
                 return leftRotate(node);
@@ -175,14 +176,14 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             return node;
         }
 
-        public TreeNode<T> FindMinimum(TreeNode<T> node)
+        public AVLTreeNode<T> FindMinimum(AVLTreeNode<T> node)
         {
             if (node == null)
             {
                 return default;
             }
             Work = node;
-            TreeNode<T> minimum = Work;
+            AVLTreeNode<T> minimum = Work;
 
             while (Work.left != null)
             {
@@ -198,7 +199,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             return (a > b) ? a : b;
         }
 
-        int height(TreeNode<T> N)
+        int height(AVLTreeNode<T> N)
         {
             if (N == null)
                 return 0;
@@ -206,7 +207,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             return N.height;
         }
 
-        int getBalance(TreeNode<T> N)
+        int getBalance(AVLTreeNode<T> N)
         {
             if (N == null)
             {
@@ -216,10 +217,10 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             return height(N.left) - height(N.right);
         }
 
-        TreeNode<T> rightRotate(TreeNode<T> y)
+        AVLTreeNode<T> rightRotate(AVLTreeNode<T> y)
         {
-            TreeNode<T> x = y.left;
-            TreeNode<T> z = x.right;
+            AVLTreeNode<T> x = y.left;
+            AVLTreeNode<T> z = x.right;
 
             x.right = y;
             y.left = z;
@@ -230,10 +231,10 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             return x;
         }
 
-        TreeNode<T> leftRotate(TreeNode<T> x)
+        AVLTreeNode<T> leftRotate(AVLTreeNode<T> x)
         {
-            TreeNode<T> y = x.right;
-            TreeNode<T> z = y.left;
+            AVLTreeNode<T> y = x.right;
+            AVLTreeNode<T> z = y.left;
 
             y.left = x;
             x.right = z;
