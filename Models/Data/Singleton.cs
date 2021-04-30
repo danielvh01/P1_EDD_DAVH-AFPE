@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 using DataStructures;
 
@@ -23,7 +24,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public string muni = "";
         //Data structures
         public DoubleLinkedList<string> priorities;
-        public DoubleLinkedList<string> municipalities;
+        public HashTable<string,string> municipalities;
         public DoubleLinkedList<PacientModel> WaitingList;
         public DoubleLinkedList<PacientModel> VaccinatedList;
         public HashTable<PacientModel, int> Data;
@@ -58,9 +59,23 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             priorities.InsertAtEnd("Essential workers");
             priorities.InsertAtEnd("People between 18 and 50 years old");
             #endregion
-            municipalities = new DoubleLinkedList<string>();
+            municipalities = new HashTable<string, string>(22);
             #region Municipalities insertions
-            
+            StreamReader sr = new StreamReader("Municipios.txt");
+            string result = sr.ReadToEnd();
+            string[] lines = result.Split("\n");
+            string depa = "";
+            for(int i = 0; i < lines.Length; i++)
+            {
+                if(lines[1].StartsWith("-"))
+                {
+                    depa = lines[1].Remove(0,1);
+                }
+                else
+                {
+                    municipalities.Add(lines[1], depa);
+                }
+            }
             #endregion
 
 

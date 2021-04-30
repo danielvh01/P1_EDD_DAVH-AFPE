@@ -25,7 +25,10 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         {
             return View();
         }
-
+        public IActionResult Login()
+        {
+            return RedirectToAction(nameof(Login), "Pacient");
+        }
         //Assign the actual login to identify the data 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DataStructures
 {
-    public class HashTable<T, K> where T : IComparable where K : IComparable
+    public class HashTable<T, K> : IEnumerable<K> where T : IComparable where K : IComparable
     {
         #region Variables
         //Propertires
@@ -186,6 +186,20 @@ namespace DataStructures
                     }
                 }
             }
+        }
+        public IEnumerable<K> GetEnumerator()
+        {
+            var node = start;
+            while (node != null)
+            {
+                yield return node.key;
+                node = node.next;
+            }
+        }
+
+        IEnumerator<K> IEnumerable<K>.GetEnumerator()
+        {
+            return GetEnumerator();
         }
         #endregion
     }

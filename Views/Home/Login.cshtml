@@ -9,7 +9,7 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div class="form-group">
-                <select class="form-select" asp-for="department">
+                <select class="form-select">
                     @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.department)
                     {
 
@@ -19,7 +19,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <select class="form-select" asp-for="municipalities">
+                <select class="form-select">
                     @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.municipalities)
                     {
 
