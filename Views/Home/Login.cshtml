@@ -7,15 +7,13 @@
 @using P1_EDD_DAVH_AFPE.Models.Data;
 
 <div class="row">
-    <div class="col-6">
-        <form asp-action="Create">
+    <div class="col-12">
+        <form asp-action="Login">
             <div class="form-group">
-                <select class="form-control" name="municipality">
-                    @foreach(var item in Singleton.Instance.municipalities)
-                    {
-                        <option value="@item">@Html.DisplayText(item)></option>
-                    }
-                </select>
+                <div class="input-group col-12 mb-3">
+                    <input type="search" class="form-control col-4" name="search" placeholder="Search">
+                </div>
+                <button type="submit" value="Login" class="btn btn-primary mb-3">Find</button>
             </div>
         </form>
     </div>
