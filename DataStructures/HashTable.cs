@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DataStructures
 {
-    public class HashTable<T, K> : IEnumerable<K> where T : IComparable where K : IComparable
+    public class HashTable<T, K> where T : IComparable where K : IComparable
     {
         #region Variables
         //Propertires
@@ -63,14 +63,11 @@ namespace DataStructures
             else {
                 if(!existsKey(key))
                 {
-                    if(Length < maxKeys)
-                    {
-                        newnode.key = key;
-                        newnode.value.InsertAtEnd(value);
-                        end.next = newnode;
-                        newnode.prev = end;
-                        end = end.next;
-                    }
+                    newnode.key = key;
+                    newnode.value.InsertAtEnd(value);
+                    end.next = newnode;
+                    newnode.prev = end;
+                    end = end.next;
                 }
                 else
                 {
@@ -111,6 +108,23 @@ namespace DataStructures
                     temp = temp.next;
                 }
                 return temp.value.Find(comparer);
+            }
+            else
+            {
+                return default;
+            }
+        }
+
+        public IEnumerable<T> GetItemsOf(K key)
+        {
+            if(existsKey(key))
+            {
+                HashNode<T, K> temp = start;
+                while (temp.key.CompareTo(key) != 0)
+                {
+                    temp = temp.next;
+                }
+                return temp.value;
             }
             else
             {
@@ -187,19 +201,17 @@ namespace DataStructures
                 }
             }
         }
-        public IEnumerable<K> GetEnumerator()
+
+        public IEnumerable<K> getKeys()
         {
+            DoubleLinkedList<K> result = new DoubleLinkedList<K>();
             var node = start;
-            while (node != null)
+            while(node != null)
             {
-                yield return node.key;
+                result.InsertAtEnd(node.key);
                 node = node.next;
             }
-        }
-
-        IEnumerator<K> IEnumerable<K>.GetEnumerator()
-        {
-            return GetEnumerator();
+            return result;
         }
         #endregion
     }

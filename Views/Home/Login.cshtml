@@ -9,18 +9,22 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div class="form-group">
-                <select class="form-select">
-                    @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.department)
+                @{ 
+                    bool a = false;
+                    string departament = "";
+                } 
+                <select class="form-select" name="Departament" id="Departament">
+                    @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.municipalities.getKeys())
                     {
 
-                        <option value="@item">@Html.DisplayFor(modelItem => item)</option>
+                        <option value="@item" onclick="@{a = true; departament = item;} ">@Html.DisplayFor(modelItem => item)</option>
 
                     }
                 </select>
             </div>
             <div class="form-group">
-                <select class="form-select">
-                    @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.municipalities)
+                <select class="form-select" ng-disabled="@a">
+                    @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.municipalities.GetItemsOf(departament))
                     {
 
                         <option value="@item">@Html.DisplayFor(modelItem => item)</option>

@@ -60,23 +60,6 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             priorities.InsertAtEnd("People between 18 and 50 years old");
             #endregion
             municipalities = new HashTable<string, string>(22);
-            #region Municipalities insertions
-            StreamReader sr = new StreamReader("Municipios.txt");
-            string result = sr.ReadToEnd();
-            string[] lines = result.Split("\n");
-            string depa = "";
-            for(int i = 0; i < lines.Length; i++)
-            {
-                if(lines[1].StartsWith("-"))
-                {
-                    depa = lines[1].Remove(0,1);
-                }
-                else
-                {
-                    municipalities.Add(lines[1], depa);
-                }
-            }
-            #endregion
 
 
         }

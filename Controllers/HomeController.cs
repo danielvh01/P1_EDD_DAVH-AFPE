@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using P1_EDD_DAVH_AFPE.Models;
 using P1_EDD_DAVH_AFPE.Models.Data;
-using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -27,7 +27,22 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         }
         public IActionResult Login()
         {
-            return RedirectToAction(nameof(Login), "Pacient");
+            StreamReader sr = new StreamReader("Municipios.txt");
+            string result = sr.ReadToEnd();
+            string[] lines = result.Split("\n");
+            string depa = "";
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].StartsWith("-"))
+                {
+                    depa = lines[i].Remove(0, 1);
+                }
+                else
+                {
+                    Singleton.Instance.municipalities.Add(lines[i], depa);
+                }
+            }
+            return View();
         }
         //Assign the actual login to identify the data 
         [HttpPost]
