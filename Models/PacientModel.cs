@@ -30,13 +30,13 @@ namespace P1_EDD_DAVH_AFPE.Models
 
         #region METHOD
 
-        //
+        //Comparer of DPI parameter
         public int CompareTo(object obj)
         {
             var comparer = ((PacientModel)obj).DPI;
             return comparer.CompareTo(DPI);
         }
-
+        //Comparar of Priority Parameter
         public int ComparePriority(object obj)
         {
             var comparer = ((PacientModel)obj).priority;
