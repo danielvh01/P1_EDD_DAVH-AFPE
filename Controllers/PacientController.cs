@@ -46,6 +46,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return View();
         }
 
+        //Method that is called in order to Schedule the appointments of pacients registered.
         public ActionResult Schedule()
         {            
             bool check = false;
@@ -71,7 +72,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
             for (int i = 0; i < Singleton.Instance.WaitingList.Length; i++)
             {
-                if (Singleton.Instance.WaitingList.Get(i).schedule == "" && Singleton.Instance.verif == false)
+                if (Singleton.Instance.WaitingList.Get(i).schedule == "Not scheduled yet" && Singleton.Instance.verif == false)
                 {
                     if (Singleton.Instance.Cont > 4)
                     {
@@ -116,16 +117,16 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     DPI = Convert.ToInt32(collection["DPI"]),
                     Department = collection["Department"],
                     municipality = collection["municipality"],
-                    priority = priorityAssign(pr, Convert.ToInt32(collection["age"])),
+                    priority = priorityAssign(pr),
                     age = Convert.ToInt32(collection["age"]),
-                    schedule = ""
+                    schedule = "Not scheduled yet"
                 };               
                 var newPacientAVL = new PacientModel
                 {
                     Name = collection["Name"],
                     LastName = collection["LastName"],
                     DPI = Convert.ToInt32(collection["DPI"]),
-                    priority = priorityAssign(pr, Convert.ToInt32(collection["age"]))
+                    priority = priorityAssign(pr)
                 };
                 Singleton.Instance.HeapPacient.insertKey(newPacient, newPacient.priority);
                 Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
@@ -133,13 +134,13 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 {
                     if (i == 0)
                     {
-                        for (int j = 0; j < Singleton.Instance.index.Length; j++)
+                        for (int j = 0; j < Singleton.Instance.PacientsTree.Length; j++)
                         {
-                            Singleton.Instance.index = new AVLTree<PacientModel>();
+                            Singleton.Instance.PacientsTree = new AVLTree<PacientModel>();
                             Singleton.Instance.WaitingList = new DoubleLinkedList<PacientModel>();
                         }
                     }
-                    Singleton.Instance.index.Insert(Singleton.Instance.HeapPacient.heapArray.Get(i).value,Singleton.Instance.index.Root);
+                    Singleton.Instance.PacientsTree.Insert(Singleton.Instance.HeapPacient.heapArray.Get(i).value,Singleton.Instance.PacientsTree.Root);
                     Singleton.Instance.WaitingList.InsertAtEnd(Singleton.Instance.HeapPacient.heapArray.Get(i).value);
                 }
                 //vCunar->eliminar de lista espera y heap
@@ -194,9 +195,10 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             }
         }
 
-        public int priorityAssign(string pa, int age)
+        public int priorityAssign(string pa)
         {
-            if (pa == "Health staff")
+            if (pa == "Health staff" || pa == "Health Sciences Students" || 
+                pa == "Relief corps" || pa == "Interned or admitted in an elderly institution person")
             {
                 return 1;
             }
@@ -204,7 +206,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             {
                 return 2;
             }
-            if (pa  == "Older than 50 years")
+            if (pa  == "Older than 50 years" || pa == "National Security Staff" 
+                || pa == "Education Staff" || pa == "Justice Staff")
             {
                 return 3;
             }
