@@ -26,7 +26,14 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return View();
         }
 
-        
+        //Assign the actual login to identify the data 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(IFormCollection collection)
+        {
+            Singleton.Instance.muni = collection["municipality"];
+            return RedirectToAction(nameof(Login), "Pacient");
+        }
 
         public IActionResult Privacy()
         {
@@ -39,7 +46,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         {
             Singleton.Instance.HeapPacient = new Heap<PacientModel>(Singleton.Instance.maxPacient);
             Singleton.Instance.Data = new HashTable<PacientModel, int>(Singleton.Instance.maxLength);
-            return RedirectToAction(nameof(Index),"Pacient");
+            return RedirectToAction(nameof(Login));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -19,6 +19,8 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public int schedule;
         public int heapCapacity;
         public int hashCapacity;
+        //String Variables
+        public string muni = "";
         //Data structures
         public DoubleLinkedList<string> priorities;
         public DoubleLinkedList<string> municipalities;
@@ -38,15 +40,21 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         {
             maxLength = 15;
             maxPacient = 3;
-            schedule = 30;
+            schedule = 30;                    
             PacientsTree = new AVLTree<PacientModel>();
             WaitingList = new DoubleLinkedList<PacientModel>();
             VaccinatedList = new DoubleLinkedList<PacientModel>();
             priorities = new DoubleLinkedList<string>();
             #region Priotity insertions
             priorities.InsertAtEnd("Health staff");
+            priorities.InsertAtEnd("Health Sciences Students");
+            priorities.InsertAtEnd("Relief corps");
+            priorities.InsertAtEnd("Interned or admitted in an elderly institution person");
             priorities.InsertAtEnd("Older than 70 years");
-            priorities.InsertAtEnd("Older than 50 years");
+            priorities.InsertAtEnd("National Security Staff");
+            priorities.InsertAtEnd("Education Staff");
+            priorities.InsertAtEnd("Justice Staff");
+            priorities.InsertAtEnd("Older between 50 and 69 years");
             priorities.InsertAtEnd("Essential workers");
             priorities.InsertAtEnd("People between 18 and 50 years old");
             #endregion
