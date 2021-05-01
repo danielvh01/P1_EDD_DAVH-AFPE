@@ -16,6 +16,10 @@ namespace P1_EDD_DAVH_AFPE.Controllers
     {
         string session;
         private readonly IHostingEnvironment hostingEnvironment;
+
+        const string SessionMunicipality = "_Municipality";
+        const string SessionDepartment = "_Department";
+
         public PacientController(IHostingEnvironment hostingEnvironment)
         {
             session = "Database.txt";
@@ -28,14 +32,15 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return View();
         }
         //GET of waiting List
-        public ActionResult SIndex()
+        public ActionResult SIndex(string municipality)
         {
-            return View(Singleton.Instance.WaitingList);
+            
+            return View(Singleton.Instance.HeapPacient);
         }
 
         public ActionResult Simulation()
         {
-            return View(Singleton.Instance.SWaitingList);
+            return View(Singleton.Instance.WaitingList);
         }
         public ActionResult VaccinatedList()
         {

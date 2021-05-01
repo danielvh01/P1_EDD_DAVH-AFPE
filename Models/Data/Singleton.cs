@@ -26,10 +26,9 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public string database;
         //Data structures
         public DoubleLinkedList<string> priorities;
-        public DoubleLinkedList<string> municipalities;
+        public HashTable<string,string> municipalities;
         public DoubleLinkedList<PacientModel> WaitingList;
         public DoubleLinkedList<PacientModel> VaccinatedList;
-        public DoubleLinkedList<PacientModel> SWaitingList;
         public HashTable<PacientModel, int> Data;
         public AVLTree<SearchCriteria<int>> DpiTree;
         public AVLTree<SearchCriteria<string>> NameTree;
@@ -71,13 +70,21 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             priorities.InsertAtEnd("Adultos de 40 a 49 años");
             priorities.InsertAtEnd("Adultos de 18 a 39 años");            
             #endregion
-            municipalities = new DoubleLinkedList<string>();
+            municipalities = new HashTable<string, string>(22);
             StreamReader sr = new StreamReader("Municipios.txt");
             string result = sr.ReadToEnd();
             string[] lines = result.Split("\r\n");
+            string d = "";
             for (int i = 0; i < lines.Length; i++)
             {
-                municipalities.InsertAtEnd(lines[i]);
+                if(lines[i].StartsWith("-"))
+                {
+                    d = lines[i].Replace("-", "");
+                }
+                else
+                {
+                    municipalities.Add(lines[i], d);
+                }
             }
 
         }
@@ -161,6 +168,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             DpiTree.Root = DpiTree.Insert(new SearchCriteria<int> { value = newPacient.DPI, key = newkey }, DpiTree.Root);
             NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = newPacient.Name, key = newkey }, NameTree.Root);
             LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = newPacient.LastName, key = newkey }, LastNameTree.Root);
+            HeapPacient.insertKey(newPacient, newPacient.priority);
         }
         public bool Login(string municipality)
         {

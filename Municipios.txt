@@ -1,4 +1,5 @@
-﻿Chahal
+﻿﻿-Alta Verapaz
+Chahal
 Chisec
 Coban
 Fray Bartolomé de las Casas
@@ -14,6 +15,7 @@ Senahú
 Tamahú
 Tactic
 Tucurú
+-Baja Verapaz
 Cubulco
 Granados
 Purulhá
@@ -22,6 +24,7 @@ Salamá
 San Jerónimo
 San Miguel Chicaj
 Santa Cruz el Chol
+-Chimaltenango
 Acatenango
 Chimaltenango
 El Tejar
@@ -38,6 +41,7 @@ Santa Cruz Balanyá
 Tecpán
 Yetocapa
 Zaragoza
+-Chiquimula
 Camotán
 Chiquimula
 Concepción Las Minas
@@ -49,6 +53,7 @@ Quetzaltepeque
 San Jacinto
 San Jose la Arada
 San Juan Ermita
+-El Progreso
 El Jícaro
 Guastatoya
 Morazán
@@ -57,6 +62,7 @@ San Antonio La Paz
 San Cristóbal Acasaguastlán
 Sanarate
 Sansare
+-Escuintla
 Escuintla
 Guanagazapa
 Iztapa
@@ -71,6 +77,7 @@ Santa Lucía Cotzumalguapa
 Sipacate
 Siquinalá
 Tiquisate
+-Guatemala
 Amatitlán
 Chinautla
 Chuarrancho
@@ -88,6 +95,7 @@ San Raymundo
 Santa Catarina Pinula
 Villa Canales
 Villa Nueva
+-Huehuetenango
 Aguacatán
 Chiantla
 Colotenango
@@ -121,11 +129,13 @@ Santiago Chimaltenango
 Tectitán
 Todos Santos Cuchumatán
 Unión Cantinil
+-Izabal
 El Estor
 Livingston
 Los Amates
 Morales
 Puerto Barrios
+-Jalapa
 Jalapa
 Mataquescuitla
 Monjas
@@ -133,6 +143,7 @@ San Carlos Alzatate
 San Luis Jilotepeque
 San Manuel Chaparrón
 San Pedro Pinula
+-Jutiapa
 Agua Blanca
 Asunción Mita
 Atescatempa
@@ -150,6 +161,7 @@ San José Acatempa
 Santa Catarina Mita
 Yutiltepeque
 Zapotitlán
+-Petén
 Dolores
 El Chal
 Isla de Flores, Santa Elena de la Cruz
@@ -164,6 +176,7 @@ San José
 San Luis
 Santa Ana
 Sayaxché
+-Quetzaltenango
 Almolonga
 Cabricán
 Cajolá
@@ -210,6 +223,7 @@ San Pedro Jocopilas
 Santa Cruz del Quiché
 Uspantán
 Zacualpa
+-Retalhuleu
 Champerico
 El Asintal
 Nuevo San Carlos
@@ -219,6 +233,7 @@ San Felipe
 San Martín Zapotitlán
 San Sebastián
 Santa Cruz Muluá
+-Sacatepéquez
 Alotenango
 Cuidad Vieja
 Jocotenango
@@ -235,6 +250,7 @@ Santa María de Jesús
 Santiago Sacatepéquez
 Santo Domingo Xenacoj
 Sumpango
+-San Marcos
 Ayutla
 Catarina
 Comitancillo
@@ -265,6 +281,7 @@ Sipacapa
 Tacaná
 Tajumulco
 Tejutla
+-Santa Rosa
 Barberena
 Casillas
 Chiquimulilla
@@ -279,6 +296,7 @@ Santa Cruz Naranjo
 Santa María Ixhuatán
 Santa Rosa de Lima
 Taxisco
+-Sololá
 Concepción
 Nahualá
 Panajachel
@@ -298,6 +316,7 @@ Santa Lucía Utatlán
 Santa María Visitación
 Santiago Atitlán
 Sololá
+-Suchitepéquez
 Chicacao
 Cuyotenango
 Mazatenango
@@ -319,6 +338,7 @@ Santa Bárbara
 Santo Domingo Suchitepéquez
 Santo Tomás La Unión 
 Zunilito
+-Totonicapán
 Momostenango
 San Andrés Xecul
 San Bartolo
@@ -327,6 +347,7 @@ San Francisco El Alto
 Santa Lucía La Reforma
 Santa María Chiquimula
 Totonicapán
+-Zacapa
 Cabañas
 Estanzuela
 Gualán

@@ -30,22 +30,12 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         }
         public IActionResult Login()
         {
-            return View();
+            return View(Singleton.Instance.municipalities.GetAllKeys());
         }
-        //Assign the actual login to identify the data 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Login(IFormCollection collection)
+
+        public IActionResult LoginM(string department)
         {
-            if(Singleton.Instance.municipalities.Find(collection["search"]) != null)
-            {
-                HttpContext.Session.SetString(SessionMunicipality, collection["search"]);
-                return RedirectToAction(nameof(Index), "Pacient");
-            }
-            else
-            {
-                return View();
-            }
+            return View(Singleton.Instance.municipalities.GetAllContent(department));
         }
 
         public IActionResult Configuration()

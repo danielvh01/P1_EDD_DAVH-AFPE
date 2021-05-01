@@ -185,6 +185,42 @@ namespace DataStructures
             }
         }
 
+        public IEnumerable<K> GetAllKeys()
+        {
+            DoubleLinkedList<K> result = new DoubleLinkedList<K>();
+            var node = start;
+            while(node != null)
+            {
+                result.InsertAtEnd(node.key);
+                node = node.next;
+            }
+            return result;
+        }
+
+        public IEnumerable<T> GetAllContent(K key)
+        {
+            if (existsKey(key))
+            {
+                var node = start;
+                while(node.key.CompareTo(key) != 0 && node != null)
+                {
+                    node = node.next;
+                }
+                if(node != null)
+                {
+                    return node.value;
+                }
+                else
+                {
+                    return default;
+                }
+            }
+            else
+            {
+                return default;
+            }
+        }
+
         #endregion
     }
 }
