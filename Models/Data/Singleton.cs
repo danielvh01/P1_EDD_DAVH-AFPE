@@ -29,7 +29,9 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public DoubleLinkedList<PacientModel> WaitingList;
         public DoubleLinkedList<PacientModel> VaccinatedList;
         public HashTable<PacientModel, int> Data;
-        public AVLTree<PacientModel> PacientsTree;
+        public AVLTree<string> DpiTree;
+        public AVLTree<string> NameTree;
+        public AVLTree<string> LastNameTree;
         public Heap<PacientModel> HeapPacient;
         #endregion
         #region Private Variables
