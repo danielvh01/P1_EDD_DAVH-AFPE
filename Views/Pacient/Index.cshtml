@@ -1,9 +1,13 @@
-﻿
+﻿@using P1_EDD_DAVH_AFPE.Models.Data
 @{
     ViewData["Title"] = "MainMenu";
 }
 
+
 <h1>COVID-19 Vaccination System</h1>
+<div class="form-group">
+    <label class="control-label text-xl-left">Current vaccination center: @Html.DisplayFor(model => Singleton.Instance.department),@Html.DisplayFor(model => Singleton.Instance.muni) </label>
+</div>
 
 <h4>What would you like to do?</h4>
 
@@ -12,7 +16,6 @@
 
         <a class="btn btn-info" asp-action="Create">Add register of person to waiting List.</a>
         <a class="btn btn-info" asp-action="Schedule">Schedule Vaccination</a>
-        <a class="btn btn-info" asp-action="CurrentTask">Reschedule vaccination</a>
         <a class="btn btn-info" asp-action="SIndex">Waiting List</a>
         <a class="btn btn-info" asp-action="VaccinatedList">Vaccinated List</a>
         <a class="btn btn-info" asp-action="Percentage">Percentage of vaccinated</a>

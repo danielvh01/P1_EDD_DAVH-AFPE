@@ -1,0 +1,3 @@
+heapCapacity:3
+hashCapacity:15
+pacients:

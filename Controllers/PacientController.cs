@@ -7,10 +7,24 @@ using System.Threading.Tasks;
 using P1_EDD_DAVH_AFPE.Models;
 using P1_EDD_DAVH_AFPE.Models.Data;
 using DataStructures;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 namespace P1_EDD_DAVH_AFPE.Controllers
+
 {
     public class PacientController : Controller
     {
+        string session;
+        private readonly IHostingEnvironment hostingEnvironment;
+
+        const string SessionMunicipality = "_Municipality";
+        const string SessionDepartment = "_Department";
+
+        public PacientController(IHostingEnvironment hostingEnvironment)
+        {
+            session = "Database.txt";
+            this.hostingEnvironment = hostingEnvironment;
+        }
         // GET: PacientController
         public ActionResult Index()
         {
@@ -18,11 +32,16 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return View();
         }
         //GET of waiting List
-        public ActionResult SIndex()
+        public ActionResult SIndex(string municipality)
+        {
+            
+            return View(Singleton.Instance.HeapPacient);
+        }
+
+        public ActionResult Simulation()
         {
             return View(Singleton.Instance.WaitingList);
         }
-
         public ActionResult VaccinatedList()
         {
             return View(Singleton.Instance.VaccinatedList);
@@ -46,7 +65,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return View();
         }
 
-        //
+        //Method that is called in order to Schedule the appointments of pacients registered.
         public ActionResult Schedule()
         {            
             bool check = false;
@@ -72,7 +91,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
             for (int i = 0; i < Singleton.Instance.WaitingList.Length; i++)
             {
-                if (Singleton.Instance.WaitingList.Get(i).schedule == "" && Singleton.Instance.verif == false)
+                if (Singleton.Instance.WaitingList.Get(i).schedule == "Not scheduled yet" && Singleton.Instance.verif == false)
                 {
                     if (Singleton.Instance.Cont > 4)
                     {
@@ -102,6 +121,12 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public ActionResult SReschedule(int ID)
+        {
+
+            return RedirectToAction(nameof(Simulation));
+        }
+
         // POST: PacientController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -115,34 +140,14 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     Name = collection["Name"],
                     LastName = collection["LastName"],
                     DPI = Convert.ToInt32(collection["DPI"]),
-                    Department = collection["Department"],
-                    municipality = collection["municipality"],
-                    priority = priorityAssign(pr, Convert.ToInt32(collection["age"])),
+                    Department = Singleton.Instance.department,
+                    municipality = Singleton.Instance.muni,
+                    priority = Singleton.Instance.priorityAssign(pr),
                     age = Convert.ToInt32(collection["age"]),
-                    schedule = ""
-                };               
-                var newPacientAVL = new PacientModel
-                {
-                    Name = collection["Name"],
-                    LastName = collection["LastName"],
-                    DPI = Convert.ToInt32(collection["DPI"]),
-                    priority = priorityAssign(pr, Convert.ToInt32(collection["age"]))
+                    schedule = "Not scheduled yet"
                 };
                 Singleton.Instance.HeapPacient.insertKey(newPacient, newPacient.priority);
                 Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
-                for (int i = 0; i < Singleton.Instance.HeapPacient.Length(); i++)
-                {
-                    if (i == 0)
-                    {
-                        for (int j = 0; j < Singleton.Instance.index.lenght; j++)
-                        {
-                            Singleton.Instance.index = new AVLTree<PacientModel>();
-                            Singleton.Instance.WaitingList = new DoubleLinkedList<PacientModel>();
-                        }
-                    }
-                    Singleton.Instance.index.Insert(Singleton.Instance.HeapPacient.heapArray.Get(i).value,Singleton.Instance.index.Root);
-                    Singleton.Instance.WaitingList.InsertAtEnd(Singleton.Instance.HeapPacient.heapArray.Get(i).value);
-                }
                 //vCunar->eliminar de lista espera y heap
                 return RedirectToAction(nameof(Index));
             }
@@ -195,32 +200,13 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             }
         }
 
-        public int priorityAssign(string pa, int age)
+        public ActionResult Data()
         {
-            if (pa == "Health staff")
-            {
-                return 1;
-            }
-            if (pa  == "Older than 70 years")
-            {
-                return 2;
-            }
-            if (pa  == "Older than 50 years")
-            {
-                return 3;
-            }
-            if (pa  == "Essential workers")
-            {
-                return 4;
-            }
-            if (pa  == "People between 18 and 50 years old")
-            {
-                return 5;
-            }
-            else
-            {
-                return default;
-            }
+            Singleton.Instance.BuildData();
+            StreamWriter file = new StreamWriter(session, false);
+            file.Write(Singleton.Instance.database);
+            file.Close();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

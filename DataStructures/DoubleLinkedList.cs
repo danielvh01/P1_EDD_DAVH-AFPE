@@ -9,8 +9,10 @@ namespace DataStructures
     public class DoubleLinkedList<T> : IEnumerable<T> where T : IComparable
     {
         #region Variables
+        //Pointers
         public Node<T> First;
         Node<T> End;
+        //Properties
         public int Length = 0;
         #endregion
 
@@ -294,12 +296,55 @@ namespace DataStructures
                 return default;
             }
         }
+        public T Find(Func<T, bool> comparer)
+        {
+            Node<T> temp = First;
+            while (temp != null && comparer.Invoke(temp.value))
+            {
+                temp = temp.next;
+            }
+            if (temp != null)
+            {
+                return temp.value;
+            }
+            else
+            {
+                return default;
+            }
+        }
+        public IEnumerable<T> GetAllElementsBy(Func<T, bool> comparer)
+        {
+            DoubleLinkedList<T> result = new DoubleLinkedList<T>();
+            var node = First;
+            while (node != null)
+            {
+                if (comparer.Invoke(node.value))
+                {
+                    result.InsertAtEnd(node.value);
+                }
+                node = node.next;
+            }
+            return result;
+        }
         public IEnumerator<T> GetEnumerator()
         {
             var node = First;
             while (node != null)
             {
                 yield return node.value;
+                node = node.next;
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator(Func<T,bool> comparer)
+        {
+            var node = First;
+            while (node != null)
+            {
+                if(comparer.Invoke(node.value))
+                {
+                    yield return node.value;
+                }
                 node = node.next;
             }
         }

@@ -7,22 +7,22 @@
         <form asp-action="Configuration">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.maxLength" class="control-label">Please indicate the maximum Length for the HashTable.</label>
-                <input asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.maxLength" class="form-control col-2" />
-                <span asp-validation-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.maxLength" class="text-danger"></span>
+                <label asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.hashCapacity" class="control-label">Por favor indique el tamaño máximo de la Tabla Hash.</label>
+                <input asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.hashCapacity" class="form-control col-2" />
+                <span asp-validation-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.hashCapacity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.maxPacient" class="control-label">Please indicate the maximum simmultaneous attendance number of pacients.</label>
-                <input asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.maxPacient" class="form-control col-2" />
-                <span asp-validation-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.maxPacient" class="text-danger"></span>
+                <label asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.heapCapacity" class="control-label">Por favor indique el número máximo de pacientes a registrar.</label>
+                <input asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.heapCapacity" class="form-control col-2" />
+                <span asp-validation-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.heapCapacity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.schedule" class="control-label">Please indicate the duration time of each medical appointment.</label>
+                <label asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.schedule" class="control-label">Por favor indique la duración maxima de una cita de vacunación.</label>
                 <input asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.schedule" class="form-control col-2" />
                 <span asp-validation-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.schedule" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Start" class="btn btn-primary" />
+                <input type="submit" value="Continuar" class="btn btn-primary" />
             </div>
         </form>
     </div>

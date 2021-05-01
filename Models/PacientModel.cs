@@ -20,23 +20,24 @@ namespace P1_EDD_DAVH_AFPE.Models
         [Required]
         public string municipality { get; set; }
         [Required]
-        public int priority { get; set; }
+        public string priority { get; set; }
         [Required]
         public int age { get; set; }
         [Required]
         public string schedule { get; set; }
 
+
         #endregion
 
         #region METHOD
 
-        //
+        //Comparer of DPI parameter
         public int CompareTo(object obj)
         {
             var comparer = ((PacientModel)obj).DPI;
             return comparer.CompareTo(DPI);
         }
-
+        //Comparar of Priority Parameter
         public int ComparePriority(object obj)
         {
             var comparer = ((PacientModel)obj).priority;
