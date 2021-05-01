@@ -33,6 +33,10 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return View(Singleton.Instance.WaitingList);
         }
 
+        public ActionResult Simulation()
+        {
+            return View(Singleton.Instance.SWaitingList);
+        }
         public ActionResult VaccinatedList()
         {
             return View(Singleton.Instance.VaccinatedList);
@@ -110,6 +114,12 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 TempData["testmsg"] = "All in the waiting list had been scheduled already or there is nobody in it.";
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public ActionResult SReschedule(int ID)
+        {
+
+            return RedirectToAction(nameof(Simulation));
         }
 
         // POST: PacientController/Create

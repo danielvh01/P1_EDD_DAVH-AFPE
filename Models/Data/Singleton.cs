@@ -13,6 +13,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         #region Public Variables
         //Boolean variables
         public bool verif = false;
+        public bool SPacient;
         //Integer variables
         public int Cont;
         public int hashCapacity;
@@ -28,6 +29,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public DoubleLinkedList<string> municipalities;
         public DoubleLinkedList<PacientModel> WaitingList;
         public DoubleLinkedList<PacientModel> VaccinatedList;
+        public DoubleLinkedList<PacientModel> SWaitingList;
         public HashTable<PacientModel, int> Data;
         public AVLTree<SearchCriteria<int>> DpiTree;
         public AVLTree<SearchCriteria<string>> NameTree;
@@ -54,17 +56,20 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             VaccinatedList = new DoubleLinkedList<PacientModel>();
             priorities = new DoubleLinkedList<string>();
             #region Priotity insertions
-            priorities.InsertAtEnd("Health staff");
-            priorities.InsertAtEnd("Health Sciences Students");
-            priorities.InsertAtEnd("Relief corps");
-            priorities.InsertAtEnd("Interned or admitted in an elderly institution person");
-            priorities.InsertAtEnd("Older than 70 years");
-            priorities.InsertAtEnd("National Security Staff");
-            priorities.InsertAtEnd("Education Staff");
-            priorities.InsertAtEnd("Justice Staff");
-            priorities.InsertAtEnd("Older between 50 and 69 years");
-            priorities.InsertAtEnd("Essential workers");
-            priorities.InsertAtEnd("People between 18 and 50 years old");
+            priorities.InsertAtEnd("Trabajador de establecimientos de salud asistencial que atienden pacientes con COVID-19");//1
+            priorities.InsertAtEnd("Trabajador de establecimiento de salud asistencial");
+            priorities.InsertAtEnd("Estudiantes de ciencias de la salud y afines");
+            priorities.InsertAtEnd("Cuerpo de socorro,trabajador de funeraria o personal que labora en instituciones de adultos mayores");
+            priorities.InsertAtEnd("Persona internada en hogar o institucion de adulto mayor");
+            priorities.InsertAtEnd("Trabajadores del sector salud (administrativos)");
+            priorities.InsertAtEnd("Adulto mayor de 70 o más años");
+            priorities.InsertAtEnd("Adulto de 50 a 69 años");
+            priorities.InsertAtEnd("Trabajador del sector de seguridad nacional");
+            priorities.InsertAtEnd("Trabajadores registrados en las municipalidades y entidades que prestan servicios esenciales");
+            priorities.InsertAtEnd("Trabajador del sector educativo");
+            priorities.InsertAtEnd("Trabajadores sector justicia, (jueces, personal en tribunales)");
+            priorities.InsertAtEnd("Adultos de 40 a 49 años");
+            priorities.InsertAtEnd("Adultos de 18 a 39 años");            
             #endregion
             municipalities = new DoubleLinkedList<string>();
             StreamReader sr = new StreamReader("Municipios.txt");
@@ -85,33 +90,67 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         }
 
 
-        public int priorityAssign(string pa)
+        public string priorityAssign(string pa)
         {
-            if (pa == "Health staff" || pa == "Health Sciences Students" ||
-                pa == "Relief corps" || pa == "Interned or admitted in an elderly institution person")
+            if (pa == "Trabajador de establecimientos de salud asistencial que atienden pacientes con COVID-19")
             {
-                return 1;
+                return "1a";
             }
-            if (pa == "Older than 70 years")
+            if (pa == "Trabajador de establecimiento de salud asistencial")
             {
-                return 2;
+                return "1b";
             }
-            if (pa == "Older than 50 years" || pa == "National Security Staff"
-                || pa == "Education Staff" || pa == "Justice Staff")
+            if (pa == "Estudiantes de ciencias de la salud y afines")
             {
-                return 3;
+                return "1c";
             }
-            if (pa == "Essential workers")
+            if (pa == "Cuerpo de socorro,trabajador de funeraria o personal que labora en instituciones de adultos mayores")
             {
-                return 4;
+                return "1d";
             }
-            if (pa == "People between 18 and 50 years old")
+            if (pa == "Persona internada en hogar o institucion de adulto mayor")
             {
-                return 5;
+                return "1e";
+            }
+            if (pa == "Trabajadores del sector salud (administrativos)")
+            {
+                return "1f";
+            }
+            if (pa == "Adulto mayor de 70 o más años")
+            {
+                return "2a"; 
+            }
+            if (pa == "Adulto de 50 a 69 años")
+            {
+                return "2b";
+            }
+            if (pa == "Trabajador del sector de seguridad nacional")
+            {
+                return "3a";
+            }
+            if (pa == "Trabajadores registrados en las municipalidades y entidades que prestan servicios esenciales")
+            {
+                return "3b";
+            }
+            if (pa == "Trabajador del sector educativo")
+            {
+                return "3c";
+            }
+            if (pa == "Trabajadores sector justicia, (jueces, personal en tribunales)")
+            {
+                return "3d";
+            }
+            if (pa == "Adultos de 40 a 49 años")
+            {
+                return "4a";
+            }
+            if (pa == "Adultos de 18 a 39 años")
+            {
+                return "4b";
             }
             else
             {
-                return default;
+                return "";
             }
         }
         public void Agregar(PacientModel newPacient)
