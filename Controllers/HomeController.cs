@@ -89,16 +89,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                 };
                                 Singleton.Instance.HeapPacient.insertKey(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
                                 Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
-                                for (int a = 0; a < Singleton.Instance.HeapPacient.Length(); a++)
-                                {
-                                    if (a == 0)
-                                    {
-                                        Singleton.Instance.PacientsTree = new AVLTree<PacientModel>();
-                                        Singleton.Instance.WaitingList = new DoubleLinkedList<PacientModel>();
-                                    }
-                                    Singleton.Instance.PacientsTree.Insert(Singleton.Instance.HeapPacient.heapArray.Get(a).value, Singleton.Instance.PacientsTree.Root);
-                                    Singleton.Instance.WaitingList.InsertAtEnd(Singleton.Instance.HeapPacient.heapArray.Get(a).value);
-                                }
+                                Singleton.Instance.Agregar(newPacient);
                             }
                         }
                     }
