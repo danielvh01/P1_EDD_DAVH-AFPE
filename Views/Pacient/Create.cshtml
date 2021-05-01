@@ -4,39 +4,38 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Registro de paciente</h1>
 
-<h4>PacientModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Nombre</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
+                <label asp-for="LastName" class="control-label">Apellido</label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Age:</label>
+                <label class="control-label">Edad</label>
                 <input asp-for="age" min="1" class="form-control" />
                 <span asp-validation-for="age" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DPI" class="control-label"></label>
+                <label asp-for="DPI" class="control-label">DPI / Partida de nacimiento</label>
                 <input asp-for="DPI" class="form-control" />
                 <span asp-validation-for="DPI" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label text-xl-left">Department: @Html.DisplayFor(model => Singleton.Instance.department)</label>
+                <label class="control-label text-xl-left">Departmento: @Html.DisplayFor(model => Singleton.Instance.department)</label>
             </div>
             <div class="form-group">
-                <label class="control-label text-xl-left">Municipality: @Html.DisplayFor(model => Singleton.Instance.muni)</label>
+                <label class="control-label text-xl-left">Municipio: @Html.DisplayFor(model => Singleton.Instance.muni)</label>
             </div>
             <div class="form-group">
                 <select class="form-select" asp-for="priority">

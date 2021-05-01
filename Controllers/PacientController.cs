@@ -33,6 +33,10 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return View(Singleton.Instance.WaitingList);
         }
 
+        public ActionResult Simulation()
+        {
+            return View(Singleton.Instance.SWaitingList);
+        }
         public ActionResult VaccinatedList()
         {
             return View(Singleton.Instance.VaccinatedList);
@@ -112,6 +116,12 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public ActionResult SReschedule(int ID)
+        {
+
+            return RedirectToAction(nameof(Simulation));
+        }
+
         // POST: PacientController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -133,8 +143,6 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 };
                 Singleton.Instance.HeapPacient.insertKey(newPacient, newPacient.priority);
                 Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
-                Singleton.Instance.NameTree.Root = Singleton.Instance.NameTree.Insert(newPacient.Name,Singleton.Instance.NameTree.Root);
-                Singleton.Instance.WaitingList.InsertAtEnd(Singleton.Instance.HeapPacient.heapArray.Get(i).value);
                 //vCunar->eliminar de lista espera y heap
                 return RedirectToAction(nameof(Index));
             }
