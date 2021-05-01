@@ -42,7 +42,7 @@
                     @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.priorities)
                     {
 
-                        <option value="@item" ng-selected="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.priorities.Get(Model.priority) == item">@Html.DisplayFor(modelItem => item)</option>
+                        <option value="@item" ng-selected="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.priorities.Find(Model.priority) == item">@Html.DisplayFor(modelItem => item)</option>
 
                     }
                 </select>

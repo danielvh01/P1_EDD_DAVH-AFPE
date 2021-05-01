@@ -74,10 +74,10 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             municipalities = new DoubleLinkedList<string>();
             StreamReader sr = new StreamReader("Municipios.txt");
             string result = sr.ReadToEnd();
-            string[] lines = result.Split("\n");
+            string[] lines = result.Split("\r\n");
             for (int i = 0; i < lines.Length; i++)
             {
-                Singleton.Instance.municipalities.InsertAtEnd(lines[i]);
+                municipalities.InsertAtEnd(lines[i]);
             }
 
         }
