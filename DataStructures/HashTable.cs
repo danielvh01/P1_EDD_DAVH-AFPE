@@ -115,23 +115,6 @@ namespace DataStructures
             }
         }
 
-        public IEnumerable<T> GetItemsOf(K key)
-        {
-            if(existsKey(key))
-            {
-                HashNode<T, K> temp = start;
-                while (temp.key.CompareTo(key) != 0)
-                {
-                    temp = temp.next;
-                }
-                return temp.value;
-            }
-            else
-            {
-                return default;
-            }
-        }
-
 
 
         public T Delete(T value, K key)
@@ -201,6 +184,7 @@ namespace DataStructures
                 }
             }
         }
+
         #endregion
     }
 }

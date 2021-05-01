@@ -7,12 +7,12 @@ namespace DataStructures
 {
     public class HeapNode<T> : IComparable where T : IComparable
     {
-        public int priority;
+        public string priority;
         public T value { get; set; }
 
         public int height;
 
-        public HeapNode(T newvalue, int p)
+        public HeapNode(T newvalue, string p)
         {
             value = newvalue;
             height = 1;

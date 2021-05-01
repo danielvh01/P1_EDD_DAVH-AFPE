@@ -133,8 +133,6 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 };
                 Singleton.Instance.HeapPacient.insertKey(newPacient, newPacient.priority);
                 Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
-                Singleton.Instance.NameTree.Root = Singleton.Instance.NameTree.Insert(newPacient.Name,Singleton.Instance.NameTree.Root);
-                Singleton.Instance.WaitingList.InsertAtEnd(Singleton.Instance.HeapPacient.heapArray.Get(i).value);
                 //vCunar->eliminar de lista espera y heap
                 return RedirectToAction(nameof(Index));
             }

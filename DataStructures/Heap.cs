@@ -63,7 +63,7 @@ namespace DataStructures
             return 2 * index + 2;
         }
 
-        public bool insertKey(T value, int p)
+        public bool insertKey(T value, string p)
         {
             if (Length() == capacity)
             {
