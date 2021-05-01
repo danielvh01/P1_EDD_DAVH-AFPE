@@ -29,9 +29,9 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public DoubleLinkedList<PacientModel> WaitingList;
         public DoubleLinkedList<PacientModel> VaccinatedList;
         public HashTable<PacientModel, int> Data;
-        public AVLTree<string> DpiTree;
-        public AVLTree<string> NameTree;
-        public AVLTree<string> LastNameTree;
+        public AVLTree<SearchCriteria<int>> DpiTree;
+        public AVLTree<SearchCriteria<string>> NameTree;
+        public AVLTree<SearchCriteria<string>> LastNameTree;
         public Heap<PacientModel> HeapPacient;
         #endregion
         #region Private Variables
@@ -47,7 +47,9 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             schedule = 30;
             department = "";
             muni = "";
-            PacientsTree = new AVLTree<PacientModel>();
+            DpiTree = new AVLTree<SearchCriteria<int>>();
+            NameTree = new AVLTree<SearchCriteria<string>>();
+            LastNameTree = new AVLTree<SearchCriteria<string>>();
             WaitingList = new DoubleLinkedList<PacientModel>();
             VaccinatedList = new DoubleLinkedList<PacientModel>();
             priorities = new DoubleLinkedList<string>();
@@ -75,6 +77,8 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 return _instance;
             }
         }
+
+
         public int priorityAssign(string pa)
         {
             if (pa == "Health staff" || pa == "Health Sciences Students" ||
@@ -103,6 +107,20 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             {
                 return default;
             }
+        }
+        public void Agregar(PacientModel newPacient)
+        {
+            int newkey = keyGen(newPacient.DPI);
+            Data.Add(newPacient, newkey);
+            Database.Add(newPacient, newkey);
+            DpiTree.Root = DpiTree.Insert(new SearchCriteria<int> { value = newPacient.DPI, key = newkey }, DpiTree.Root);
+            NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = newPacient.Name, key = newkey }, NameTree.Root);
+            LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = newPacient.LastName, key = newkey }, LastNameTree.Root);
+        }
+        public bool Login(string municipality)
+        {
+
+            return true;
         }
 
         public int keyGen(int dpi)

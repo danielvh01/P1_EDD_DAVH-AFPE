@@ -130,27 +130,11 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     priority = Singleton.Instance.priorityAssign(pr),
                     age = Convert.ToInt32(collection["age"]),
                     schedule = "Not scheduled yet"
-                };               
-                var newPacientAVL = new PacientModel
-                {
-                    Name = collection["Name"],
-                    LastName = collection["LastName"],
-                    DPI = Convert.ToInt32(collection["DPI"]),
-                    priority = Singleton.Instance.priorityAssign(pr)
                 };
                 Singleton.Instance.HeapPacient.insertKey(newPacient, newPacient.priority);
                 Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
-                for (int i = 0; i < Singleton.Instance.HeapPacient.Length(); i++)
-                {
-                    if (i == 0)
-                    {
-                         Singleton.Instance.PacientsTree = new AVLTree<PacientModel>();
-                         Singleton.Instance.WaitingList = new DoubleLinkedList<PacientModel>();
-                    }
-                    Singleton.Instance.PacientsTree.Insert(Singleton.Instance.HeapPacient.heapArray.Get(i).value,Singleton.Instance.PacientsTree.Root);
-                    Singleton.Instance.WaitingList.InsertAtEnd(Singleton.Instance.HeapPacient.heapArray.Get(i).value);
-                    //Data();
-                }
+                Singleton.Instance.NameTree.Root = Singleton.Instance.NameTree.Insert(newPacient.Name,Singleton.Instance.NameTree.Root);
+                Singleton.Instance.WaitingList.InsertAtEnd(Singleton.Instance.HeapPacient.heapArray.Get(i).value);
                 //vCunar->eliminar de lista espera y heap
                 return RedirectToAction(nameof(Index));
             }
