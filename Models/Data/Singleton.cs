@@ -67,7 +67,13 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             priorities.InsertAtEnd("People between 18 and 50 years old");
             #endregion
             municipalities = new DoubleLinkedList<string>();
-
+            StreamReader sr = new StreamReader("Municipios.txt");
+            string result = sr.ReadToEnd();
+            string[] lines = result.Split("\n");
+            for (int i = 0; i < lines.Length; i++)
+            {
+                Singleton.Instance.municipalities.InsertAtEnd(lines[i]);
+            }
 
         }
         public static Singleton Instance
@@ -119,7 +125,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         }
         public bool Login(string municipality)
         {
-
+            
             return true;
         }
 

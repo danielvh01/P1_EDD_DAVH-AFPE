@@ -17,6 +17,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        const string SessionMunicipality = "_Municipality";
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -28,13 +30,6 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         }
         public IActionResult Login()
         {
-            StreamReader sr = new StreamReader("Municipios.txt");
-            string result = sr.ReadToEnd();
-            string[] lines = result.Split("\n");
-            for (int i = 0; i < lines.Length; i++)
-            {
-                Singleton.Instance.municipalities.InsertAtEnd(lines[i]);
-            }
             return View();
         }
         //Assign the actual login to identify the data 
@@ -42,9 +37,15 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(IFormCollection collection)
         {
-            Singleton.Instance.department = collection["department"];
-            Singleton.Instance.muni = collection["municipality"];
-            return RedirectToAction(nameof(Index), "Pacient");
+            if(Singleton.Instance.municipalities.Find(collection["search"]) != null)
+            {
+                HttpContext.Session.SetString(SessionMunicipality, collection["search"]);
+                return RedirectToAction(nameof(Index), "Pacient");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult Configuration()
@@ -87,7 +88,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                     age = Convert.ToInt32(obj2[6]),
                                     schedule = obj2[7]
                                 };
-                                Singleton.Instance.HeapPacient.insertKey(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
+                                Singleton.Instance.HeapPacient.insertKey(newPacient, newPacient.priority);
                                 Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
                                 Singleton.Instance.Agregar(newPacient);
                             }

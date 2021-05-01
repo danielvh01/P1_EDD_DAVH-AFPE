@@ -335,7 +335,19 @@ namespace DataStructures
                 node = node.next;
             }
         }
-        
+
+        public IEnumerator<T> GetEnumerator(Func<T,bool> comparer)
+        {
+            var node = First;
+            while (node != null)
+            {
+                if(comparer.Invoke(node.value))
+                {
+                    yield return node.value;
+                }
+                node = node.next;
+            }
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
