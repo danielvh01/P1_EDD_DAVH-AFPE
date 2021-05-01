@@ -7,10 +7,20 @@ using System.Threading.Tasks;
 using P1_EDD_DAVH_AFPE.Models;
 using P1_EDD_DAVH_AFPE.Models.Data;
 using DataStructures;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 namespace P1_EDD_DAVH_AFPE.Controllers
+
 {
     public class PacientController : Controller
     {
+        string session;
+        private readonly IHostingEnvironment hostingEnvironment;
+        public PacientController(IHostingEnvironment hostingEnvironment)
+        {
+            session = "Database.txt";
+            this.hostingEnvironment = hostingEnvironment;
+        }
         // GET: PacientController
         public ActionResult Index()
         {
@@ -139,6 +149,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     }
                     Singleton.Instance.PacientsTree.Insert(Singleton.Instance.HeapPacient.heapArray.Get(i).value,Singleton.Instance.PacientsTree.Root);
                     Singleton.Instance.WaitingList.InsertAtEnd(Singleton.Instance.HeapPacient.heapArray.Get(i).value);
+                    //Data();
                 }
                 //vCunar->eliminar de lista espera y heap
                 return RedirectToAction(nameof(Index));
@@ -192,6 +203,13 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             }
         }
 
-        
+        public ActionResult Data()
+        {
+            Singleton.Instance.BuildData();
+            StreamWriter file = new StreamWriter(session, false);
+            file.Write(Singleton.Instance.database);
+            file.Close();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
