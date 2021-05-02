@@ -33,8 +33,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         }
         //GET of waiting List
         public ActionResult SIndex(string municipality)
-        {
-            
+        {            
             return View(Singleton.Instance.HeapPacient);
         }
 
@@ -146,9 +145,11 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     age = Convert.ToInt32(collection["age"]),
                     schedule = "Not scheduled yet"
                 };
+                Singleton.Instance.NameTree.Insert();
+                Singleton.Instance.LastNameTree.Insert();
+                Singleton.Instance.DpiTree.Insert();
                 Singleton.Instance.HeapPacient.insertKey(newPacient, newPacient.priority);
                 Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
-                //vCunar->eliminar de lista espera y heap
                 return RedirectToAction(nameof(Index));
             }
             catch
