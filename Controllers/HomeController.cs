@@ -18,6 +18,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         private readonly ILogger<HomeController> _logger;
 
         const string SessionMunicipality = "_Municipality";
+        const string SessionDepartment = "_Department";
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -87,11 +88,11 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 }
                 lectorlinea.Close();
 
-                return View();
+                return RedirectToAction(nameof(Login));
             }
             else
             {
-                return RedirectToAction(nameof(Configuration));
+                return View();
             }
         }
 

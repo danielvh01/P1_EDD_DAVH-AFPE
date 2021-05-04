@@ -145,11 +145,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     age = Convert.ToInt32(collection["age"]),
                     schedule = "Not scheduled yet"
                 };
-                Singleton.Instance.NameTree.Insert();
-                Singleton.Instance.LastNameTree.Insert();
-                Singleton.Instance.DpiTree.Insert();
-                Singleton.Instance.HeapPacient.insertKey(newPacient, newPacient.priority);
-                Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
+                Singleton.Instance.Agregar(newPacient);
                 return RedirectToAction(nameof(Index));
             }
             catch

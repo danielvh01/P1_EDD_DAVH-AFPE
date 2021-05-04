@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataStructures.HeapNode<string>>
+﻿@model IEnumerable<DataStructures.HeapNode<PacientModel>>
 @using P1_EDD_DAVH_AFPE.Models.Data 
 @{
     ViewData["Title"] = "SIndex";
@@ -43,33 +43,30 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.value)
+                    @Html.DisplayFor(modelItem => item.value.Name)
                 </td>
                 <td>
-                    
+                    @Html.DisplayFor(modelItem => item.value.DPI)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DPI)
+                    @Html.DisplayFor(modelItem => item.value.Department)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Department)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.municipality)
+                    @Html.DisplayFor(modelItem => item.value.municipality)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.priority)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.age)
+                    @Html.DisplayFor(modelItem => item.value.age)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.schedule)
+                    @Html.DisplayFor(modelItem => item.value.schedule)
                 </td>
                 <td>
                 <td>
-                    @Html.ActionLink("Vaccinated", "Delete", new { item.DPI })
-                    @Html.ActionLink("Did not assist", "Reschedule", new { item.DPI }) |
+                    @Html.ActionLink("Vaccinated", "Delete", new { item.value.DPI })
+                    @Html.ActionLink("Did not assist", "Reschedule", new { item.value.DPI }) |
                 </td>
                 </td>
             </tr>
