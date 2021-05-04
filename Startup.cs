@@ -55,7 +55,7 @@ namespace P1_EDD_DAVH_AFPE
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Configuration}/{id?}");
             });
         }
     }
