@@ -1,12 +1,10 @@
 ﻿@model IEnumerable<DataStructures.HeapNode<PacientModel>>
 @using P1_EDD_DAVH_AFPE.Models.Data 
-@{
-    ViewData["Title"] = "SIndex";
-}
 
-<h1>Waiting List</h1>
 
-<a asp-action="Index">Back to main menu</a>
+<h1>Lista de espera</h1>
+
+<a asp-action="Index">Regresar a menu principal</a>
 
 <table class="table">
     <thead>
@@ -30,9 +28,6 @@
                 Prioridad
             </th>
             <th>
-                Edad
-            </th>
-            <th>
                 Horario
             </th>
             <th></th>
@@ -41,35 +36,35 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.value.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.value.DPI)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.value.Department)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.value.municipality)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.priority)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.value.age)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.value.schedule)
-                </td>
-                <td>
-                <td>
-                    @Html.ActionLink("Vaccinated", "Delete", new { item.value.DPI })
-                    @Html.ActionLink("Did not assist", "Reschedule", new { item.value.DPI }) |
-                </td>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.value.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.value.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.value.DPI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.value.Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.value.municipality)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.value.priority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.value.schedule)
+            </td>
+            <td>
+            <td>
+                @Html.ActionLink("Vaccinated", "Delete", new { item.value.DPI })
+                @Html.ActionLink("Did not assist", "Reschedule", new { item.value.DPI }) |
+            </td>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

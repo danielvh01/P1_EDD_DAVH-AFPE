@@ -81,8 +81,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                     DPI = Convert.ToInt32(obj2[2]),
                                     Department = obj2[4],
                                     municipality = obj2[3],
-                                    priority = obj2[5],
-                                    age = Convert.ToInt32(obj2[6]),
+                                    priority = obj2[5],                                    
                                     schedule = obj2[7]
                                 };
                                 Singleton.Instance.AddDataBase(newPacient);
