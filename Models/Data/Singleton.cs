@@ -24,6 +24,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public string department;
         public string muni;
         public string startingDate;
+        public string lastAppointment;
         //DATA STORAGE//
         public string database;
         //Data structures
@@ -41,7 +42,6 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         private HashTable<PacientModel, int> Database;
         private readonly static Singleton _instance = new Singleton();
         private Heap<PacientModel> HeapDatabase;
-        private string lastAppointment;
         #endregion
         private Singleton()
         {
@@ -50,12 +50,14 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             schedule = 30;
             department = "";
             muni = "";
+            Database = new HashTable<PacientModel, int>(hashCapacity);
             DpiTree = new AVLTree<SearchCriteria<int>>();
             NameTree = new AVLTree<SearchCriteria<string>>();
             LastNameTree = new AVLTree<SearchCriteria<string>>();
             WaitingList = new DoubleLinkedList<PacientModel>();
             VaccinatedList = new DoubleLinkedList<PacientModel>();
             priorities = new DoubleLinkedList<string>();
+            HeapPacient = new Heap<PacientModel>(heapCapacity);
             #region Priotity insertions
             priorities.InsertAtEnd("Trabajador de establecimientos de salud asistencial que atienden pacientes con COVID-19");//1
             priorities.InsertAtEnd("Trabajador de establecimiento de salud asistencial");
