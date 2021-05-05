@@ -51,12 +51,8 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             department = "";
             muni = "";
             Database = new HashTable<PacientModel, int>(hashCapacity);
-            DpiTree = new AVLTree<SearchCriteria<int>>();
-            NameTree = new AVLTree<SearchCriteria<string>>();
-            LastNameTree = new AVLTree<SearchCriteria<string>>();
-            VaccinatedList = new DoubleLinkedList<PacientModel>();
             priorities = new DoubleLinkedList<string>();
-            HeapPacient = new Heap<PacientModel>(heapCapacity);
+            vaciar();
             #region Priotity insertions
             priorities.InsertAtEnd("Trabajador de establecimientos de salud asistencial que atienden pacientes con COVID-19");//1
             priorities.InsertAtEnd("Trabajador de establecimiento de salud asistencial");
@@ -178,8 +174,18 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             int newkey = keyGen(newPacient.DPI);
             Database.Add(newPacient, newkey);
         }
+        private void vaciar()
+        {
+            Data = new HashTable<PacientModel, int>(hashCapacity);
+            DpiTree = new AVLTree<SearchCriteria<int>>();
+            NameTree = new AVLTree<SearchCriteria<string>>();
+            LastNameTree = new AVLTree<SearchCriteria<string>>();
+            VaccinatedList = new DoubleLinkedList<PacientModel>();
+            HeapPacient = new Heap<PacientModel>(heapCapacity);
+        }
         public void Login(string municipality)
         {
+            vaciar();
             foreach(var item in Singleton.Instance.Database.GetAllElementsOf(x => x.municipality == municipality))
             {
                 int newkey = keyGen(item.DPI);
@@ -187,6 +193,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 DpiTree.Root = DpiTree.Insert(new SearchCriteria<int> { value = item.DPI, key = newkey }, DpiTree.Root);
                 NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = item.Name, key = newkey }, NameTree.Root);
                 LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = item.LastName, key = newkey }, LastNameTree.Root);
+                HeapPacient.insertKey(item, item.priority);
             }
         }
 
@@ -212,16 +219,14 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         {
             //Write all the content of the HashTable.
             string result = "";
-            for (int i = 0; i < HeapPacient.Length(); i++)
+            foreach(var Pacient in Database.GetAllElements())
             {
-                int PacientParam = HeapPacient.heapArray.Get(i).value.DPI;
-                var Pacient = Database.Get(x => x.Name.CompareTo(PacientParam), keyGen(PacientParam));
                 result += Pacient.Name + ",";
                 result += Pacient.LastName + ",";
                 result += Pacient.DPI + ",";
                 result += Pacient.Department + ",";
                 result += Pacient.municipality + ",";
-                result += Pacient.priority + ",";                
+                result += Pacient.priority + ",";
                 result += Pacient.schedule + ";";
             }
             return result;

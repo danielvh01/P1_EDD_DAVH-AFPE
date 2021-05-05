@@ -42,6 +42,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         public IActionResult Session(string municipality)
         {
             HttpContext.Session.SetString(SessionMunicipality, municipality);
+            Singleton.Instance.Login(HttpContext.Session.GetString(SessionMunicipality));
             return RedirectToAction(nameof(Index), "Pacient");
         }
 
@@ -72,17 +73,17 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                         for (int j = 0; j < tasks.Length; j++)
                         {
                             string[] obj2 = tasks[j].Split(",");
-                            if (obj2.Length == 6)
+                            if (obj2.Length == 7)
                             {
                                 var newPacient = new PacientModel
                                 {
                                     Name = obj2[0],
                                     LastName = obj2[1],
                                     DPI = Convert.ToInt32(obj2[2]),
-                                    Department = obj2[4],
-                                    municipality = obj2[3],
+                                    Department = obj2[3],
+                                    municipality = obj2[4],
                                     priority = obj2[5],                                    
-                                    schedule = obj2[7]
+                                    schedule = obj2[6]
                                 };
                                 Singleton.Instance.AddDataBase(newPacient);
                             }
