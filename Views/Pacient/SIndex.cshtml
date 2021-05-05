@@ -58,12 +58,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.value.schedule)
             </td>
-            <td>
-            <td>
-                @Html.ActionLink("Vaccinated", "Delete", new { item.value.DPI })
-                @Html.ActionLink("Did not assist", "Reschedule", new { item.value.DPI }) |
-            </td>
-            </td>
         </tr>
         }
     </tbody>
