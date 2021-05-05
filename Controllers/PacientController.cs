@@ -33,6 +33,21 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             Singleton.Instance.Login(HttpContext.Session.GetString(SessionMunicipality));
             return View();
         }
+
+        //GET of Simulation parameters
+        [HttpGet]
+        public ActionResult SMenu()
+        {
+            return View();
+        }
+        // POST: PacientController/SMenu
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SMenu(IFormCollection collection)
+        {
+            return RedirectToAction(nameof(SIndex));
+        }
+
         //GET of waiting List
         public ActionResult SIndex()
         {            
@@ -41,7 +56,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
         public ActionResult Simulation()
         {
-            return View(Singleton.Instance.WaitingList);
+            return View(Singleton.Instance.HeapPacient);
         }
         public ActionResult VaccinatedList()
         {
@@ -60,11 +75,6 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return View();
         }
 
-        // GET: PacientController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
 
         //Method that is called in order to Schedule the appointments of pacients registered.
         public ActionResult Schedule()
@@ -153,6 +163,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                         
                     }
                     Singleton.Instance.lastAppointment = date;
+                    Data();
                 }
                 if (verif)
                 {
@@ -176,6 +187,13 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return RedirectToAction(nameof(Simulation));
         }
 
+        // GET: PacientController/Create
+        public ActionResult Create()
+        {
+            ViewBag.depa = HttpContext.Session.GetString(SessionDepartment);
+            ViewBag.muni = HttpContext.Session.GetString(SessionMunicipality);
+            return View();
+        }
         // POST: PacientController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -189,14 +207,14 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     Name = collection["Name"],
                     LastName = collection["LastName"],
                     DPI = Convert.ToInt32(collection["DPI"]),
-                    Department = Singleton.Instance.department,
-                    municipality = Singleton.Instance.muni,
-                    priority = Singleton.Instance.priorityAssign(pr),
-                    age = Convert.ToInt32(collection["age"]),
+                    Department = HttpContext.Session.GetString(SessionDepartment),
+                    municipality = HttpContext.Session.GetString(SessionMunicipality),
+                    priority = Singleton.Instance.priorityAssign(pr),                    
                     schedule = "No asignado todavía",
                     vaccinated = false
                 };
                 Singleton.Instance.Agregar(newPacient);
+                Data();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -229,7 +247,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         // GET: PacientController/Delete/5
         public ActionResult Delete(int dpi)
         {
-            PacientModel pacient = Singleton.Instance.WaitingList.Get(Singleton.Instance.WaitingList.GetPositionOf(new PacientModel {DPI = dpi}));
+            PacientModel pacient = new PacientModel();
             return View(pacient);
         }
 

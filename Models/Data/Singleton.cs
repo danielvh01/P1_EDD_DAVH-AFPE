@@ -200,12 +200,12 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             database = "";
             database += "heapCapacity:" + heapCapacity + "\n";
             database += "hashCapacity:" + hashCapacity + "\n";
-            string tasks = recorrido();
-            if (tasks.Length > 0)
+            string ptnts = recorrido();
+            if (ptnts.Length > 0)
             {
-                tasks = tasks.Remove(tasks.Length - 1);
+                ptnts = ptnts.Remove(ptnts.Length - 1);
             }
-            database += "pacients:" + tasks;
+            database += "pacients:" + ptnts;
         }
 
         public string recorrido()
@@ -215,14 +215,13 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             for (int i = 0; i < HeapPacient.Length(); i++)
             {
                 int PacientParam = HeapPacient.heapArray.Get(i).value.DPI;
-                var Pacient = Data.Get(x => x.Name.CompareTo(PacientParam), keyGen(PacientParam));
+                var Pacient = Database.Get(x => x.Name.CompareTo(PacientParam), keyGen(PacientParam));
                 result += Pacient.Name + ",";
                 result += Pacient.LastName + ",";
                 result += Pacient.DPI + ",";
                 result += Pacient.Department + ",";
                 result += Pacient.municipality + ",";
-                result += Pacient.priority + ",";
-                result += Pacient.age + ",";
+                result += Pacient.priority + ",";                
                 result += Pacient.schedule + ";";
             }
             return result;

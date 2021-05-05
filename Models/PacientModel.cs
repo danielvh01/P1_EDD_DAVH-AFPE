@@ -21,8 +21,7 @@ namespace P1_EDD_DAVH_AFPE.Models
         public string municipality { get; set; }
         [Required]
         public string priority { get; set; }
-        [Required]
-        public int age { get; set; }
+
         [Required]
         public string schedule { get; set; }
 
