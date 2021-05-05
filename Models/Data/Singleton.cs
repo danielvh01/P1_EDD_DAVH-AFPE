@@ -25,7 +25,6 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public string department;
         public string muni;
         public string startingDate;
-        public string lastAppointment;
         //DATA STORAGE//
         public string database;
         //Data structures

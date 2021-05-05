@@ -44,6 +44,12 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SMenu(IFormCollection collection)
         {
+            Singleton.Instance.simmultaneous = int.Parse(collection["simmultaneous"]);
+            Singleton.Instance.schedule = int.Parse(collection["schedule"]);
+            if(Singleton.Instance.startingDate == "")
+            {
+                Singleton.Instance.startingDate = collection["startingDate"];
+            }
             return RedirectToAction(nameof(SIndex));
         }
 
@@ -89,18 +95,9 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
             if (Singleton.Instance.HeapPacient.heapArray.Length > 0)
             {
-                if (Singleton.Instance.lastAppointment == "")
-                {
-                    date = hour + ":" + min + day + "/" + month + "/" + year;
-                }
-                else
-                {
-                    day = int.Parse(Singleton.Instance.lastAppointment.Substring(8, 2));
-                    month = int.Parse(Singleton.Instance.lastAppointment.Substring(5, 2));
-                    year = int.Parse(Singleton.Instance.lastAppointment.Substring(0, 4));
-                }
                 for (int a = 0; a < Singleton.Instance.HeapPacient.heapArray.Length; a++)
                 {
+                    date = hour + ":" + min + day + "/" + month + "/" + year;
                     if (a % Singleton.Instance.simmultaneous != 0)
                     {
                         if (Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule == "No asignado todavía")
@@ -161,9 +158,9 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                         }
                         
                     }
-                    Singleton.Instance.lastAppointment = date;
-                    Data();
                 }
+                Singleton.Instance.startingDate = date;
+                Data();
                 if (verif)
                 {
                     TempData["testmsg"] = "Calendarización generada correctamente.";
