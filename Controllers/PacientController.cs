@@ -97,6 +97,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             {
                 for (int a = 0; a < Singleton.Instance.HeapPacient.heapArray.Length; a++)
                 {
+                    //arreglar if
                     date = hour + ":" + min + day + "/" + month + "/" + year;
                     if (a % Singleton.Instance.simmultaneous != 0)
                     {
