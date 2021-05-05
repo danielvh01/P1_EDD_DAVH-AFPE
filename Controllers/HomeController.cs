@@ -85,6 +85,10 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                     priority = obj2[5],                                    
                                     schedule = obj2[6]
                                 };
+                                if (newPacient.schedule != "No asignado todavía")
+                                {
+
+                                }
                                 Singleton.Instance.AddDataBase(newPacient);
                             }
                         }
