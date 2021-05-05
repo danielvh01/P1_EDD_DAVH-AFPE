@@ -19,7 +19,7 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@Html.ActionLink(item, "Index", "Pacient", new { municipality = item }, new { @class = "btn-link btn-block text-left" })</td>
+                            <td>@Html.ActionLink(item, "Session", new { municipality = item}, new { @class = "btn-link btn-block text-left" })</td>
                         </tr>
                     }
                 </tbody>

@@ -36,7 +36,13 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
         public IActionResult LoginM(string department)
         {
+            HttpContext.Session.SetString(SessionDepartment,department);
             return View(Singleton.Instance.municipalities.GetAllContent(department));
+        }
+        public IActionResult Session(string municipality)
+        {
+            HttpContext.Session.SetString(SessionMunicipality, municipality);
+            return RedirectToAction(nameof(Index), "Pacient");
         }
 
         public IActionResult Configuration()
@@ -79,8 +85,6 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                     age = Convert.ToInt32(obj2[6]),
                                     schedule = obj2[7]
                                 };
-                                Singleton.Instance.HeapPacient.insertKey(newPacient, newPacient.priority);
-                                Singleton.Instance.Data.Add(newPacient, Singleton.Instance.keyGen(newPacient.DPI));
                                 Singleton.Instance.Agregar(newPacient);
                             }
                         }
