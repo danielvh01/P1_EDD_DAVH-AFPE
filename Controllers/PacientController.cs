@@ -97,7 +97,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             {
                 for (int a = 0; a < Singleton.Instance.HeapPacient.heapArray.Length; a++)
                 {
-                    date = hour + ":" + min + day + "/" + month + "/" + year;
+                    date = hour + ":" + min + "-" + day + "/" + month + "/" + year;
                     if (a % Singleton.Instance.simmultaneous != 0)
                     {
                         if (Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule == "No asignado todavía")
@@ -177,11 +177,26 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult SReschedule(int DPI)
+        //This method is called when a person didn't assist in the scheduled hour in order to assign a new one with different date.
+        public ActionResult SReschedule(HeapNode<PacientModel>  pacient)
         {
-
+            int spacer = Singleton.Instance.startingDate.IndexOf("-");
+            int hour = 8;
+            int min = 0;
+            int year = int.Parse(Singleton.Instance.startingDate.Substring(spacer+8, 2))+1;
+            int month = int.Parse(Singleton.Instance.startingDate.Substring(spacer+5, 2));
+            int day = int.Parse(Singleton.Instance.startingDate.Substring(spacer+0, 4));  
+            string date = date = hour + ":" + min + day + "/" + month + "/" + year;
+            Singleton.Instance.HeapPacient.heapArray.Get(Singleton.Instance.HeapPacient.heapArray.GetPositionOf(pacient)).value.schedule = date;
             return RedirectToAction(nameof(Simulation));
         }
+
+        public ActionResult Vaccinated(HeapNode<PacientModel> pacient)
+        {
+            Singleton.Instance.HeapPacient.heapArray.Get(Singleton.Instance.HeapPacient.heapArray.GetPositionOf(pacient)).value.vaccinated = true;
+            return RedirectToAction(nameof(Simulation));
+        }
+        
 
         // GET: PacientController/Create
         public ActionResult Create()
