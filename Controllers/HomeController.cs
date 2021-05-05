@@ -85,7 +85,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                     age = Convert.ToInt32(obj2[6]),
                                     schedule = obj2[7]
                                 };
-                                Singleton.Instance.Agregar(newPacient);
+                                Singleton.Instance.AddDataBase(newPacient);
                             }
                         }
                     }

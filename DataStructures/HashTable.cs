@@ -221,6 +221,24 @@ namespace DataStructures
             }
         }
 
+        public IEnumerable<T> GetAllElementsOf(Func<T, bool> Comparer)
+        {
+            DoubleLinkedList<T> result = new DoubleLinkedList<T>();
+            var node = start;
+            while (node != null)
+            {
+                for (int i = 0; i < node.value.Length; i++)
+                {
+                    T val = node.value.Get(i);
+                    if (Comparer.Invoke(val))
+                    {
+                        result.InsertAtEnd(val);
+                    }
+                }
+                node = node.next;
+            }
+            return result;
+        }
         #endregion
     }
 }

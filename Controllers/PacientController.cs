@@ -30,6 +30,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         {
             ViewBag.Department = HttpContext.Session.GetString(SessionDepartment);
             ViewBag.Municipality = HttpContext.Session.GetString(SessionMunicipality);
+            Singleton.Instance.Login(HttpContext.Session.GetString(SessionMunicipality));
             return View();
         }
         //GET of waiting List
