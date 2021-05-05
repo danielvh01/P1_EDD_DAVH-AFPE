@@ -27,7 +27,6 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         //Data structures
         public DoubleLinkedList<string> priorities;
         public HashTable<string,string> municipalities;
-        public DoubleLinkedList<PacientModel> WaitingList;
         public DoubleLinkedList<PacientModel> VaccinatedList;
         public HashTable<PacientModel, int> Data;
         public AVLTree<SearchCriteria<int>> DpiTree;
@@ -51,7 +50,6 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             DpiTree = new AVLTree<SearchCriteria<int>>();
             NameTree = new AVLTree<SearchCriteria<string>>();
             LastNameTree = new AVLTree<SearchCriteria<string>>();
-            WaitingList = new DoubleLinkedList<PacientModel>();
             VaccinatedList = new DoubleLinkedList<PacientModel>();
             priorities = new DoubleLinkedList<string>();
             #region Priotity insertions
@@ -170,7 +168,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = newPacient.LastName, key = newkey }, LastNameTree.Root);
             HeapPacient.insertKey(newPacient, newPacient.priority);
         }
-        public bool Login(string municipality)
+        public bool Login()
         {
             
             return true;
