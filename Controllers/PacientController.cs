@@ -180,7 +180,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult SReschedule(int ID)
+        public ActionResult SReschedule(int DPI)
         {
 
             return RedirectToAction(nameof(Simulation));
