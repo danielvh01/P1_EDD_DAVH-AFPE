@@ -66,56 +66,94 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
         //Method that is called in order to Schedule the appointments of pacients registered.
         public ActionResult Schedule()
-        {            
-            bool check = false;
-            Random r = new Random();            
-            string date;
-            int day = r.Next(1, 28);
-            int month = r.Next(1, 12);
-            int year = 2021;
-            for (int a = 1; a < Singleton.Instance.WaitingList.Length +1; a++)
-            {
-                if (Singleton.Instance.WaitingList.Length > 1)
-                {                    
-                    if (Singleton.Instance.WaitingList.Get(a).schedule == Singleton.Instance.WaitingList.Get(a - 1).schedule)
-                    {
-                        Singleton.Instance.Cont++;
-                    }
-                    if (Singleton.Instance.Cont == 3)
-                    {
-                        Singleton.Instance.verif = true;
-                    }
-                }                
-            }
+        {
+            bool verif = false;
+            int hour = 8;
+            int min = 0;
+            int day = int.Parse(Singleton.Instance.startingDate.Substring(8,2));
+            int month = int.Parse(Singleton.Instance.startingDate.Substring(5, 2));
+            int year = int.Parse(Singleton.Instance.startingDate.Substring(0, 4));
+            string date = "";
 
-            for (int i = 0; i < Singleton.Instance.WaitingList.Length; i++)
+
+            if (Singleton.Instance.HeapPacient.heapArray.Length > 0)
             {
-                if (Singleton.Instance.WaitingList.Get(i).schedule == "Not scheduled yet" && Singleton.Instance.verif == false)
+                for (int a = 0; a < Singleton.Instance.HeapPacient.heapArray.Length; a++)
                 {
-                    if (Singleton.Instance.Cont > 4)
+                    date = hour + ":" + min + day + "/" + month + "/" + year;
+                    if (a % Singleton.Instance.simmultaneous != 0)
                     {
-                        date = day + "/" + month + "/" + year;
-                        Singleton.Instance.WaitingList.Get(i).schedule = date;
-                        Singleton.Instance.Cont++;
+                        if (Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule == "No asignado todavía")
+                        {
+                            Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule = date;
+                            
+                            verif = true;
+                        }
                     }
                     else
                     {
-                        day = r.Next(1, 28);
-                        month = r.Next(1, 12);
-                        date = day + "/" + month + "/" + year;
-                        Singleton.Instance.WaitingList.Get(i).schedule = date;
-                        Singleton.Instance.Cont++;
+                        if (Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule == "No asignado todavía")
+                        {
+                            if ((min + Singleton.Instance.schedule) < 60)
+                            {
+                                min += Singleton.Instance.schedule;
+                            }
+                            else
+                            {
+                                min += Singleton.Instance.schedule - 60;
+                                hour++;
+                            }
+                            if (hour >= 17)
+                            {
+                                hour = 8;
+                                day++;
+                            }
+                            if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10)
+                            {
+                                if (day >= 31)
+                                {
+                                    day = 1;
+                                    month++;
+                                }
+                            }
+                            if (month == 4 || month == 6 || month == 9 || month == 11)
+                            {
+                                if (day >= 30)
+                                {
+                                    day = 1;
+                                    month++;
+                                }
+                            }
+                            if (month == 2)
+                            {
+                                if (day >= 28)
+                                {
+                                    day = 1;
+                                    month++;
+                                }
+                            }
+                            if (month >= 12)
+                            {
+                                month = 1;
+                                year++;
+                            }
+                            verif = true;
+                        }
+                        
                     }
-                    check = true;
                 }
-            }
-            if (check)
-            {
-                TempData["testmsg"] = "Calendarization generated.";
-            }
+                if (verif)
+                {
+                    TempData["testmsg"] = "Calendarización generada correctamente.";
+                }
+                else
+                {
+                    TempData["testmsg"] = "Todas las personas de la lista de espera ya tenian un horario establecido";
+                }
+            }            
             else
             {
-                TempData["testmsg"] = "All in the waiting list had been scheduled already or there is nobody in it.";
+                TempData["testmsg"] = "No hay ninguna persona en lista de espera.";
             }
             return RedirectToAction(nameof(Index));
         }
@@ -143,7 +181,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     municipality = Singleton.Instance.muni,
                     priority = Singleton.Instance.priorityAssign(pr),
                     age = Convert.ToInt32(collection["age"]),
-                    schedule = "Not scheduled yet"
+                    schedule = "No asignado todavía",
+                    vaccinated = false
                 };
                 Singleton.Instance.Agregar(newPacient);
                 return RedirectToAction(nameof(Index));

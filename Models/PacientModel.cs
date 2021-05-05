@@ -26,6 +26,7 @@ namespace P1_EDD_DAVH_AFPE.Models
         [Required]
         public string schedule { get; set; }
 
+        public bool vaccinated { get; set; }
 
         #endregion
 

@@ -14,7 +14,8 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         //Boolean variables
         public bool verif = false;
         public bool SPacient;
-        //Integer variables
+        //Integer variable
+        public int simmultaneous;
         public int Cont;
         public int hashCapacity;
         public int heapCapacity;
@@ -22,6 +23,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         //String Variables
         public string department;
         public string muni;
+        public string startingDate;
         //DATA STORAGE//
         public string database;
         //Data structures

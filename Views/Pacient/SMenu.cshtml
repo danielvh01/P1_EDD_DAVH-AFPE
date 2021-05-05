@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "SMenu";
+}
+
+<h1>SMenu</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="SConfiguration">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.simmultaneous" class="control-label">Por favor indique el numero simultaneo de pacientes a atender.</label>
+                <input asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.simmultaneous" class="form-control col-2" />
+                <span asp-validation-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.simmultaneous" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.schedule" class="control-label">Por favor indique la duración de la cita de vacunación.</label>
+                <input asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.schedule" class="form-control col-2" />
+                <span asp-validation-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.schedule" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Por favor indique la fecha de inicio de jornada de vacunación</label>
+                <input asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.startingDate" class="form-control" type="date" required />
+                <span asp-validation-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.startingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Continuar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
