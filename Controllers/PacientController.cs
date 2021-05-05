@@ -28,11 +28,13 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         // GET: PacientController
         public ActionResult Index()
         {
-            //
+            ViewBag.Department = HttpContext.Session.GetString(SessionDepartment);
+            ViewBag.Municipality = HttpContext.Session.GetString(SessionMunicipality);
+            Singleton.Instance.Login(HttpContext.Session.GetString(SessionMunicipality));
             return View();
         }
         //GET of waiting List
-        public ActionResult SIndex(string municipality)
+        public ActionResult SIndex()
         {            
             return View(Singleton.Instance.HeapPacient);
         }

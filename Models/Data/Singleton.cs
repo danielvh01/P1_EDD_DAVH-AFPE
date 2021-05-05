@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using DataStructures;
 
+
 namespace P1_EDD_DAVH_AFPE.Models.Data
 {
     public sealed class Singleton
@@ -29,7 +30,6 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         //Data structures
         public DoubleLinkedList<string> priorities;
         public HashTable<string,string> municipalities;
-        public DoubleLinkedList<PacientModel> WaitingList;
         public DoubleLinkedList<PacientModel> VaccinatedList;
         public HashTable<PacientModel, int> Data;
         public AVLTree<SearchCriteria<int>> DpiTree;
@@ -53,7 +53,6 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             DpiTree = new AVLTree<SearchCriteria<int>>();
             NameTree = new AVLTree<SearchCriteria<string>>();
             LastNameTree = new AVLTree<SearchCriteria<string>>();
-            WaitingList = new DoubleLinkedList<PacientModel>();
             VaccinatedList = new DoubleLinkedList<PacientModel>();
             priorities = new DoubleLinkedList<string>();
             #region Priotity insertions
@@ -165,17 +164,28 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         public void Agregar(PacientModel newPacient)
         {
             int newkey = keyGen(newPacient.DPI);
-            Data.Add(newPacient, newkey);
             Database.Add(newPacient, newkey);
-            DpiTree.Root = DpiTree.Insert(new SearchCriteria<int> { value = newPacient.DPI, key = newkey }, DpiTree.Root);
-            NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = newPacient.Name, key = newkey }, NameTree.Root);
-            LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = newPacient.LastName, key = newkey }, LastNameTree.Root);
+            Data.Add(newPacient, newkey);
+            DpiTree.Root = DpiTree.Insert(new SearchCriteria<int> { value = newPacient.DPI, key = newPacient.DPI }, DpiTree.Root);
+            NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = newPacient.Name, key = newPacient.DPI }, NameTree.Root);
+            LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = newPacient.LastName, key = newPacient.DPI }, LastNameTree.Root);
             HeapPacient.insertKey(newPacient, newPacient.priority);
         }
-        public bool Login(string municipality)
+        public void AddDataBase(PacientModel newPacient)
         {
-            
-            return true;
+            int newkey = keyGen(newPacient.DPI);
+            Database.Add(newPacient, newkey);
+        }
+        public void Login(string municipality)
+        {
+            foreach(var item in Singleton.Instance.Database.GetAllElementsOf(x => x.municipality == municipality))
+            {
+                int newkey = keyGen(item.DPI);
+                Data.Add(item, newkey);
+                DpiTree.Root = DpiTree.Insert(new SearchCriteria<int> { value = item.DPI, key = newkey }, DpiTree.Root);
+                NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = item.Name, key = newkey }, NameTree.Root);
+                LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = item.LastName, key = newkey }, LastNameTree.Root);
+            }
         }
 
         public int keyGen(int dpi)
