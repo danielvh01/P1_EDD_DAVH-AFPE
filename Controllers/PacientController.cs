@@ -69,7 +69,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         //Method that is called in order to Schedule the appointments of pacients registered.
         public ActionResult Schedule()
         {
-            bool verif = false;
+            bool verif = false;            
             int hour = 8;
             int min = 0;
             int day = int.Parse(Singleton.Instance.startingDate.Substring(8,2));
@@ -80,9 +80,18 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
             if (Singleton.Instance.HeapPacient.heapArray.Length > 0)
             {
-                for (int a = 0; a < Singleton.Instance.HeapPacient.heapArray.Length; a++)
+                if (Singleton.Instance.lastAppointment == "")
                 {
                     date = hour + ":" + min + day + "/" + month + "/" + year;
+                }
+                else
+                {
+                    day = int.Parse(Singleton.Instance.lastAppointment.Substring(8, 2));
+                    month = int.Parse(Singleton.Instance.lastAppointment.Substring(5, 2));
+                    year = int.Parse(Singleton.Instance.lastAppointment.Substring(0, 4));
+                }
+                for (int a = 0; a < Singleton.Instance.HeapPacient.heapArray.Length; a++)
+                {
                     if (a % Singleton.Instance.simmultaneous != 0)
                     {
                         if (Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule == "No asignado todavía")
@@ -143,6 +152,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                         }
                         
                     }
+                    Singleton.Instance.lastAppointment = date;
                 }
                 if (verif)
                 {
