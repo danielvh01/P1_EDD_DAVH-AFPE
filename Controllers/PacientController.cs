@@ -97,7 +97,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             {
                 for (int a = 0; a < Singleton.Instance.HeapPacient.heapArray.Length; a++)
                 {
-                    date = hour + ":" + min + "-" + day + "/" + month + "/" + year;
+                    //arreglar if
+                    date = hour + ":" + min + day + "/" + month + "/" + year;
                     if (a % Singleton.Instance.simmultaneous != 0)
                     {
                         if (Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule == "No asignado todavía")
