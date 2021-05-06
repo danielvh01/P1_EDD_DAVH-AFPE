@@ -15,6 +15,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         //Boolean variables
         public bool verif = false;
         public bool SPacient;
+        public bool verifAppointmen = false;
         //Integer variable
         public int simmultaneous;
         public int Cont;
@@ -211,7 +212,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             {
                 ptnts = ptnts.Remove(ptnts.Length - 1);
             }
-            database += "pacients:" + ptnts;
+            database += "pacients:" + ptnts + ";";            
         }
 
         public string recorrido()

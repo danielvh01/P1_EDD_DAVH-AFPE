@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<DataStructures.HeapNode<PacientModel>>
-@using P1_EDD_DAVH_AFPE.Models.Data 
+@using P1_EDD_DAVH_AFPE.Models.Data
 
 
 <h1>Lista de espera</h1>
@@ -36,29 +36,33 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.value.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.value.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.value.DPI)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.value.Department)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.value.municipality)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.value.priority)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.value.schedule)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.value.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.value.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.value.DPI)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.value.Department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.value.municipality)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.value.priority)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.value.schedule)
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

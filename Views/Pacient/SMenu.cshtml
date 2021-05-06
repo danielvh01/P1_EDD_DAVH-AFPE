@@ -3,13 +3,13 @@
     ViewData["Title"] = "SMenu";
 }
 
-<h1>SMenu</h1>
+<h1>Menú de simulación</h1>
 
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="SConfiguration">
+        <form asp-action="SMenu">
             <div class="form-group">
-                <label for="simmultaneous" class="control-label">Por favor indique el numero simultaneo de pacientes a atender.</label>
+                <label for="simmultaneous" class="control-label">Por favor indique el número simultáneo de pacientes a atender.</label>
                 <input name="simmultaneous" class="form-control col-2" type="number" min="1" value="3" required />
                 <span name="simmultaneous" class="text-danger"></span>
             </div>
@@ -18,7 +18,7 @@
                 <input name="schedule" class="form-control col-2" type="number" min="5" max="60" value="15" required />
                 <span name="schedule" class="text-danger"></span>
             </div>
-            @if (P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.startingDate == "")
+            @if (P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.startingDate == null)
             {
                 <div class="form-group">
                     <label for="startingDate" class="control-label">Por favor indique la fecha de inicio de jornada de vacunación</label>
@@ -33,7 +33,14 @@
         </form>
     </div>
 </div>
+
+<div>
+    <a asp-action="Index">Regresar al menú</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 <script>
-var dt = new Date();
-document.getElementById('date-time').innerHTML=dt;
+    var dt = new Date();
+    document.getElementById('date-time').innerHTML = dt;
 </script>

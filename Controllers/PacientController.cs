@@ -46,10 +46,11 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         {
             Singleton.Instance.simmultaneous = int.Parse(collection["simmultaneous"]);
             Singleton.Instance.schedule = int.Parse(collection["schedule"]);
-            if(Singleton.Instance.startingDate == "")
+            if(Singleton.Instance.startingDate == null)
             {
                 Singleton.Instance.startingDate = collection["startingDate"];
             }
+            Schedule();
             return RedirectToAction(nameof(SIndex));
         }
 
@@ -84,32 +85,113 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         //Method that is called in order to Schedule the appointments of pacients registered.
         public ActionResult Schedule()
         {
-            bool verif = false;            
+            bool verif = false;
+            bool verif2 = false;
             int hour = 8;
             int min = 0;
-            int day = int.Parse(Singleton.Instance.startingDate.Substring(8,2));
-            int month = int.Parse(Singleton.Instance.startingDate.Substring(5, 2));
-            int year = int.Parse(Singleton.Instance.startingDate.Substring(0, 4));
-            string date = "";
-
+            int year = 0;
+            int month = 0;
+            int day = 0;
+            string datetime = "";
+            string minhour = "";
+            string dayMonth = "";
+            if (Singleton.Instance.verifAppointmen)
+            {
+                int spacer1 = Singleton.Instance.startingDate.IndexOf(":");
+                int spacer2 = Singleton.Instance.startingDate.IndexOf("-");
+                if (spacer1 == 2 && hour > 9)
+                {
+                    hour = int.Parse(Singleton.Instance.startingDate.Substring(0, 2));
+                }
+                else
+                {
+                    hour = int.Parse(Singleton.Instance.startingDate.Substring(1, 1));
+                }
+                if (spacer2 == 6 && min > 9)
+                {
+                    min = int.Parse(Singleton.Instance.startingDate.Substring(spacer2 - 2, 2));
+                }
+                else 
+                {
+                    min = int.Parse(Singleton.Instance.startingDate.Substring(spacer2 - 1, 1));
+                }
+                year = int.Parse(Singleton.Instance.startingDate.Substring(spacer2 + 7, 4));
+                if (month > 9)
+                {
+                    month = int.Parse(Singleton.Instance.startingDate.Substring(spacer2 + 4, 2));
+                }
+                else
+                {
+                    month = int.Parse(Singleton.Instance.startingDate.Substring(spacer2 + 5, 1));
+                }
+                if (day > 9)
+                {
+                    day = int.Parse(Singleton.Instance.startingDate.Substring(spacer2 + 2, 1));
+                }
+                else
+                {
+                    day = int.Parse(Singleton.Instance.startingDate.Substring(spacer2 + 1, 2));
+                }
+            }
+            else
+            {
+                day = int.Parse(Singleton.Instance.startingDate.Substring(8, 2));
+                month = int.Parse(Singleton.Instance.startingDate.Substring(5, 2));
+                year = int.Parse(Singleton.Instance.startingDate.Substring(0, 4));
+            }
+            
 
             if (Singleton.Instance.HeapPacient.heapArray.Length > 0)
             {
                 for (int a = 0; a < Singleton.Instance.HeapPacient.heapArray.Length; a++)
                 {
-                    date = hour + ":" + min + "-" + day + "/" + month + "/" + year;
-                    if (a % Singleton.Instance.simmultaneous != 0)
+                    datetime = hour + ":" + min + "-" + day + "/" + month + "/" + year;                                            
+                    if (min < 10)
                     {
-                        if (Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule == "No asignado todavía")
+                        minhour = hour + ":" + "0" + min ;
+                        verif2 = true;
+                    }
+                    if(hour < 10)
+                    {                        
+                        minhour = "+" + hour + ":" + min;
+                        verif2 = true;
+                    }                    
+                    if (hour < 10 && min < 10)
+                    {
+                        minhour = "0" +hour + ":" + "0" + min;
+                        verif2 = true;
+                    }
+                    if (day < 10)
+                    {
+                        dayMonth = "-" + "0"+  day + "/" + month + "/" + year;
+                        verif2 = true;
+                    }
+                    if (month < 10)
+                    {
+                        dayMonth = "-" + day + "/" + "0"+ month + "/" + year;
+                        verif2 = true;
+                    }
+                    if (day < 10 && month < 10)
+                    {
+                        dayMonth = "-" +"0"+ day + "/" + "0" + month + "/" + year;
+                        verif2 = true;
+                    }
+                    if (verif2)
+                    {
+                        datetime = minhour + dayMonth;
+                    }
+                    if (a % Singleton.Instance.simmultaneous != 0 || a == 0)
+                    {
+                        if (Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule == "No asignado todavia")
                         {
-                            Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule = date;
+                            Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule = datetime;
                             
-                            verif = true;
+                            verif = true;                            
                         }
                     }
                     else
                     {
-                        if (Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule == "No asignado todavía")
+                        if (Singleton.Instance.HeapPacient.heapArray.Get(a).value.schedule == "No asignado todavia")
                         {
                             if ((min + Singleton.Instance.schedule) < 60)
                             {
@@ -159,7 +241,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                         
                     }
                 }
-                Singleton.Instance.startingDate = date;
+                Singleton.Instance.startingDate = datetime;
+                Singleton.Instance.verifAppointmen = true;
                 Data();
                 if (verif)
                 {
@@ -221,7 +304,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     Department = HttpContext.Session.GetString(SessionDepartment),
                     municipality = HttpContext.Session.GetString(SessionMunicipality),
                     priority = Singleton.Instance.priorityAssign(pr),                    
-                    schedule = "No asignado todavía",
+                    schedule = "No asignado todavia",
                     vaccinated = false
                 };
                 Singleton.Instance.Agregar(newPacient);
