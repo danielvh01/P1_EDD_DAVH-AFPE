@@ -1,3 +1,3 @@
 heapCapacity:15
 hashCapacity:15
-pacients:oa,miguelito,7418529631234,﻿Alta Verapaz,Chahal,1a,20/05/2021 08:15:00,False;ppp,ppppp,9873214568527,﻿Alta Verapaz,Chahal,1a,20/05/2021 08:15:00,False;asdf,ll,9631237417895,﻿Alta Verapaz,Chahal,1a,20/05/2021 08:15:00,False;
+pacients:oa,miguelito,7418529631234,﻿Alta Verapaz,Chahal,1a,20/05/2021 08:15:00,False;ppp,ppppp,9873214568527,﻿Alta Verapaz,Chahal,1a,20/05/2021 08:15:00,False;asdf,ll,9631237417895,﻿Alta Verapaz,Chahal,1a,20/05/2021 08:15:00,False;oa,miguelito,8621485214856,﻿Alta Verapaz,Chahal,,1/01/0001 00:00:00,False;ppp,ppppp,7896321457896,﻿Alta Verapaz,Chahal,,1/01/0001 00:00:00,False;

@@ -1,0 +1,29 @@
+﻿
+<form asp-action="WorkArea">
+        <div class="form-group">
+            <label>Practica y estudia ciencias de la salud o afines:   </label>
+            <select class="form-select" name="q4">
+                <option>Si</option>
+                <option>No</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Posee contacto con pacientes infectados por COVID-19:</label>
+            <select class="form-select" name="q1">
+                <option>Si</option>
+                <option>No</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Forma parte del sector administrativo del area seleccionada:</label>
+            <select class="form-select" name="q2">
+                <option>Si</option>
+                <option>No</option>
+            </select>
+        </div>
+        @Html.Hidden(ViewBag.dpi, new { }, new { })
+    <div class="form-group">
+        <input type="submit" value="Registrar" class="btn btn-primary" />
+    </div>
+</form>
+

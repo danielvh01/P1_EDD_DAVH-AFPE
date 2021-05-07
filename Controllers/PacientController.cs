@@ -199,23 +199,87 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
             string pr = collection["priority"];
             int age = int.Parse(collection["age"]);
-            string q1 = collection["q1"];
-            string q4 = collection["q4"];
-            string q2 = collection["q2"];
-            string q3 = collection["q3"];
+            
             var newPacient = new PacientModel
             {
                 Name = collection["Name"],
                 LastName = collection["LastName"],
                 DPI = Convert.ToInt64(collection["DPI"]),
                 Department = HttpContext.Session.GetString(SessionDepartment),
-                municipality = HttpContext.Session.GetString(SessionMunicipality),
-                priority = Singleton.Instance.priorityAssign(pr,age,q1,q4,q2,q3),                    
+                municipality = HttpContext.Session.GetString(SessionMunicipality),                  
                 schedule = new DateTime(),
                 vaccinated = false
             };
+            if(pr == "Area de salud")
+            {
+                Singleton.Instance.Agregar(newPacient);
+                Data();
+                return RedirectToAction(nameof(WorkArea), newPacient.DPI);
+            }
+            else if (pr == "Trabajador de funeraria o de institucion del adulto mayor")
+            {
+                newPacient.priority = "1d";
+            }
+            else if (pr == "Persona internada en hogar o institucion del adulto mayor")
+            {
+                newPacient.priority = "1e";
+            }
+            else
+            {
+                if (collection["q3"] == "No")
+                {
+                    switch (pr)
+                    {
+                        case "Area educativa":
+                            newPacient.priority = "3c";
+                            break;
+                        case "Area de justicia":
+                            newPacient.priority = "3d";
+                            break;
+                        case "Entidad de servivios esenciales":
+                            newPacient.priority = "3b";
+                            break;
+                        case "Area de seguridad nacional":
+                            newPacient.priority = "3a";
+                            break;
+                        case "Otros":
+                            if (age < 40)
+                            {
+                                newPacient.priority = "4b";
+                            }
+                            else if (age < 50)
+                            {
+                                newPacient.priority = "4a";
+                            }
+                            else if (age < 70)
+                            {
+                                newPacient.priority = "2a";
+                            }
+                            break;
+                    }
+                }
+                else
+                {
+                    newPacient.priority = "2a";
+                }
+            }
             Singleton.Instance.Agregar(newPacient);
             Data();
+            return RedirectToAction(nameof(Index));
+        }
+        public ActionResult WorkArea(int dpi)
+        {
+            ViewBag.dpi = dpi;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult WorkArea(IFormCollection collection)
+        {
+            string q1 = collection["q1"];
+            string q4 = collection["q4"];
+            string q2 = collection["q2"];
+            string q3 = collection["q3"];
             return RedirectToAction(nameof(Index));
         }
 
