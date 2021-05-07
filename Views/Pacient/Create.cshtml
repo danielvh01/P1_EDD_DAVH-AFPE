@@ -29,11 +29,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="DPI" class="control-label">DPI / Partida de nacimiento</label>
-                <input asp-for="DPI" class="form-control" maxlength="13" minlength="13"/>
+                <input asp-for="DPI" class="form-control" maxlength="13" minlength="13" />
                 <span asp-validation-for="DPI" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label>Por favor seleccione la categoria a la que mas se adecue:</label>
+                <label for="age" class="control-label">Por favor indique su edad:</label>
+                <input name="age" class="form-control col-2" type="number" min="18" value="18" required />
+                <span name="age" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Su trabajo pertenece al area de:</label>
                 <select class="form-select" asp-for="priority">
                     @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.priorities)
                     {
@@ -41,6 +46,41 @@
                         <option value="@item">@Html.DisplayFor(modelItem => item)</option>
 
                     }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Practica y estudia ciencias de la salud o afines:</label>
+                <select class="form-select" name="q4">
+                    <option>Si</option>
+                    <option>No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Posee contacto con pacientes infectados por COVID-19:</label>
+                <select class="form-select" name="q1">
+                    <option>Si</option>
+                    <option>No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Forma parte del sector administrativo del area seleccionada:</label>
+                <select class="form-select" name="q2">
+                    <option>Si</option>
+                    <option>No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Posee alguna de las siguientes enfermedades:</label>
+                <ul>Diabetes mellitus</ul>
+                <ul>Enfermedad pulmonar crónica</ul>
+                <ul>Enfermedad renal crónica</ul>
+                <ul>Enfermedades cardiovasculares y cerebrovasculares</ul>
+                <ul>Hipertensión arterial que requiere medicamento</ul>
+                <ul>Inmunosupresión (VIH, cáncer, uso de inmunosupresores) </ul>
+                <ul>Obesidad</ul>
+                <select class="form-select" name="q3">
+                    <option>Si</option>
+                    <option>No</option>
                 </select>
             </div>
             <div class="form-group">

@@ -56,20 +56,14 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             priorities = new DoubleLinkedList<string>();
             vaciar();
             #region Priotity insertions
-            priorities.InsertAtEnd("Trabajador de establecimientos de salud asistencial que atienden pacientes con COVID-19");//1
-            priorities.InsertAtEnd("Trabajador de establecimiento de salud asistencial");
-            priorities.InsertAtEnd("Estudiantes de ciencias de la salud y afines");
-            priorities.InsertAtEnd("Cuerpo de socorro,trabajador de funeraria o personal que labora en instituciones de adultos mayores");
-            priorities.InsertAtEnd("Persona internada en hogar o institucion de adulto mayor");
-            priorities.InsertAtEnd("Trabajadores del sector salud (administrativos)");
-            priorities.InsertAtEnd("Adulto mayor de 70 o más años");
-            priorities.InsertAtEnd("Adulto de 50 a 69 años");
-            priorities.InsertAtEnd("Trabajador del sector de seguridad nacional");
-            priorities.InsertAtEnd("Trabajadores registrados en las municipalidades y entidades que prestan servicios esenciales");
-            priorities.InsertAtEnd("Trabajador del sector educativo");
-            priorities.InsertAtEnd("Trabajadores sector justicia, (jueces, personal en tribunales)");
-            priorities.InsertAtEnd("Adultos de 40 a 49 años");
-            priorities.InsertAtEnd("Adultos de 18 a 39 años");            
+            priorities.InsertAtEnd("Area de salud");//1            
+            priorities.InsertAtEnd("Area de justicia");
+            priorities.InsertAtEnd("Area educativa");
+            priorities.InsertAtEnd("Area de seguridad nacional");
+            priorities.InsertAtEnd("Cuerpo de socorro");
+            priorities.InsertAtEnd("Entidad de servivios esenciales");                   
+            priorities.InsertAtEnd("Persona internada en hogar o institucion del adulto mayor");
+            priorities.InsertAtEnd("Trabajador de funeraria o de institucion del adulto mayor");
             #endregion
             municipalities = new HashTable<string, string>(22);
             StreamReader sr = new StreamReader("Municipios.txt");
@@ -98,67 +92,70 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         }
 
 
-        public string priorityAssign(string pa)
+        public string priorityAssign(string pa, int age, string q1,string q4, string q2, string q3)
         {
-            if (pa == "Trabajador de establecimientos de salud asistencial que atienden pacientes con COVID-19")
+            if (pa == "Area de salud")
             {
-                return "1a";
+                if (q1 == "Si")
+                {
+                    return "1a";
+                }
+                if (q1 == "No" && q2 == "No" && q4 == "No")
+                {
+                    return "1b";
+                }
+                if (q1 == "No" && q2 == "No" && q4 == "Si")
+                {
+                    return "1c";
+                }
+                if (q1 == "No" && q2 == "Si" && q4 == "No")
+                {
+                    return "1f";
+                }
             }
-            if (pa == "Trabajador de establecimiento de salud asistencial")
-            {
-                return "1b";
-            }
-            if (pa == "Estudiantes de ciencias de la salud y afines")
-            {
-                return "1c";
-            }
-            if (pa == "Cuerpo de socorro,trabajador de funeraria o personal que labora en instituciones de adultos mayores")
+            if (pa == "Cuerpo de socorro" || pa == "Trabajador de funeraria o de institucion del adulto mayor")
             {
                 return "1d";
             }
-            if (pa == "Persona internada en hogar o institucion de adulto mayor")
+            if (pa == "Persona internada en hogar o institucion del adulto mayor")
             {
                 return "1e";
             }
-            if (pa == "Trabajadores del sector salud (administrativos)")
+            if (age > 70 || q3 == "Si")
             {
-                return "1f";
+                return "2a";
             }
-            if (pa == "Adulto mayor de 70 o más años")
-            {
-                return "2a"; 
-            }
-            if (pa == "Adulto de 50 a 69 años")
+            if (age > 49 && age < 70)
             {
                 return "2b";
             }
-            if (pa == "Trabajador del sector de seguridad nacional")
+            if (pa == "Area de seguridad nacional")
             {
                 return "3a";
             }
-            if (pa == "Trabajadores registrados en las municipalidades y entidades que prestan servicios esenciales")
+            if (pa == "Entidad de servivios esenciales")
             {
                 return "3b";
             }
-            if (pa == "Trabajador del sector educativo")
+            if (pa == "Area educativa")
             {
                 return "3c";
             }
-            if (pa == "Trabajadores sector justicia, (jueces, personal en tribunales)")
+            if (pa == "Area de justicia")
             {
                 return "3d";
             }
-            if (pa == "Adultos de 40 a 49 años")
+            if (age > 39 && age < 50)
             {
                 return "4a";
             }
-            if (pa == "Adultos de 18 a 39 años")
+            if (age > 17 && age < 40)
             {
                 return "4b";
             }
             else
             {
-                return "";
+                return "";                
             }
         }
         public void genWaitingList(string municipality)
