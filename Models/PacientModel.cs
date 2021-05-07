@@ -14,7 +14,7 @@ namespace P1_EDD_DAVH_AFPE.Models
         [Required]
         public string LastName { get; set; }
         [Required]
-        public int DPI { get; set; }
+        public long DPI { get; set; }
         [Required]
         public string Department{ get; set; }
         [Required]
@@ -23,7 +23,7 @@ namespace P1_EDD_DAVH_AFPE.Models
         public string priority { get; set; }
 
         [Required]
-        public string schedule { get; set; }
+        public DateTime schedule { get; set; }
 
         public bool vaccinated { get; set; }
 

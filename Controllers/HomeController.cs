@@ -64,7 +64,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                     if (obj[i].Substring(0, spacer) == "hashCapacity")
                     {
                         Singleton.Instance.hashCapacity = Convert.ToInt32(obj[i].Substring(spacer + 1));
-                        Singleton.Instance.Data = new HashTable<PacientModel, int>(Singleton.Instance.hashCapacity);
+                        Singleton.Instance.Data = new HashTable<PacientModel, long>(Singleton.Instance.hashCapacity);
                     }
                     if (obj[i].Substring(0, spacer) == "pacients")
                     {
@@ -79,15 +79,25 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                 {
                                     Name = obj2[0],
                                     LastName = obj2[1],
-                                    DPI = Convert.ToInt32(obj2[2]),
+                                    DPI = Convert.ToInt64(obj2[2]),
                                     Department = obj2[3],
                                     municipality = obj2[4],
-                                    priority = obj2[5],                                    
-                                    schedule = obj2[6]
+                                    priority = obj2[5],  
                                 };
-                                if (newPacient.schedule != "No asignado todavía")
+                                string d = obj2[6];
+                                string[] date = d.Split("/");
+                                newPacient.schedule = newPacient.schedule.AddYears(int.Parse(date[2].Substring(0, 4)) - 1);
+                                newPacient.schedule = newPacient.schedule.AddMonths(int.Parse(date[1]) - 1);
+                                newPacient.schedule = newPacient.schedule.AddDays(int.Parse(date[0]) - 1);
+                                newPacient.schedule = newPacient.schedule.AddHours(int.Parse(date[2].Substring(5,2)));
+                                int separator = date[2].IndexOf(":");
+                                newPacient.schedule = newPacient.schedule.AddMinutes(int.Parse(date[2].Substring(separator + 1, 2)));
+                                if (newPacient.schedule.CompareTo(new DateTime()) != 0)
                                 {
-
+                                    if (Singleton.Instance.startingDate.CompareTo(newPacient.schedule) > 0)
+                                    {
+                                        Singleton.Instance.startingDate = newPacient.schedule;
+                                    }
                                 }
                                 Singleton.Instance.AddDataBase(newPacient);
                             }
@@ -109,7 +119,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         public IActionResult Configuration(IFormCollection collection)
         {
             Singleton.Instance.HeapPacient = new Heap<PacientModel>(Singleton.Instance.heapCapacity);
-            Singleton.Instance.Data = new HashTable<PacientModel, int>(Singleton.Instance.hashCapacity);
+            Singleton.Instance.Data = new HashTable<PacientModel, long>(Singleton.Instance.hashCapacity);
             FileStream fs = new FileStream("./Database.txt", FileMode.Create, FileAccess.Write);
             Singleton.Instance.BuildData();
             StreamWriter sw = new StreamWriter(fs);

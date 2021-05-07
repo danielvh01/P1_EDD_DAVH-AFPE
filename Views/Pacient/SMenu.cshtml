@@ -18,7 +18,7 @@
                 <input name="schedule" class="form-control col-2" type="number" min="5" max="60" value="15" required />
                 <span name="schedule" class="text-danger"></span>
             </div>
-            @if (P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.startingDate == null)
+            @if (P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.startingDate.CompareTo(new DateTime()) == 0)
             {
                 <div class="form-group">
                     <label for="startingDate" class="control-label">Por favor indique la fecha de inicio de jornada de vacunación</label>

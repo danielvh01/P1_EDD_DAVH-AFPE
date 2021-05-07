@@ -56,7 +56,14 @@
                     @Html.DisplayFor(modelItem => item.value.priority)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.value.schedule)
+                    @if (item.value.schedule.CompareTo(new DateTime()) != 0)
+                    {
+                        @Html.DisplayFor(modelItem => item.value.schedule)
+                    }
+                    else
+                    {
+                        <p>No asignado todavía</p>
+                    }
                 </td>
             </tr>
         }
