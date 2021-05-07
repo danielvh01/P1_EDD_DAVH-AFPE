@@ -34,8 +34,36 @@ namespace P1_EDD_DAVH_AFPE.Models
         //Comparer of DPI parameter
         public int CompareTo(object obj)
         {
-            var comparer = ((PacientModel)obj).DPI;
-            return comparer.CompareTo(DPI);
+            var comparer = ((PacientModel)obj);
+            int x;
+            if (schedule.CompareTo(new DateTime()) == 0)
+            {
+                if(priority.CompareTo(comparer.priority) == 0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    x = priority.CompareTo(comparer.priority);
+                }
+            }
+            else if (comparer.schedule.CompareTo(new DateTime()) == 0)
+            {
+                if (priority.CompareTo(comparer.priority) == 0)
+                {
+                    return -1;
+                }
+                else
+                {
+                    x = priority.CompareTo(comparer.priority);
+                }
+            }
+            x = schedule.CompareTo(comparer.schedule);
+            if(x == 0)
+            {
+                x = priority.CompareTo(comparer.priority);
+            }
+            return x;
         }
         //Comparar of Priority Parameter
         public int ComparePriority(object obj)

@@ -1,0 +1,104 @@
+﻿@model IEnumerable<P1_EDD_DAVH_AFPE.Models.PacientModel>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>Lista de Registros</h1>
+
+<a asp-action="Index">Regresar a menu principal</a>
+
+<div class="col-12">
+    <form asp-action="List">
+        <div class="input-group mb-3">
+            <input type="search" class="form-control col-4" name="search" placeholder="Buscar">
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="criteria" id="criteria" value="Dpi" checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+                Buscar por DPI
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="criteria" id="criteria" value="Name">
+            <label class="form-check-label" for="flexRadioDefault1">
+               Buscar por Nombre
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="criteria" id="criteria" value="LastName">
+            <label class="form-check-label" for="flexRadioDefault1">
+                Buscar por Apellido
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Buscar</button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nombre
+            </th>
+            <th>
+                Apellido
+            </th>
+            <th>
+                DPI / Partida de nacimiento
+            </th>
+            <th>
+                Departamento
+            </th>
+            <th>
+                Municipio
+            </th>
+            <th>
+                Prioridad
+            </th>
+            <th>
+                Horario
+            </th>
+            <th>
+                Estado
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DPI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.municipality)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.priority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.schedule)
+            </td>
+            <td>
+                @if(item.vaccinated)
+                {
+                    <p>Vacunado</p>
+                }
+                else
+                {
+                    <p>No vacunado</p>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

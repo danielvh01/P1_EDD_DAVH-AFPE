@@ -56,7 +56,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 Singleton.Instance.startingDate = Singleton.Instance.startingDate.AddHours(8);
             }
             Schedule();
-            return RedirectToAction(nameof(SIndex));
+            return RedirectToAction(nameof(Simulation));
         }
 
         //GET of waiting List
@@ -64,6 +64,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         {            
             return View(Singleton.Instance.HeapPacient);
         }
+        
 
         public ActionResult Simulation()
         {
@@ -76,7 +77,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
         public ActionResult Percentage()
         {
-            return View(Singleton.Instance.VaccinatedList);
+            ViewBag.Percentage = Singleton.Instance.VaccinatedList.Length / Singleton.Instance.Data.Length * 100;
+            return View();
         }
 
         // GET: PacientController/Details/5
@@ -86,7 +88,57 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return View();
         }
 
-        
+        public ActionResult List()
+        {
+            return View(Singleton.Instance.Data.GetAllElements());
+        }
+        [HttpPost]
+        public ActionResult List(IFormCollection collection)
+        {
+            if (collection["criteria"] == "Dpi")
+            {
+                var criteria = Singleton.Instance.DpiTree.Find(x => x.value.CompareTo(long.Parse(collection["Search"])), Singleton.Instance.DpiTree.Root);
+                if (criteria != null)
+                {
+                    return View("SearchResult", Singleton.Instance.Data.Get(x => x.DPI.CompareTo(criteria.value), Singleton.Instance.keyGen(criteria.key)));
+                }
+                else
+                {
+                    TempData["testmsg"] = "No se encontró ninguna coincidencia";
+                    return RedirectToAction(nameof(List));
+                }
+            }
+            else if(collection["criteria"] == "Name")
+            {
+                var criteria = Singleton.Instance.NameTree.Find(x => x.value.CompareTo(collection["Search"]), Singleton.Instance.NameTree.Root);
+                if (criteria != null)
+                {
+                    return View("SearchResult", Singleton.Instance.Data.Get(x => x.Name.CompareTo(criteria.value), Singleton.Instance.keyGen(criteria.key)));
+                }
+                else
+                {
+                    TempData["testmsg"] = "No se encontró ninguna coincidencia";
+                    return RedirectToAction(nameof(List));
+                }
+            }
+            else if(collection["criteria"] == "LastName")
+            {
+                var criteria = Singleton.Instance.LastNameTree.Find(x => x.value.CompareTo(collection["Search"]), Singleton.Instance.LastNameTree.Root);
+                if (criteria != null)
+                {
+                    return View("SearchResult", Singleton.Instance.Data.Get(x => x.LastName.CompareTo(criteria.value), Singleton.Instance.keyGen(criteria.key)));
+                }
+                else
+                {
+                    TempData["testmsg"] = "No se encontró ninguna coincidencia";
+                    return RedirectToAction(nameof(List));
+                }
+            }
+            else
+            {
+                return View(Singleton.Instance.Data.GetAllElements());
+            }
+        }
 
         //Method that is called in order to Schedule the appointments of pacients registered.
         public ActionResult Schedule()
@@ -119,26 +171,21 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        public ActionResult NotAssist()
+        {
+            var result = Singleton.Instance.HeapPacient.getMin();
+            return View(result);
+        }
+
         //This method is called when a person didn't assist in the scheduled hour in order to assign a new one with different date.
         public ActionResult SReschedule(HeapNode<PacientModel>  pacient)
         {
-            //int spacer = Singleton.Instance.startingDate.IndexOf("-");
-            //int hour = 8;
-            //int min = 0;
-            //int year = int.Parse(Singleton.Instance.startingDate.Substring(spacer+8, 2))+1;
-            //int month = int.Parse(Singleton.Instance.startingDate.Substring(spacer+5, 2));
-            //int day = int.Parse(Singleton.Instance.startingDate.Substring(spacer+0, 4));  
-            //string date = date = hour + ":" + min + day + "/" + month + "/" + year;
-            //Singleton.Instance.HeapPacient.heapArray.Get(Singleton.Instance.HeapPacient.heapArray.GetPositionOf(pacient)).value.schedule = date;
+            var x = Singleton.Instance.HeapPacient.extractMin().value;
+            x.schedule = Singleton.Instance.NextDate(Singleton.Instance.HeapPacient.Length() - 1);
+            Singleton.Instance.HeapPacient.insertKey(x, x.priority);
             return RedirectToAction(nameof(Simulation));
-        }
-
-        public ActionResult Vaccinated(HeapNode<PacientModel> pacient)
-        {
-            Singleton.Instance.HeapPacient.heapArray.Get(Singleton.Instance.HeapPacient.heapArray.GetPositionOf(pacient)).value.vaccinated = true;
-            return RedirectToAction(nameof(Simulation));
-        }
-        
+        }        
 
         // GET: PacientController/Create
         public ActionResult Create()
@@ -170,48 +217,19 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: PacientController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: PacientController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         // GET: PacientController/Delete/5
-        public ActionResult Delete(int dpi)
+        public ActionResult Delete()
         {
-            PacientModel pacient = new PacientModel();
-            return View(pacient);
+            var result = Singleton.Instance.HeapPacient.getMin();
+            return View("VaccinatedCheck", result);
         }
 
-        // POST: PacientController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Vaccinated()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Singleton.Instance.VaccinatedList.InsertAtEnd(Singleton.Instance.HeapPacient.extractMin().value);
+            return RedirectToAction(nameof(Simulation));
         }
+
 
         public ActionResult Data()
         {

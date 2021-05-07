@@ -1,0 +1,12 @@
+﻿
+
+@using P1_EDD_DAVH_AFPE.Models.Data
+<div class="container text-center justify-content-center align-content-center">
+    <h1>Porcenaje de Vacunados: @ViewBag.Percentage</h1>
+    <br />
+    <h3>Cantidad de Personas vacunadas: @Singleton.Instance.VaccinatedList.Length</h3>
+    <h3>Cantidad de Personas en Cola: @Singleton.Instance.HeapPacient.Length()</h3>
+    <h3>Total de Registros: @Singleton.Instance.Data.Length</h3>
+    <a asp-action="Index">Regresar a menu principal</a>
+</div>
+
