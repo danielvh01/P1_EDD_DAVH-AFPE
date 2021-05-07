@@ -201,6 +201,11 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         {
 
             string pr = collection["priority"];
+            int age = int.Parse(collection["age"]);
+            string q1 = collection["q1"];
+            string q4 = collection["q4"];
+            string q2 = collection["q2"];
+            string q3 = collection["q3"];
             var newPacient = new PacientModel
             {
                 Name = collection["Name"],
@@ -208,7 +213,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 DPI = Convert.ToInt64(collection["DPI"]),
                 Department = HttpContext.Session.GetString(SessionDepartment),
                 municipality = HttpContext.Session.GetString(SessionMunicipality),
-                priority = Singleton.Instance.priorityAssign(pr),                    
+                priority = Singleton.Instance.priorityAssign(pr,age,q1,q4,q2,q3),                    
                 schedule = new DateTime(),
                 vaccinated = false
             };
