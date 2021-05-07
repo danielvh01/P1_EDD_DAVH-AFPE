@@ -24,7 +24,10 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         {
             _logger = logger;
         }
-
+        public IActionResult Help()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             return View();
