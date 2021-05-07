@@ -76,7 +76,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                         for (int j = 0; j < tasks.Length; j++)
                         {
                             string[] obj2 = tasks[j].Split(",");
-                            if (obj2.Length == 7)
+                            if (obj2.Length == 8)
                             {
                                 var newPacient = new PacientModel
                                 {
@@ -86,6 +86,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                     Department = obj2[3],
                                     municipality = obj2[4],
                                     priority = obj2[5],  
+                                    vaccinated = bool.Parse(obj2[7])
                                 };
                                 string d = obj2[6];
                                 string[] date = d.Split("/");

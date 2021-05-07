@@ -47,7 +47,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         private Singleton()
         {
             hashCapacity = 15;
-            heapCapacity = 3;
+            heapCapacity = 15;
             schedule = 30;
             department = "";
             muni = "";
@@ -161,6 +161,17 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 return "";
             }
         }
+        public void genWaitingList(string municipality)
+        {
+            HeapPacient = new Heap<PacientModel>(heapCapacity);
+            foreach (var item in Singleton.Instance.Database.GetAllElementsOf(x => x.municipality == municipality))
+            {
+                if (!item.vaccinated)
+                {
+                    HeapPacient.insertKey(item, item.priority);
+                }
+            }
+        }
         public void Agregar(PacientModel newPacient)
         {
             long newkey = keyGen(newPacient.DPI);
@@ -207,7 +218,13 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 DpiTree.Root = DpiTree.Insert(new SearchCriteria<long> { value = item.DPI, key = newkey }, DpiTree.Root);
                 NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = item.Name, key = newkey }, NameTree.Root);
                 LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = item.LastName, key = newkey }, LastNameTree.Root);
-                HeapPacient.insertKey(item, item.priority);
+                if (item.vaccinated)
+                {
+                    VaccinatedList.InsertAtEnd(item);
+                }
+                {
+                    HeapPacient.insertKey(item, item.priority);
+                }
             }
         }
 
@@ -241,7 +258,8 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 result += Pacient.Department + ",";
                 result += Pacient.municipality + ",";
                 result += Pacient.priority + ",";
-                result += Pacient.schedule + ";";
+                result += Pacient.schedule + ",";
+                result += Pacient.vaccinated + ";";
             }
             return result;
         }

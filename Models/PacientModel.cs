@@ -38,24 +38,24 @@ namespace P1_EDD_DAVH_AFPE.Models
             int x;
             if (schedule.CompareTo(new DateTime()) == 0)
             {
-                if(priority.CompareTo(comparer.priority) == 0)
+                if (comparer.schedule.CompareTo(new DateTime()) != 0)
                 {
                     return 1;
                 }
                 else
                 {
-                    x = priority.CompareTo(comparer.priority);
+                    return priority.CompareTo(comparer.priority);
                 }
             }
             else if (comparer.schedule.CompareTo(new DateTime()) == 0)
             {
-                if (priority.CompareTo(comparer.priority) == 0)
+                if (schedule.CompareTo(new DateTime()) != 0)
                 {
                     return -1;
                 }
                 else
                 {
-                    x = priority.CompareTo(comparer.priority);
+                    return priority.CompareTo(comparer.priority);
                 }
             }
             x = schedule.CompareTo(comparer.schedule);
