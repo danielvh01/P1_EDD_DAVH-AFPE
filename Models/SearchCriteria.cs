@@ -8,7 +8,7 @@ namespace P1_EDD_DAVH_AFPE.Models
     public class SearchCriteria<T> : IComparable where T : IComparable
     {
         public T value;
-        public int key;
+        public long key;
 
         public int CompareTo(object obj)
         {

@@ -25,21 +25,22 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         //String Variables
         public string department;
         public string muni;
-        public string startingDate;
+        //DateTime Variables;
+        public DateTime startingDate;
         //DATA STORAGE//
         public string database;
         //Data structures
         public DoubleLinkedList<string> priorities;
         public HashTable<string,string> municipalities;
         public DoubleLinkedList<PacientModel> VaccinatedList;
-        public HashTable<PacientModel, int> Data;
-        public AVLTree<SearchCriteria<int>> DpiTree;
+        public HashTable<PacientModel, long> Data;
+        public AVLTree<SearchCriteria<long>> DpiTree;
         public AVLTree<SearchCriteria<string>> NameTree;
         public AVLTree<SearchCriteria<string>> LastNameTree;
         public Heap<PacientModel> HeapPacient;
         #endregion
         #region Private Variables
-        private HashTable<PacientModel, int> Database;
+        private HashTable<PacientModel, long> Database;
         private readonly static Singleton _instance = new Singleton();
         private Heap<PacientModel> HeapDatabase;
         #endregion
@@ -50,7 +51,8 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             schedule = 30;
             department = "";
             muni = "";
-            Database = new HashTable<PacientModel, int>(hashCapacity);
+            startingDate = new DateTime();
+            Database = new HashTable<PacientModel, long>(hashCapacity);
             priorities = new DoubleLinkedList<string>();
             vaciar();
             #region Priotity insertions
@@ -161,43 +163,55 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         }
         public void Agregar(PacientModel newPacient)
         {
-            int newkey = keyGen(newPacient.DPI);
+            long newkey = keyGen(newPacient.DPI);
             Database.Add(newPacient, newkey);
             Data.Add(newPacient, newkey);
-            DpiTree.Root = DpiTree.Insert(new SearchCriteria<int> { value = newPacient.DPI, key = newPacient.DPI }, DpiTree.Root);
+            DpiTree.Root = DpiTree.Insert(new SearchCriteria<long> { value = newPacient.DPI, key = newPacient.DPI }, DpiTree.Root);
             NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = newPacient.Name, key = newPacient.DPI }, NameTree.Root);
             LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = newPacient.LastName, key = newPacient.DPI }, LastNameTree.Root);
             HeapPacient.insertKey(newPacient, newPacient.priority);
         }
         public void AddDataBase(PacientModel newPacient)
         {
-            int newkey = keyGen(newPacient.DPI);
+            long newkey = keyGen(newPacient.DPI);
             Database.Add(newPacient, newkey);
         }
         private void vaciar()
         {
-            Data = new HashTable<PacientModel, int>(hashCapacity);
-            DpiTree = new AVLTree<SearchCriteria<int>>();
+            Data = new HashTable<PacientModel, long>(hashCapacity);
+            DpiTree = new AVLTree<SearchCriteria<long>>();
             NameTree = new AVLTree<SearchCriteria<string>>();
             LastNameTree = new AVLTree<SearchCriteria<string>>();
             VaccinatedList = new DoubleLinkedList<PacientModel>();
             HeapPacient = new Heap<PacientModel>(heapCapacity);
+        }
+        public DateTime NextDate(int index)
+        {
+            if ((index % simmultaneous) == 0)
+            {
+                startingDate = startingDate.AddMinutes(schedule);
+                if(startingDate.Hour > 17)
+                {
+                    startingDate = startingDate.AddHours(15);
+                }
+            }
+            return startingDate;
         }
         public void Login(string municipality)
         {
             vaciar();
             foreach(var item in Singleton.Instance.Database.GetAllElementsOf(x => x.municipality == municipality))
             {
-                int newkey = keyGen(item.DPI);
+                long newkey = keyGen(item.DPI);
                 Data.Add(item, newkey);
-                DpiTree.Root = DpiTree.Insert(new SearchCriteria<int> { value = item.DPI, key = newkey }, DpiTree.Root);
+                DpiTree.Root = DpiTree.Insert(new SearchCriteria<long> { value = item.DPI, key = newkey }, DpiTree.Root);
                 NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = item.Name, key = newkey }, NameTree.Root);
                 LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = item.LastName, key = newkey }, LastNameTree.Root);
                 HeapPacient.insertKey(item, item.priority);
             }
         }
 
-        public int keyGen(int dpi)
+        public long keyGen(long dpi)
         {
             return dpi % hashCapacity;
         }
