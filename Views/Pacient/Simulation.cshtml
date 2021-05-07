@@ -3,35 +3,35 @@
     ViewData["Title"] = "Simulation";
 }
 
-<h1>Simulation</h1>
-
-<h2>Waiting List</h2>
+<h1>Simulación de Citas</h1>
 
 
+@Html.ActionLink("Reasignar fecha al primero en la lista", "NotAssist") |
+@Html.ActionLink("Vacunar al primero en la lista", "Delete")
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                Name
+                Nombre
             </th>
             <th>
-                Last Name
+                Apellido
             </th>
             <th>
-                DPI / Birthday Certificate
+                DPI / Certificado de Nacimiento
             </th>
             <th>
-                Department
+                Departamento
             </th>
             <th>
-                Municipality
+                Municipio
             </th>
             <th>
-                Priority
+                Prioridad
             </th>
             <th>
-                Schedule:
+                Horario:
             </th>
             <th></th>
         </tr>
@@ -59,15 +59,19 @@
                     @Html.DisplayFor(modelItem => item.value.priority)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.value.schedule)
-                </td>
-                <td>
-                    @Html.ActionLink("Vaccinated", "Delete", new { item.value })
-                    @Html.ActionLink("Did not assist", "Reschedule", new { item.value }) |
+                    @if (item.value.schedule.CompareTo(new DateTime()) != 0)
+                    {
+                        @Html.DisplayFor(modelItem => item.value.schedule)
+                    }
+                    else
+                    {
+                        <p>No asignado todavía</p>
+                    }
                 </td>
             </tr>
         }
+
     </tbody>
 </table>
 
-<a asp-action="Index">Back to main menu</a>
+<a asp-action="Index">Regresar al menú</a>

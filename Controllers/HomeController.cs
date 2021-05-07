@@ -94,7 +94,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                 newPacient.schedule = newPacient.schedule.AddMinutes(int.Parse(date[2].Substring(separator + 1, 2)));
                                 if (newPacient.schedule.CompareTo(new DateTime()) != 0)
                                 {
-                                    if (Singleton.Instance.startingDate.CompareTo(newPacient.schedule) > 0)
+                                    if (Singleton.Instance.startingDate.CompareTo(newPacient.schedule) < 0)
                                     {
                                         Singleton.Instance.startingDate = newPacient.schedule;
                                     }

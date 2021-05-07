@@ -21,8 +21,8 @@ namespace DataStructures
 
         public int CompareTo(Object obj)
         {
-            var comparer = ((HeapNode<T>)obj).priority;
-            return comparer.CompareTo(priority);
+            var comparer = ((HeapNode<T>)obj).value;
+            return comparer.CompareTo(value);
         }
 
     }

@@ -9,7 +9,7 @@ namespace DataStructures
     {
         #region Variables
         //Propertires
-        int Length;
+        public int Length;
         int maxKeys;
         //Pointers
         HashNode<T, K> start;
@@ -239,6 +239,7 @@ namespace DataStructures
             }
             return result;
         }
+        
         public IEnumerable<T> GetAllElements()
         {
             DoubleLinkedList<T> result = new DoubleLinkedList<T>();
