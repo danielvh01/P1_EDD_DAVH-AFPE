@@ -62,6 +62,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             priorities.InsertAtEnd("Area de seguridad nacional");
             priorities.InsertAtEnd("Cuerpo de socorro");
             priorities.InsertAtEnd("Entidad de servivios esenciales");                   
+            priorities.InsertAtEnd("Otros");
             priorities.InsertAtEnd("Persona internada en hogar o institucion del adulto mayor");
             priorities.InsertAtEnd("Trabajador de funeraria o de institucion del adulto mayor");
             #endregion
