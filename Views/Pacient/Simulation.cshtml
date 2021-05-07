@@ -73,5 +73,11 @@
 
     </tbody>
 </table>
+@if (TempData["testmsg"] != null)
+{
+    <script type="text/javascript">
+       alert("@TempData["testmsg"]");
+    </script>
+}
 
 <a asp-action="Index">Regresar al menú</a>

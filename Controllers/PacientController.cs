@@ -55,19 +55,45 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 Singleton.Instance.startingDate = Singleton.Instance.startingDate.AddDays(int.Parse(date[2]) - 1);
                 Singleton.Instance.startingDate = Singleton.Instance.startingDate.AddHours(8);
             }
-            Schedule();
+            bool verif = false;
+            if (Singleton.Instance.HeapPacient.Length() > 0)
+            {
+                for (int i = 0; i < Singleton.Instance.HeapPacient.Length(); i++)
+                {
+                    if (Singleton.Instance.HeapPacient.heapArray.Get(i).value.schedule.CompareTo(new DateTime()) == 0)
+                    {
+                        Singleton.Instance.HeapPacient.heapArray.Get(i).value.schedule = Singleton.Instance.NextDate(i);
+                        verif = true;
+                    }
+                }
+                Data();
+                if (verif)
+                {
+                    TempData["testmsg"] = "Calendarización generada correctamente.";
+                }
+                else
+                {
+                    TempData["testmsg"] = "Todas las personas de la lista de espera ya tenian un horario establecido";
+                }
+            }
+            else
+            {
+                TempData["testmsg"] = "No hay personas en la lista de espera";
+            }
             return RedirectToAction(nameof(Simulation));
         }
 
         //GET of waiting List
         public ActionResult SIndex()
-        {            
+        {
+            Singleton.Instance.genWaitingList(HttpContext.Session.GetString(SessionMunicipality));
             return View(Singleton.Instance.HeapPacient);
         }
         
 
         public ActionResult Simulation()
         {
+            Singleton.Instance.genWaitingList(HttpContext.Session.GetString(SessionMunicipality));
             return View(Singleton.Instance.HeapPacient);
         }
         public ActionResult VaccinatedList()
@@ -140,36 +166,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             }
         }
 
-        //Method that is called in order to Schedule the appointments of pacients registered.
-        public ActionResult Schedule()
-        {
-            bool verif = false;
-            if (Singleton.Instance.HeapPacient.Length() > 0)
-            {
-                for(int i = 0; i < Singleton.Instance.HeapPacient.Length(); i++)
-                {
-                    if (Singleton.Instance.HeapPacient.heapArray.Get(i).value.schedule.CompareTo(new DateTime()) == 0)
-                    {
-                        Singleton.Instance.HeapPacient.heapArray.Get(i).value.schedule = Singleton.Instance.NextDate(i);
-                        verif = true;
-                    }
-                }
-                Data();
-                if (verif)
-                {
-                    TempData["testmsg"] = "Calendarización generada correctamente.";
-                }
-                else
-                {
-                    TempData["testmsg"] = "Todas las personas de la lista de espera ya tenian un horario establecido";
-                }
-            }
-            else
-            {
-                TempData["testmsg"] = "No hay personas en la lista de espera";
-            }
-            return RedirectToAction(nameof(Index));
-        }
+        
 
 
         public ActionResult NotAssist()
@@ -221,7 +218,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         public ActionResult Delete()
         {
             var result = Singleton.Instance.HeapPacient.getMin();
-            return View("VaccinatedCheck", result);
+            return View("VaccinatedCheck", result.value);
         }
 
         public ActionResult Vaccinated()
