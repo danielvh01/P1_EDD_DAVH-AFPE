@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Configuration">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.hashCapacity" class="control-label">Por favor indique el tamaño máximo de la Tabla Hash.</label>
+                <input asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.hashCapacity" class="form-control col-2" />
+                <span asp-validation-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.hashCapacity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.heapCapacity" class="control-label">Por favor indique el número máximo de pacientes a registrar.</label>
+                <input asp-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.heapCapacity" class="form-control col-2" />
+                <span asp-validation-for="@P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.heapCapacity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Continuar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

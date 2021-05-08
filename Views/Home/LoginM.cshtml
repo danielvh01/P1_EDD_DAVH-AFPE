@@ -1,0 +1,30 @@
+﻿@model IEnumerable<string>
+
+
+    <h1>Municipio</h1>
+    <a asp-action="Login">Cambiar de Departamento</a>
+
+    @using P1_EDD_DAVH_AFPE.Models.Data;
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-hover ">
+                <thead>
+                    <tr>
+                        <th>
+                            Municipio:
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(item, "Session", new { municipality = item}, new { @class = "btn-link btn-block text-left" })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+

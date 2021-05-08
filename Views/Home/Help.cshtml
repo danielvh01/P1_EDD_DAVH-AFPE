@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewData["Title"] = "Help";
+}
+
+<style>
+
+    h4 {
+        text-align: left;
+        text-transform: uppercase;
+        color: #33ADFF;
+    }
+
+</style>
+
+<a asp-action="Login" asp-controller="Home">Regresar a elección de centro de vacunación</a>
+
+
+<h1>Bienvenido al sistema de ayuda</h1>
+
+<p>Esta parte de la aplicación esta diseñada para explicar la forma en que se trabaja.</p>
+
+<p>
+    Para empezar, es necesario seleccionar en que departamento y municipio se ejecuta la aplicación.
+</p>
+
+<p>Seleccionar a que departamento y municipio pertenece es importante, debido a que en base a esos datos de inicio de sesión se mostrará el menú correspondiente a ese centro de vacunación y cada persona registrada sera identificado con los mismos.</p>
+
+<p>Seguidamente del inicio de sesión se encontrará con el menú principal de la aplicación , en donde podrá realizar las siguientes acciones:</p>
+
+<ul>
+    <li>Cambiar ubicación del centro de vacunación</li>
+    <li>Registrar paciente</li>
+    <li>Visualizar lista de todos los registros</li>
+    <li>Simular calendarizado de horario de vacunación</li>
+    <li>Visualizar lista de espera</li>
+    <li>Visualizar lista de vacunados</li>
+    <li>Obtener porcentaje de vacunados</li>
+</ul>
+
+<h4>Cambiar ubicación del centro de vacunación</h4>
+<p>
+    Se ubicará a la par del nombre del centro de vacunación elegido la siguiente función:    <a href="#">Cambiar de Ubicación</a>
+    la cuál regresa al usuario al inicio de sesión, dándole la posibilidad de cambiar el centro de vacunación y mostrar la información contenida en el sistema del mismo.
+</p>
+    <h4>Registrar Paciente</h4>
+<p>
+    La funcionalidad de registro de paciente se realiza por medio del ingreso de nombre, apellido, DPI / Partida de nacimiento y la selección de grupo al que
+    la persona pertenece para poder asignarle la prioridad correspondiente siguiendo el orden de el plan de vacunación propuesto por el gobierno.
+</p>
+<p>El departamento y municipio del paciente se asignan en base a los datos del inicio de sesión del centro de vacunación , por lo que no será necesario indicarlo en el registro.</p>
+
+
+<h4>Visualizar lista de todos los registros</h4>
+
+<p>Es una lista la cual muestra la información de todos los pacientes que fueron registrados en el respectivo centro de vacunación.</p>
+<p>Permite realizar busqueda por medio del ingreso de uno de los siguientes parametros :</p>
+
+<ul>
+    <li>Nombre</li>
+    <li>Apellido</li>
+    <li>DPI / Partida de nacimiento</li>
+</ul>
+
+<p>En el siguiente contenedor de palabras:</p>
+<div class="input-group mb-3">
+    <input type="search" class="form-control col-4" name="search" placeholder="Parámetro">
+</div>
+
+<p>Luego debe marcar una de las tres siguientes opciones en base al parámetro ingresado en el contenedor</p>
+
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="criteria" id="criteria" value="Dpi" checked>
+    <label class="form-check-label" for="flexRadioDefault1">
+        Buscar por DPI
+    </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="criteria" id="criteria" value="Name">
+    <label class="form-check-label" for="flexRadioDefault1">
+        Buscar por Nombre
+    </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="criteria" id="criteria" value="LastName">
+    <label class="form-check-label" for="flexRadioDefault1">
+        Buscar por Apellido
+    </label>
+</div>
+
+<p>
+    Y por último presionar el botón de busqueda, el cual si la busqueda encuentra al paciente, será redireccionado a los detalles del mismo. En caso contrario, el sistema mostrará un mensaje de que la busqueda no ha encontrado
+    un paciente con el parámetro ingresado y regresará de nuevo a la lista de todos los registros.
+</p>
+
+<div class="form-group">
+    <input type="submit" value="Buscar" class="btn btn-primary" />
+</div>
+
+<p>Cabe mencionar que los datos deben ser ingresados de forma literal, de lo contrario la busqueda no encontrará el paciente buscado ya que lo tomará como inexistente.</p>
+
+
+<h4>Simular calendarizado de horario de vacunación</h4>
+<p>
+    Simular calendarizado de horario de vacunación redirecciona a un menú configurable en donde se require ingresar el número simultáneo de pacientes a tender, la duración de la cita de vacunación
+    en minutos enteros y la fecha de inicio de jornada de vacunación.
+</p>
+
+<p>Posteriormente se mostrará la lista de espera en dónde se podrá poner a prueba el sistema e indicar si una persona asistió y fué vacunada .</p>
+<p>Asimismo, se puede indicar que la persona no asistió. Si éste fuera el caso, el sistema automaticamente reprograma una fecha con distinto día y el paciente seguirá en la lista de espera hasta que sea marcado como asistió y fué vacunado.</p>
+
+<h4>Visualizar lista de espera</h4>
+<p>Permite al usuario :</p>
+
+<ul>
+    <li>Observar el reporte de pacientes aún no vacunados</li>
+    <li>Ver la información de cada paciente (nombre, apellido, DPI / Partida de nacimiento, prioridad y horario de vacunación asignado)</li>
+</ul>
+
+<h4>Visualizar lista de vacunados</h4>
+<p>Permite al usuario :</p>
+
+<ul>
+    <li>Observar el reporte de pacientes vacunados</li>
+    <li>Ver la información de cada paciente (nombre, apellido, DPI / Partida de nacimiento, prioridad y horario de vacunación el cual fue vacunado)</li>
+</ul>
+
+<h4>Visualizar porcentaje de vacunados</h4>
+<p>Permite al usuario obtener el reporte de las personas vacunadas en forma de porcentaje. Este dato se genera en base a las personas vacunadas entre las registradas con el objetivo de ver el progreso de la vacunación de pacientes.</p>
+
+
+

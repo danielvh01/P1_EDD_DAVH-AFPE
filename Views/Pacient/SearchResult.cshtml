@@ -1,0 +1,79 @@
+﻿@model P1_EDD_DAVH_AFPE.Models.PacientModel
+
+@{
+    ViewData["Title"] = "SearchResult";
+}
+
+<h1>SearchResult</h1>
+
+<div>
+    <h4>PacientModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Nombre
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Apellido
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            DPI / Partida de nacimiento
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DPI)
+        </dd>
+        <dt class="col-sm-2">
+            Departamento
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Department)
+        </dd>
+        <dt class="col-sm-2">
+            Municipio
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.municipality)
+        </dd>
+        <dt class="col-sm-2">
+            Prioridad
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.priority)
+        </dd>
+        <dt class="col-sm-2">
+            Horario
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.schedule.CompareTo(new DateTime()) != 0)
+            {
+                @Html.DisplayFor(model => model.schedule)
+            }
+            else
+            {
+                <p>No asignado todavía</p>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Estado
+        </dt>
+        <td>
+            @if (Model.vaccinated)
+            {
+                <p>Vacunado</p>
+            }
+            else
+            {
+                <p>No vacunado</p>
+            }
+        </td>
+    </dl>
+</div>
+<div>
+    <a asp-action="List" class="text-primary" size="4">Regresar a la lista</a>
+</div>

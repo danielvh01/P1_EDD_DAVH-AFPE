@@ -1,10 +1,13 @@
 ﻿@model IEnumerable<P1_EDD_DAVH_AFPE.Models.PacientModel>
-@using P1_EDD_DAVH_AFPE.Models.Data
+@{
+    ViewData["Title"] = "Simulation";
+}
+
+<h1>Simulación de Citas</h1>
 
 
-<h1>Lista de espera</h1>
-
-<a asp-action="Index">Regresar a menu principal</a>
+@Html.ActionLink("Reasignar fecha al primero en la lista", "NotAssist") |
+@Html.ActionLink("Vacunar al primero en la lista", "Delete")
 
 <table class="table">
     <thead>
@@ -16,7 +19,7 @@
                 Apellido
             </th>
             <th>
-                DPI / Partida de nacimiento
+                DPI / Certificado de Nacimiento
             </th>
             <th>
                 Departamento
@@ -28,7 +31,7 @@
                 Prioridad
             </th>
             <th>
-                Horario
+                Horario:
             </th>
             <th></th>
         </tr>
@@ -67,9 +70,14 @@
                 </td>
             </tr>
         }
+
     </tbody>
 </table>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@if (TempData["testmsg"] != null)
+{
+    <script type="text/javascript">
+       alert("@TempData["testmsg"]");
+    </script>
 }
+
+<a asp-action="Index">Regresar al menú</a>

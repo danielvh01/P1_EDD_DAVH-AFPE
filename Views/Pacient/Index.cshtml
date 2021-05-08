@@ -1,21 +1,26 @@
-﻿
+﻿@using P1_EDD_DAVH_AFPE.Models.Data
+@using Microsoft.AspNetCore.Http
 @{
     ViewData["Title"] = "MainMenu";
 }
 
-<h1>COVID-19 Vaccination System</h1>
 
-<h4>What would you like to do?</h4>
+<h1>Sistema de vacunación COVID-19</h1>
+<a asp-action="Login" asp-controller="Home">Cambiar de Ubicación</a>
+<div class="form-group">
+    <label class="control-label text-xl-left">Centro de vacunación actual: @ViewBag.Department, @ViewBag.Municipality </label>
+</div>
+
+<h4>¿Qué acción desea realizar?</h4>
 
 <div>
     <div>
-
-        <a class="btn btn-info" asp-action="Create">Add register of person to waiting List.</a>
-        <a class="btn btn-info" asp-action="Schedule">Schedule Vaccination</a>
-        <a class="btn btn-info" asp-action="CurrentTask">Reschedule vaccination</a>
-        <a class="btn btn-info" asp-action="SIndex">Waiting List</a>
-        <a class="btn btn-info" asp-action="VaccinatedList">Vaccinated List</a>
-        <a class="btn btn-info" asp-action="Percentage">Percentage of vaccinated</a>
+        <a class="btn btn-info" asp-action="Create">Registrar paciente</a>
+        <a class="btn btn-info" asp-action="List">Lista de todos los Registros</a>
+        <a class="btn btn-info" asp-action="SMenu">Simulación de calendarizado</a>
+        <a class="btn btn-info" asp-action="SIndex">Lista de espera</a>
+        <a class="btn btn-info" asp-action="VaccinatedList">Lista de vacunados</a>
+        <a class="btn btn-info" asp-action="Percentage">Porcentaje de vacunados</a>
     </div>
 
 </div>

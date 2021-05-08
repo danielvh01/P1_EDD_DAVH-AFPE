@@ -1,48 +1,44 @@
 ﻿@model P1_EDD_DAVH_AFPE.Models.PacientModel
-
+@using P1_EDD_DAVH_AFPE.Models.Data
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Registro de paciente</h1>
 
-<h4>PacientModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label class="control-label text-xl-left">Departmento a registrar: @ViewBag.depa</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label text-xl-left">Municipio a registrar: @ViewBag.muni</label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Nombre</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
+                <label asp-for="LastName" class="control-label">Apellido</label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Age:</label>
-                <input asp-for="age" min="1" class="form-control" />
-                <span asp-validation-for="age" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DPI" class="control-label"></label>
-                <input asp-for="DPI" class="form-control" />
+                <label asp-for="DPI" class="control-label">DPI / Partida de nacimiento</label>
+                <input asp-for="DPI" class="form-control" maxlength="13" minlength="13" />
                 <span asp-validation-for="DPI" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Department" class="control-label"></label>
-                <input asp-for="Department" class="form-control" />
-                <span asp-validation-for="Department" class="text-danger"></span>
+                <label for="age" class="control-label">Por favor indique su edad:</label>
+                <input name="age" class="form-control col-2" type="number" min="18" value="18" required />
+                <span name="age" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="municipality" class="control-label"></label>
-                <input asp-for="municipality" class="form-control" />
-                <span asp-validation-for="municipality" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+                <label>Su trabajo pertenece al area de:</label>
                 <select class="form-select" asp-for="priority">
                     @foreach (var item in P1_EDD_DAVH_AFPE.Models.Data.Singleton.Instance.priorities)
                     {
@@ -53,16 +49,35 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label>Posee alguna de las siguientes enfermedades:</label>
+                <ul>Diabetes mellitus</ul>
+                <ul>Enfermedad pulmonar crónica</ul>
+                <ul>Enfermedad renal crónica</ul>
+                <ul>Enfermedades cardiovasculares y cerebrovasculares</ul>
+                <ul>Hipertensión arterial que requiere medicamento</ul>
+                <ul>Inmunosupresión (VIH, cáncer, uso de inmunosupresores) </ul>
+                <ul>Obesidad</ul>
+                <select class="form-select" name="q3">
+                    <option>Si</option>
+                    <option selected>No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Registrar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regresar al menú</a>
 </div>
-
+@if (TempData["testmsg"] != null)
+{
+    <script type="text/javascript">
+       alert("@TempData["testmsg"]");
+    </script>
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

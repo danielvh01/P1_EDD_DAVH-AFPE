@@ -6,185 +6,90 @@ using System.Threading.Tasks;
 
 namespace DataStructures
 {
-    public class Heap<T> : IEnumerable<HeapNode<T>> where T : IComparable
+    public class Heap<T> : IEnumerable<T> where T : IComparable
     {
         #region Variables
-
-        public DoubleLinkedList<HeapNode<T>> heapArray;
+        //Heap en forma de arreglo (forma alternativa del array)
+        public DoubleLinkedList<T> heapArray;
+        //Heap en forma de arbol binario (forma principal del array)
+        public AVLTree<T> binaryHeap;
+        //Capacidad máxima del heap
         int capacity;
 
 
         #endregion
 
         #region Methods
+        //Constructor
         public Heap(int L)
         {
             capacity = L;
-            heapArray = new DoubleLinkedList<HeapNode<T>>();
-        }
+            heapArray = new DoubleLinkedList<T>();
 
+            binaryHeap = new AVLTree<T>();
+        }
+        //Metodo que obtiene el tamaño del heap
         public int Length()
         {
-            return heapArray.Length;
+            return binaryHeap.Length;
         }
 
-        public void Swap(int a, int b)
+        //Inserta un nuevo elemento al heap
+        public bool insertKey(T value)
         {
-            if (a > b)
-            {
-                HeapNode<T> temp = heapArray.Get(a);
-                heapArray.Delete(a);
-                heapArray.Insert(heapArray.Get(b), a);
-                heapArray.Delete(b);
-                heapArray.Insert(temp, b);
-            }
-            else
-            {
-                HeapNode<T> temp = heapArray.Get(b);
-                heapArray.Delete(b);
-                heapArray.Insert(heapArray.Get(a), b);
-                heapArray.Delete(a);
-                heapArray.Insert(temp, a);
-            }
-        }
-
-        public int Parent(int index)
-        {
-            return (index - 1) / 2;
-        }
-
-        public int Left(int index)
-        {
-            return 2 * index + 1;
-        }
-
-        public int Right(int index)
-        {
-            return 2 * index + 2;
-        }
-
-        public bool insertKey(T value, int p)
-        {
+            //Si no ha llegado a su máxima capacidad, inserta el elemento
             if (Length() == capacity)
             {
                 return false;
             }
-            int i = Length();
-            heapArray.Insert(new HeapNode<T>(value, p), i);
-
-            while (i > 0 && heapArray.Get(i).CompareTo(heapArray.Get(Parent(i))) > 0)
-            {
-                Swap(i, Parent(i));
-                i = Parent(i);
-            }
+            binaryHeap.Root = binaryHeap.Insert(value, binaryHeap.Root);
             return true;
         }
-
-        public HeapNode<T> getMin()
+        //Obtiene el elemento más pequeño del heap
+        public T getMin()
         {
+            FillHeapArray(binaryHeap.Root);
             return heapArray.Get(0);
         }
-
-        public HeapNode<T> extractMin()
+        //Extrae el elemento más pequeño del heap
+        public T extractMin()
         {
+            //Si el heap no esta vació realiza la eliminación
             if (Length() <= 0)
             {
                 return default;
             }
             else
             {
-                HeapNode<T> result = heapArray.Get(0);
-                heapArray.Delete(0);
-                if (Length() > 0)
-                {
-                    MoveDown(0);
-                }
+                FillHeapArray(binaryHeap.Root);
+                T result = heapArray.Get(0);
+                binaryHeap.Delete(binaryHeap.Root, result);
                 return result;
             }
         }
-        public void Delete(T value)
+
+        //Genera el heap en forma de arreglo en base a la forma de árbol binario
+        void FillHeapArray(AVLTreeNode<T> node)
         {
-            if (Length() > 0)
+            if (node == null)
             {
-                DoubleLinkedList<HeapNode<T>> result = new DoubleLinkedList<HeapNode<T>>();
-                for (int i = 0; heapArray.Length > 0; i++)
-                {
-                    HeapNode<T> x = extractMin();
-                    result.Insert(x, i);
-                }
-                for (int i = 0; result.Length > 0; i++)
-                {
-                    HeapNode<T> temp = result.Get(0);
-                    result.Delete(0);
-                    if (temp.value.CompareTo(value) != 0)
-                    {
-                        insertKey(temp.value, temp.priority);
-                    }
-                }
+                return;
+            }
+            if (node.left != null)
+            {
+                FillHeapArray(node.left);
+            }
+            heapArray.InsertAtEnd(node.value);
+            if (node.right != null)
+            {
+                FillHeapArray(node.right);
             }
         }
 
-        public void MoveDown(int position)
+        //Devuelve todos los elementos del heap
+        public IEnumerator<T> GetEnumerator()
         {
-            int lchild = Left(position);
-            int rchild = Right(position);
-            int largest;
-            if ((lchild < Length()) && (heapArray.Get(position).CompareTo(heapArray.Get(lchild)) < 0))
-            {
-                largest = lchild;
-            }
-            else
-            {
-                largest = position;
-            }
-            if ((rchild < Length()) && (heapArray.Get(largest).CompareTo(heapArray.Get(rchild)) < 0))
-            {
-                largest = rchild;
-            }
-            if (largest != position)
-            {
-                Swap(position, largest);
-                MoveDown(largest);
-            }
-        }
-
-        public void Sort()
-        {
-            if (Length() > 0)
-            {
-                DoubleLinkedList<HeapNode<T>> sorted = new DoubleLinkedList<HeapNode<T>>();
-                for (int i = 0; heapArray.Length > 0; i++)
-                {
-                    HeapNode<T> x = extractMin();
-                    sorted.Insert(x, i);
-                }
-                for (int i = 0; sorted.Length > 0; i++)
-                {
-                    HeapNode<T> temp = sorted.Get(0);
-                    sorted.Delete(0);
-                    insertKey(temp.value, temp.priority);
-                }
-            }
-        }
-
-        public IEnumerable<HeapNode<T>> Search(Func<T, int> Comparer)
-        {
-            DoubleLinkedList<HeapNode<T>> result = new DoubleLinkedList<HeapNode<T>>();
-            int cont = 0;
-            for (int i = 0; i < heapArray.Length; i++)
-            {
-                if (Comparer.Invoke(heapArray.Get(i).value) == 0)
-                {
-                    result.Insert(heapArray.Get(i), cont++);
-                }
-            }
-            return result;
-        }
-
-        public IEnumerator<HeapNode<T>> GetEnumerator()
-        {
-
-            Sort();
+            FillHeapArray(binaryHeap.Root);
             var node = heapArray.First;
             while (node != null)
             {

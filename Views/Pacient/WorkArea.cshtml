@@ -1,0 +1,34 @@
+﻿@model P1_EDD_DAVH_AFPE.Models.PacientModel
+<form asp-action="WorkArea">
+    <div class="form-group">
+        <label>Practica y estudia ciencias de la salud o afines:   </label>
+        <select class="form-select" name="q2">
+            <option>Si</option>
+            <option selected>No</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Posee contacto con pacientes infectados por COVID-19:</label>
+        <select class="form-select" name="q1">
+            <option>Si</option>
+            <option selected>No</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Forma parte del sector administrativo del area seleccionada:</label>
+        <select class="form-select" name="q3">
+            <option>Si</option>
+            <option selected>No</option>
+        </select>
+    </div>
+    <input type="hidden" name="dpi" value="@Model.DPI" />
+    <input type="hidden" name="department" value="@Model.Department" />
+    <input type="hidden" name="municipality" value="@Model.municipality" />
+    <input type="hidden" name="name" value="@Model.Name" />
+    <input type="hidden" name="lastname" value="@Model.LastName" />
+
+    <div class="form-group">
+        <input type="submit" value="Registrar" class="btn btn-primary" />
+    </div>
+</form>
+
