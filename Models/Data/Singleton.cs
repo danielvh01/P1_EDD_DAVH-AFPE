@@ -193,7 +193,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             {
                 if (!item.vaccinated)
                 {
-                    HeapPacient.insertKey(item);
+                    HeapPacient.insertKey(item, item.priority);
                 }
             }
         }
@@ -221,7 +221,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = newPacient.LastName, key = newPacient.DPI }, LastNameTree.Root);
 
             //Se inserta el pacientModel al heap para que luego la informacion sea capturada en las demas interfaces de la aplicacion
-            HeapPacient.insertKey(newPacient);
+            HeapPacient.insertKey(newPacient, newPacient.priority);
         }
 
         //Metodo que es llamado en el HomeController para obtener todos los datos en un archivo de texto que contiene todos los pacientes y su respectiva informacion
@@ -275,7 +275,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                     VaccinatedList.InsertAtEnd(item);
                 }
                 else{
-                    HeapPacient.insertKey(item);
+                    HeapPacient.insertKey(item, item.priority);
                 }
             }
         }
