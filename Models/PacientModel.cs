@@ -31,13 +31,16 @@ namespace P1_EDD_DAVH_AFPE.Models
 
         #region METHOD
 
-        //Comparer of DPI parameter
+        //Comparador encargado de realizar el ordenamiento en base a la fecha, prioridad o dpi del PacientModel en base a las distintas condiciones
+        //a lo largo del metodo
+
         public int CompareTo(object obj)
         {
             var comparer = ((PacientModel)obj);
             int x;
             if (schedule.CompareTo(new DateTime()) == 0)
             {
+                //Valida si el pacient model que ingresa viene sin fecha
                 if (comparer.schedule.CompareTo(new DateTime()) != 0)
                 {
                     return 1;
@@ -47,6 +50,7 @@ namespace P1_EDD_DAVH_AFPE.Models
                     return priority.CompareTo(comparer.priority);
                 }
             }
+            //Si se compara con uno que si tiene, procede a ser superior
             else if (comparer.schedule.CompareTo(new DateTime()) == 0)
             {
                 if (schedule.CompareTo(new DateTime()) != 0)
@@ -59,22 +63,20 @@ namespace P1_EDD_DAVH_AFPE.Models
                 }
             }
             x = schedule.CompareTo(comparer.schedule);
-            if(x == 0)
+            //Si no tiene fecha , compara prioridades para realizar el ordenamiento
+            if (x == 0)
             {
                 x = priority.CompareTo(comparer.priority);
             }
-            if(x == 0)
+            //Si las fechas son iguales y si las prioridades son iguales, procede a comparar por DPI como ultima instancia
+            if (x == 0)
             {
                 x = DPI.CompareTo(comparer.DPI);
             }
             return x;
         }
         //Comparar of Priority Parameter
-        public int ComparePriority(object obj)
-        {
-            var comparer = ((PacientModel)obj).priority;
-            return comparer.CompareTo(priority);
-        }
+        
         #endregion
     }
 }

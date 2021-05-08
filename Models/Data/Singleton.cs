@@ -44,6 +44,8 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         private readonly static Singleton _instance = new Singleton();
         private Heap<PacientModel> HeapDatabase;
         #endregion
+
+        //Inicializacion de variables y estructura de datos
         private Singleton()
         {
             hashCapacity = 15;
@@ -56,6 +58,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             priorities = new DoubleLinkedList<string>();
             vaciar();
             #region Priotity insertions
+            //Inicializacion de la lista contenedora de areas de trabajo para generar posteriormente las prioridades
             priorities.InsertAtEnd("Area de salud");//1            
             priorities.InsertAtEnd("Area de justicia");
             priorities.InsertAtEnd("Area educativa");
@@ -66,6 +69,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             priorities.InsertAtEnd("Persona internada en hogar o institucion del adulto mayor");
             priorities.InsertAtEnd("Trabajador de funeraria o de institucion del adulto mayor");
             #endregion
+            //Se guarda en una Tabla Hash la informacion de los municipios contenida en un documento de texto para luego ser usada en la vista "LoginM"
             municipalities = new HashTable<string, string>(22);
             StreamReader sr = new StreamReader("Municipios.txt");
             string result = sr.ReadToEnd();
@@ -93,8 +97,10 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             }
         }
 
+        //Metodo que se encarga de validad el dpi / partida de nacimiento ingresado por el usuario
         public bool cuiValid(long dpi)
         {
+            //Se realiza la extraccion de datos del DPI usando el metodo substring de Strings
             string cui = dpi.ToString();
             int department = int.Parse(cui.Substring(9,2));
             int municipality = int.Parse(cui.Substring(11, 2));
@@ -178,6 +184,8 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             }
         }
 
+        //Obtiene datos en base al municipio que fue iniciado sesion , los obtiene de la tabla Hash Data y verifica que 
+        //el paciente no ha sido vacunado para agregarlo a la lista de espera cada vez que se mande a llamar la vista.
         public void genWaitingList(string municipality)
         {
             HeapPacient = new Heap<PacientModel>(heapCapacity);
@@ -189,21 +197,43 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 }
             }
         }
+
+        //Es el metodo que se encarga de insertar a los pacientes en las estructuras de datos : Tabla Hash, Arboles de busqueda AVL (nombre,apellido, dpi)
+        
         public void Agregar(PacientModel newPacient)
         {
+            //genera una llave de tipo long la cual se usara como indice en la insercion a la tabla hash
             long newkey = keyGen(newPacient.DPI);
+
+            //se inserta en la Tabla Hash que contiene los datos de todos los municipios y departamentos
             Database.Add(newPacient, newkey);
+
+            //se inserta en la tabla hash que nada mas se utiliza por cada inicio de sesion
             Data.Add(newPacient, newkey);
+
+            //se realiza la insercion de un PacientModel nada mas con la informacion de DPI
             DpiTree.Root = DpiTree.Insert(new SearchCriteria<long> { value = newPacient.DPI, key = newPacient.DPI }, DpiTree.Root);
+
+            //se realiza la insercion de un PacientModel nada mas con la informacion de Nombre
             NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = newPacient.Name, key = newPacient.DPI }, NameTree.Root);
+
+            //se realiza la insercion de un PacientModel nada mas con la informacion de Apellido
             LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = newPacient.LastName, key = newPacient.DPI }, LastNameTree.Root);
+
+            //Se inserta el pacientModel al heap para que luego la informacion sea capturada en las demas interfaces de la aplicacion
             HeapPacient.insertKey(newPacient);
         }
+
+        //Metodo que es llamado en el HomeController para obtener todos los datos en un archivo de texto que contiene todos los pacientes y su respectiva informacion
         public void AddDataBase(PacientModel newPacient)
         {
             long newkey = keyGen(newPacient.DPI);
             Database.Add(newPacient, newkey);
         }
+
+        //Metodo que se encarga de vacias las estructuras de datos utilizadas a lo largo de un inicio de sesion con un municipio
+        //Cada vez que el usuario decida cambiar de ubicacion el centro de vacunacion, se vacian las estructuras de datos para que estas se puedan volver a llenar con los datos
+        //del municipio posterior elegido.
         private void vaciar()
         {
             Data = new HashTable<PacientModel, long>(hashCapacity);
@@ -213,6 +243,8 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             VaccinatedList = new DoubleLinkedList<PacientModel>();
             HeapPacient = new Heap<PacientModel>(heapCapacity);
         }
+
+        //Obtiene la fecha de la proxima cita de vacunacion
         public DateTime NextDate(int index)
         {
             if ((index % simmultaneous) == 0)
@@ -225,6 +257,9 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             }
             return startingDate;
         }
+
+        //Login es el metodo encargado de obtener los datos de la base de datos principal. Si el municipio del elemento obtenido coincide con el municipio el cual el usuario ha iniciado sesion
+        //Se procede a la agregacion del resto de estructura de datos que se usaran para el respectivo municipio.
         public void Login(string municipality)
         {
             vaciar();
@@ -245,16 +280,23 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             }
         }
 
+        //Metodo encargado de generar las llaves que se le asignan a un pacientModel a la hora de registrarse , recibiendo como parametro el DPI del paciente
+        //de tipo Long y devolviendo un Long mod capacidad de la tabla hash configurada al inicio de la ejecucion de la aplicacion.
         public long keyGen(long dpi)
         {
             return dpi % hashCapacity;
         }
 
+        //Metodo encargado de recolectar la informacion de toda la aplicacion para luego concatenar la misma en un string.
         public void BuildData()
         {
+            //reinicia la el string de base de datos para volverla a rellenar con la informacion actual
             database = "";
+            //obtiene el valor de la capacidad del heap 
             database += "heapCapacity:" + heapCapacity + "\n";
+            //obtiene el valor de la capacidad de la tabla hash
             database += "hashCapacity:" + hashCapacity + "\n";
+            //invoca el metodo recorrido() que obtiene la informacion de todos los pacientes ingresados a lo largo del uso de la aplicacion
             string ptnts = recorrido();
             if (ptnts.Length > 0)
             {
@@ -263,10 +305,13 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             database += "pacients:" + ptnts + ";";            
         }
 
+        // obtiene la informacion de todos los pacientes ingresados a lo largo del uso de la aplicacion agregados a la estructura de datos "Tabla Hash - > DataBase"
         public string recorrido()
         {
             //Write all the content of the HashTable.
             string result = "";
+            //Por cada paciente situado en la base de datos, utiliza el metodo GetAllElements (IEnumerable)de la Tabla hash para recopilar la informacion y mandarla 
+            //al metodo BuilData()
             foreach(var Pacient in Database.GetAllElements())
             {
                 result += Pacient.Name + ",";

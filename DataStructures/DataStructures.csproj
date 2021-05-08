@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\P1_EDD_DAVH-AFPE.csproj" />
+  </ItemGroup>
+
 </Project>
