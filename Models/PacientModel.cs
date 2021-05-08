@@ -63,6 +63,10 @@ namespace P1_EDD_DAVH_AFPE.Models
             {
                 x = priority.CompareTo(comparer.priority);
             }
+            if(x == 0)
+            {
+                x = DPI.CompareTo(comparer.DPI);
+            }
             return x;
         }
         //Comparar of Priority Parameter
