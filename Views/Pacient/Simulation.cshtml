@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataStructures.HeapNode<PacientModel>>
+﻿@model IEnumerable<P1_EDD_DAVH_AFPE.Models.PacientModel>
 @{
     ViewData["Title"] = "Simulation";
 }
@@ -41,27 +41,27 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.value.Name)
+                    @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.value.LastName)
+                    @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.value.DPI)
+                    @Html.DisplayFor(modelItem => item.DPI)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.value.Department)
+                    @Html.DisplayFor(modelItem => item.Department)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.value.municipality)
+                    @Html.DisplayFor(modelItem => item.municipality)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.value.priority)
+                    @Html.DisplayFor(modelItem => item.priority)
                 </td>
                 <td>
-                    @if (item.value.schedule.CompareTo(new DateTime()) != 0)
+                    @if (item.schedule.CompareTo(new DateTime()) != 0)
                     {
-                        @Html.DisplayFor(modelItem => item.value.schedule)
+                        @Html.DisplayFor(modelItem => item.schedule)
                     }
                     else
                     {

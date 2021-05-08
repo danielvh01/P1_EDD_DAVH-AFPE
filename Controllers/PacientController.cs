@@ -60,9 +60,9 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             {
                 for (int i = 0; i < Singleton.Instance.HeapPacient.Length(); i++)
                 {
-                    if (Singleton.Instance.HeapPacient.heapArray.Get(i).value.schedule.CompareTo(new DateTime()) == 0)
+                    if (Singleton.Instance.HeapPacient.heapArray.Get(i).schedule.CompareTo(new DateTime()) == 0)
                     {
-                        Singleton.Instance.HeapPacient.heapArray.Get(i).value.schedule = Singleton.Instance.NextDate(i);
+                        Singleton.Instance.HeapPacient.heapArray.Get(i).schedule = Singleton.Instance.NextDate(i);
                         verif = true;
                     }
                 }
@@ -175,16 +175,16 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
         public ActionResult NotAssist()
         {
-            var result = Singleton.Instance.HeapPacient.getMin().value;
+            var result = Singleton.Instance.HeapPacient.getMin();
             return View(result);
         }
 
         //This method is called when a person didn't assist in the scheduled hour in order to assign a new one with different date.
         public ActionResult SReschedule(PacientModel  pacient)
         {
-            var x = Singleton.Instance.HeapPacient.extractMin().value;
+            var x = Singleton.Instance.HeapPacient.extractMin();
             x.schedule = Singleton.Instance.NextDate(Singleton.Instance.HeapPacient.Length() - 1);
-            Singleton.Instance.HeapPacient.insertKey(x, x.priority);
+            Singleton.Instance.HeapPacient.insertKey(x);
             return RedirectToAction(nameof(Simulation));
         }        
 
@@ -320,12 +320,12 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         public ActionResult Delete()
         {
             var result = Singleton.Instance.HeapPacient.getMin();
-            return View("VaccinatedCheck", result.value);
+            return View("VaccinatedCheck", result);
         }
 
         public ActionResult Vaccinated()
         {
-            var x = Singleton.Instance.HeapPacient.extractMin().value;
+            var x = Singleton.Instance.HeapPacient.extractMin();
             x.vaccinated = true;
             Singleton.Instance.VaccinatedList.InsertAtEnd(x);
             Data();

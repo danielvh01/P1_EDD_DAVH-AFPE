@@ -185,7 +185,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             {
                 if (!item.vaccinated)
                 {
-                    HeapPacient.insertKey(item, item.priority);
+                    HeapPacient.insertKey(item);
                 }
             }
         }
@@ -197,7 +197,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             DpiTree.Root = DpiTree.Insert(new SearchCriteria<long> { value = newPacient.DPI, key = newPacient.DPI }, DpiTree.Root);
             NameTree.Root = NameTree.Insert(new SearchCriteria<string> { value = newPacient.Name, key = newPacient.DPI }, NameTree.Root);
             LastNameTree.Root = LastNameTree.Insert(new SearchCriteria<string> { value = newPacient.LastName, key = newPacient.DPI }, LastNameTree.Root);
-            HeapPacient.insertKey(newPacient, newPacient.priority);
+            HeapPacient.insertKey(newPacient);
         }
         public void AddDataBase(PacientModel newPacient)
         {
@@ -240,7 +240,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                     VaccinatedList.InsertAtEnd(item);
                 }
                 else{
-                    HeapPacient.insertKey(item, item.priority);
+                    HeapPacient.insertKey(item);
                 }
             }
         }

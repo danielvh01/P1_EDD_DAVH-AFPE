@@ -31,11 +31,11 @@ namespace DataStructures
                 Length++;
                 return new AVLTreeNode<T>(newvalue);
             }
-            if (newvalue.CompareTo(pNode.value) > 0)
+            if (newvalue.CompareTo(pNode.value) < 0)
             {
                 pNode.left = Insert(newvalue, pNode.left);
             }
-            else if (newvalue.CompareTo(pNode.value) < 0)
+            else if (newvalue.CompareTo(pNode.value) > 0)
             {
                 pNode.right = Insert(newvalue, pNode.right);
             }
@@ -48,22 +48,22 @@ namespace DataStructures
             int balance = getBalance(pNode);
 
             //Left Left Case
-            if (balance > 1 && newvalue.CompareTo(pNode.left.value) > 0)
+            if (balance > 1 && newvalue.CompareTo(pNode.left.value) < 0)
                 return rightRotate(pNode);
 
             // Right Right Case
-            if (balance < -1 && newvalue.CompareTo(pNode.right.value) < 0)
+            if (balance < -1 && newvalue.CompareTo(pNode.right.value) > 0)
                 return leftRotate(pNode);
 
             // Left Right Case
-            if (balance > 1 && newvalue.CompareTo(pNode.left.value) < 0)
+            if (balance > 1 && newvalue.CompareTo(pNode.left.value) > 0)
             {
                 pNode.left = leftRotate(pNode.left);
                 return rightRotate(pNode);
             }
 
             // Right Left Case
-            if (balance < -1 && newvalue.CompareTo(pNode.right.value) > 0)
+            if (balance < -1 && newvalue.CompareTo(pNode.right.value) < 0)
             {
                 pNode.right = rightRotate(pNode.right);
                 return leftRotate(pNode);
@@ -79,7 +79,7 @@ namespace DataStructures
                 {
                     return node.value;
                 }
-                if (comparer.Invoke(node.value) > 0)
+                if (comparer.Invoke(node.value) < 0)
                 {
                     return Find(comparer, node.left);
                 }
@@ -113,11 +113,11 @@ namespace DataStructures
                 }
             }
 
-            if (node.value.CompareTo(parent.value) > 0 && parent.left != null)
+            if (node.value.CompareTo(parent.value) < 0 && parent.left != null)
             {
                 temp = SearchParent(node, parent.left);
             }
-            if (node.value.CompareTo(parent.value) < 0 && parent.right != null)
+            if (node.value.CompareTo(parent.value) > 0 && parent.right != null)
             {
                 temp = SearchParent(node, parent.right);
             }
@@ -130,11 +130,11 @@ namespace DataStructures
             {
                 return node;
             }
-            if (value.CompareTo(node.value) > 0)
+            if (value.CompareTo(node.value) < 0)
             {
                 node.left = Delete(node.left, value);
             }
-            else if (value.CompareTo(node.value) < 0)
+            else if (value.CompareTo(node.value) > 0)
             {
                 node.right = Delete(node.right, value);
             }
