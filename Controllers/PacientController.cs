@@ -69,7 +69,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 Data();
                 if (verif)
                 {
-                    TempData["testmsg"] = "Calendarización generada correctamente.";
+                    TempData["testmsg"] = "Calendarizacion generada correctamente.";
                 }
                 else
                 {
@@ -103,7 +103,11 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
         public ActionResult Percentage()
         {
-            ViewBag.Percentage = Singleton.Instance.VaccinatedList.Length / Singleton.Instance.Data.Length * 100;
+            if (Singleton.Instance.Data.Length > 0)
+            {
+                double p = double.Parse(Singleton.Instance.VaccinatedList.Length.ToString()) / double.Parse(Singleton.Instance.Data.Length.ToString()) * 100;
+                ViewBag.Percentage = p.ToString("N2");
+            }
             return View();
         }
 
@@ -130,7 +134,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 }
                 else
                 {
-                    TempData["testmsg"] = "No se encontró ninguna coincidencia";
+                    TempData["testmsg"] = "No se encontro ninguna coincidencia";
                     return RedirectToAction(nameof(List));
                 }
             }
@@ -143,7 +147,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 }
                 else
                 {
-                    TempData["testmsg"] = "No se encontró ninguna coincidencia";
+                    TempData["testmsg"] = "No se encontro ninguna coincidencia";
                     return RedirectToAction(nameof(List));
                 }
             }
@@ -156,7 +160,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 }
                 else
                 {
-                    TempData["testmsg"] = "No se encontró ninguna coincidencia";
+                    TempData["testmsg"] = "No se encontro ninguna coincidencia";
                     return RedirectToAction(nameof(List));
                 }
             }
@@ -171,12 +175,12 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
         public ActionResult NotAssist()
         {
-            var result = Singleton.Instance.HeapPacient.getMin();
+            var result = Singleton.Instance.HeapPacient.getMin().value;
             return View(result);
         }
 
         //This method is called when a person didn't assist in the scheduled hour in order to assign a new one with different date.
-        public ActionResult SReschedule(HeapNode<PacientModel>  pacient)
+        public ActionResult SReschedule(PacientModel  pacient)
         {
             var x = Singleton.Instance.HeapPacient.extractMin().value;
             x.schedule = Singleton.Instance.NextDate(Singleton.Instance.HeapPacient.Length() - 1);
@@ -199,87 +203,116 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
             string pr = collection["priority"];
             int age = int.Parse(collection["age"]);
-            
-            var newPacient = new PacientModel
+            long dpi = Convert.ToInt64(collection["DPI"]);
+            if(Singleton.Instance.cuiValid(dpi))
             {
-                Name = collection["Name"],
-                LastName = collection["LastName"],
-                DPI = Convert.ToInt64(collection["DPI"]),
-                Department = HttpContext.Session.GetString(SessionDepartment),
-                municipality = HttpContext.Session.GetString(SessionMunicipality),                  
-                schedule = new DateTime(),
-                vaccinated = false
-            };
-            if(pr == "Area de salud")
-            {
-                Singleton.Instance.Agregar(newPacient);
-                Data();
-                return RedirectToAction(nameof(WorkArea), newPacient.DPI);
-            }
-            else if (pr == "Trabajador de funeraria o de institucion del adulto mayor")
-            {
-                newPacient.priority = "1d";
-            }
-            else if (pr == "Persona internada en hogar o institucion del adulto mayor")
-            {
-                newPacient.priority = "1e";
-            }
-            else
-            {
-                if (collection["q3"] == "No")
+                var newPacient = new PacientModel
                 {
-                    switch (pr)
-                    {
-                        case "Area educativa":
-                            newPacient.priority = "3c";
-                            break;
-                        case "Area de justicia":
-                            newPacient.priority = "3d";
-                            break;
-                        case "Entidad de servivios esenciales":
-                            newPacient.priority = "3b";
-                            break;
-                        case "Area de seguridad nacional":
-                            newPacient.priority = "3a";
-                            break;
-                        case "Otros":
-                            if (age < 40)
-                            {
-                                newPacient.priority = "4b";
-                            }
-                            else if (age < 50)
-                            {
-                                newPacient.priority = "4a";
-                            }
-                            else if (age < 70)
-                            {
-                                newPacient.priority = "2a";
-                            }
-                            break;
-                    }
+                    Name = collection["Name"],
+                    LastName = collection["LastName"],
+                    DPI = dpi,
+                    Department = HttpContext.Session.GetString(SessionDepartment),
+                    municipality = HttpContext.Session.GetString(SessionMunicipality),
+                    schedule = new DateTime(),
+                    vaccinated = false
+                };
+                if (pr == "Area de salud")
+                {
+                    return RedirectToAction(nameof(WorkArea), newPacient);
+                }
+                else if (pr == "Trabajador de funeraria o de institucion del adulto mayor" || pr == "Cuerpo de socorro")
+                {
+                    newPacient.priority = "1d";
+                }
+                else if (pr == "Persona internada en hogar o institucion del adulto mayor")
+                {
+                    newPacient.priority = "1e";
                 }
                 else
                 {
-                    newPacient.priority = "2a";
+                    if (collection["q3"] == "No" && age < 70)
+                    {
+                        switch (pr)
+                        {
+                            case "Otros":
+                                if (age < 40)
+                                {
+                                    newPacient.priority = "4b";
+                                }
+                                else if (age < 50)
+                                {
+                                    newPacient.priority = "4a";
+                                }
+                                break;
+                            case "Area educativa":
+                                newPacient.priority = "3c";
+                                break;
+                            case "Area de justicia":
+                                newPacient.priority = "3d";
+                                break;
+                            case "Entidad de servivios esenciales":
+                                newPacient.priority = "3b";
+                                break;
+                            case "Area de seguridad nacional":
+                                newPacient.priority = "3a";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        newPacient.priority = "2a";
+                    }
                 }
+                Singleton.Instance.Agregar(newPacient);
+                Data();
+                return RedirectToAction(nameof(Index));
             }
-            Singleton.Instance.Agregar(newPacient);
-            Data();
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                TempData["testmsg"] = "DPI no valido, intentelo de nuevo";
+                return View();
+            }
         }
-        public ActionResult WorkArea(int dpi)
+        public ActionResult WorkArea(PacientModel pacient)
         {
-            ViewBag.dpi = dpi;
-            return View();
+            return View(pacient);
         }
 
         [HttpPost]
         public ActionResult WorkArea(IFormCollection collection)
         {
+            long dpi = long.Parse(collection["dpi"]);
+            var pacient = new PacientModel
+            {
+                Name = collection["name"],
+                LastName = collection["lastname"],
+                DPI = dpi,
+                Department = collection["department"],
+                municipality = collection["municipality"],
+                schedule = new DateTime(),
+                vaccinated = false,
+            };
             string q1 = collection["q1"];
-            string q4 = collection["q4"];
             string q2 = collection["q2"];
             string q3 = collection["q3"];
+            if(q1 == "Si")
+            {
+                pacient.priority = "1a";
+            }
+            else if(q2 == "Si")
+            {
+                pacient.priority = "1c";
+            }
+            else if (q3 == "Si")
+            {
+                pacient.priority = "1f";
+            }
+            else
+            {
+                pacient.priority = "1b";
+            }
+            Singleton.Instance.Agregar(pacient);
+            Data();
             return RedirectToAction(nameof(Index));
         }
 
@@ -292,7 +325,10 @@ namespace P1_EDD_DAVH_AFPE.Controllers
 
         public ActionResult Vaccinated()
         {
-            Singleton.Instance.VaccinatedList.InsertAtEnd(Singleton.Instance.HeapPacient.extractMin().value);
+            var x = Singleton.Instance.HeapPacient.extractMin().value;
+            x.vaccinated = true;
+            Singleton.Instance.VaccinatedList.InsertAtEnd(x);
+            Data();
             return RedirectToAction(nameof(Simulation));
         }
 

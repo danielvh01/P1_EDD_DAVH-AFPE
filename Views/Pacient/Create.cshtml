@@ -59,7 +59,7 @@
                 <ul>Obesidad</ul>
                 <select class="form-select" name="q3">
                     <option>Si</option>
-                    <option>No</option>
+                    <option selected>No</option>
                 </select>
             </div>
             <div class="form-group">
@@ -72,7 +72,12 @@
 <div>
     <a asp-action="Index">Regresar al menú</a>
 </div>
-
+@if (TempData["testmsg"] != null)
+{
+    <script type="text/javascript">
+       alert("@TempData["testmsg"]");
+    </script>
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

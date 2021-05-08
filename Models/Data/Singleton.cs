@@ -84,6 +84,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             }
 
         }
+
         public static Singleton Instance
         {
             get
@@ -92,73 +93,91 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
             }
         }
 
-
-        public string priorityAssign(string pa, int age, string q1,string q4, string q2, string q3)
+        public bool cuiValid(long dpi)
         {
-            if (pa == "Area de salud")
+            string cui = dpi.ToString();
+            int department = int.Parse(cui.Substring(9,2));
+            int municipality = int.Parse(cui.Substring(11, 2));
+            if(department >= 1 && department <= 22)
             {
-                if (q1 == "Si")
+                int i = 0;
+                switch (department)
                 {
-                    return "1a";
+                    case 1:
+                        i = municipalities.getLenghtOf("Guatemala");
+                        break;
+                    case 2:
+                        i = municipalities.getLenghtOf("El Progreso");
+                        break;
+                    case 3:
+                        i = municipalities.getLenghtOf("Sacatepéquez");
+                        break;
+                    case 4:
+                        i = municipalities.getLenghtOf("Chimaltenango");
+                        break;
+                    case 5:
+                        i = municipalities.getLenghtOf("Escuintla");
+                        break;
+                    case 6:
+                        i = municipalities.getLenghtOf("Santa Rosa");
+                        break;
+                    case 7:
+                        i = municipalities.getLenghtOf("Sololá");
+                        break;
+                    case 8:
+                        i = municipalities.getLenghtOf("Totonicapán");
+                        break;
+                    case 9:
+                        i = municipalities.getLenghtOf("Quetzaltenango");
+                        break;
+                    case 10:
+                        i = municipalities.getLenghtOf("Suchitepéquez");
+                        break;
+                    case 11:
+                        i = municipalities.getLenghtOf("Retalhuleu");
+                        break;
+                    case 12:
+                        i = municipalities.getLenghtOf("San Marcos");
+                        break;
+                    case 13:
+                        i = municipalities.getLenghtOf("Huehuetenango");
+                        break;
+                    case 14:
+                        i = municipalities.getLenghtOf("Quiché");
+                        break;
+                    case 15:
+                        i = municipalities.getLenghtOf("Baja Verapaz");
+                        break;
+                    case 16:
+                        i = municipalities.getLenghtOf("Alta Verapaz");
+                        break;
+                    case 17:
+                        i = municipalities.getLenghtOf("Petén");
+                        break;
+                    case 18:
+                        i = municipalities.getLenghtOf("Izabal");
+                        break;
+                    case 19:
+                        i = municipalities.getLenghtOf("Zacapa");
+                        break;
+                    case 20:
+                        i = municipalities.getLenghtOf("Chiquimula");
+                        break;
+                    case 21:
+                        i = municipalities.getLenghtOf("Jalapa");
+                        break;
+                    case 22:
+                        i = municipalities.getLenghtOf("Jutiapa");
+                        break;
                 }
-                if (q1 == "No" && q2 == "No" && q4 == "No")
-                {
-                    return "1b";
-                }
-                if (q1 == "No" && q2 == "No" && q4 == "Si")
-                {
-                    return "1c";
-                }
-                if (q1 == "No" && q2 == "Si" && q4 == "No")
-                {
-                    return "1f";
-                }
-            }
-            if (pa == "Cuerpo de socorro" || pa == "Trabajador de funeraria o de institucion del adulto mayor")
-            {
-                return "1d";
-            }
-            if (pa == "Persona internada en hogar o institucion del adulto mayor")
-            {
-                return "1e";
-            }
-            if (age > 70 || q3 == "Si")
-            {
-                return "2a";
-            }
-            if (age > 49 && age < 70)
-            {
-                return "2b";
-            }
-            if (pa == "Area de seguridad nacional")
-            {
-                return "3a";
-            }
-            if (pa == "Entidad de servivios esenciales")
-            {
-                return "3b";
-            }
-            if (pa == "Area educativa")
-            {
-                return "3c";
-            }
-            if (pa == "Area de justicia")
-            {
-                return "3d";
-            }
-            if (age > 39 && age < 50)
-            {
-                return "4a";
-            }
-            if (age > 17 && age < 40)
-            {
-                return "4b";
+                return municipality >= 1 && municipality <= i;
             }
             else
             {
-                return "";                
+                return false;
             }
         }
+
         public void genWaitingList(string municipality)
         {
             HeapPacient = new Heap<PacientModel>(heapCapacity);
@@ -220,7 +239,7 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
                 {
                     VaccinatedList.InsertAtEnd(item);
                 }
-                {
+                else{
                     HeapPacient.insertKey(item, item.priority);
                 }
             }

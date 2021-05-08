@@ -22,7 +22,7 @@
         <div class="form-check">
             <input class="form-check-input" type="radio" name="criteria" id="criteria" value="Name">
             <label class="form-check-label" for="flexRadioDefault1">
-               Buscar por Nombre
+                Buscar por Nombre
             </label>
         </div>
         <div class="form-check">
@@ -65,40 +65,47 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DPI)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Department)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.municipality)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.priority)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.schedule)
-            </td>
-            <td>
-                @if(item.vaccinated)
-                {
-                    <p>Vacunado</p>
-                }
-                else
-                {
-                    <p>No vacunado</p>
-                }
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DPI)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.municipality)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.priority)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.schedule)
+                </td>
+                <td>
+                    @if (item.vaccinated)
+                    {
+                        <p>Vacunado</p>
+                    }
+                    else
+                    {
+                        <p>No vacunado</p>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@if (TempData["testmsg"] != null)
+{
+    <script type="text/javascript">
+       alert("@TempData["testmsg"]");
+    </script>
+}
