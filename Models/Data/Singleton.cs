@@ -42,7 +42,6 @@ namespace P1_EDD_DAVH_AFPE.Models.Data
         #region Private Variables
         private HashTable<PacientModel, long> Database;
         private readonly static Singleton _instance = new Singleton();
-        private Heap<PacientModel> HeapDatabase;
         #endregion
 
         //Inicializacion de variables y estructura de datos
