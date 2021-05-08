@@ -7,11 +7,11 @@ namespace DataStructures
     public class AVLTreeNode<T> where T : IComparable
     {
         #region Varibales and Instances
-        //Pointers
+        //Punteros
         public AVLTreeNode<T> parent { get; set; }
         public AVLTreeNode<T> left { get; set; }
         public AVLTreeNode<T> right { get; set; }
-        //Properties
+        //Propiedades
         public T value { get; set; }
 
         public int height;

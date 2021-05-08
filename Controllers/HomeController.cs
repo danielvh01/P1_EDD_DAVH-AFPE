@@ -17,6 +17,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        //Asignacion de claves de sesión
         const string SessionMunicipality = "_Municipality";
         const string SessionDepartment = "_Department";
 
