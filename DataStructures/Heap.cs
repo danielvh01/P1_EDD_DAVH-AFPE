@@ -9,8 +9,6 @@ namespace DataStructures
     public class Heap<T> : IEnumerable<T> where T : IComparable
     {
         #region Variables
-
-        //public DoubleLinkedList<HeapNode<T>> heapArray;
         public DoubleLinkedList<T> heapArray;
 
         public AVLTree<T> binaryHeap;
@@ -23,7 +21,6 @@ namespace DataStructures
         public Heap(int L)
         {
             capacity = L;
-            //heapArray = new DoubleLinkedList<HeapNode<T>>();
             heapArray = new DoubleLinkedList<T>();
 
             binaryHeap = new AVLTree<T>();
@@ -54,10 +51,6 @@ namespace DataStructures
             }
         }
 
-        public int Parent(int index)
-        {
-            return (index - 1) / 2;
-        }
 
         public int Left(int index)
         {
@@ -76,20 +69,12 @@ namespace DataStructures
                 return false;
             }
             binaryHeap.Root = binaryHeap.Insert(value, binaryHeap.Root);
-            //heapArray.Insert(new HeapNode<T>(value, p), i);
-
-            //while (i > 0 && heapArray.Get(i).CompareTo(heapArray.Get(Parent(i))) > 0)
-            //{
-            //    Swap(i, Parent(i));
-            //    i = Parent(i);
-            //}
             return true;
         }
 
         public T getMin()
         {
             FillHeapArray(binaryHeap.Root);
-            //return binaryHeap.Root.value;
             return heapArray.Get(0);
         }
 
@@ -101,8 +86,6 @@ namespace DataStructures
             }
             else
             {
-                //T result = binaryHeap.Root.value;
-                //binaryHeap.Root = binaryHeap.Delete(binaryHeap.Root, result);
                 FillHeapArray(binaryHeap.Root);
                 T result = heapArray.Get(0);
                 heapArray.Delete(0);
@@ -111,29 +94,6 @@ namespace DataStructures
                     MoveDown(0);
                 }
                 return result;
-            }
-        }
-        public void Delete(T value)
-        {
-            if (Length() > 0)
-            {
-                //DoubleLinkedList<HeapNode<T>> result = new DoubleLinkedList<HeapNode<T>>();
-                //for (int i = 0; binaryHeap.Length > 0; i++)
-                //{
-                //    HeapNode<T> x = extractMin();
-                //    result.Insert(x, i);
-                //}
-                //for (int i = 0; result.Length > 0; i++)
-                //{
-                //    HeapNode<T> temp = result.Get(0);
-                //    result.Delete(0);
-                //    if (temp.value.CompareTo(value) != 0)
-                //    {
-                //        insertKey(temp.value, temp.priority);
-                //    }
-                //}
-                
-                binaryHeap.Root = binaryHeap.Delete(binaryHeap.Root, value);
             }
         }
 
@@ -161,25 +121,6 @@ namespace DataStructures
             }
         }
 
-        //public void Sort()
-        //{
-        //    if (Length() > 0)
-        //    {
-        //        //DoubleLinkedList<HeapNode<T>> sorted = new DoubleLinkedList<HeapNode<T>>();
-        //        DoubleLinkedList<T> sorted = new DoubleLinkedList<T>();
-        //        for (int i = 0; binaryHeap.Length > 0; i++)
-        //        {
-        //            T x = extractMin();
-        //            sorted.Insert(x, i);
-        //        }
-        //        for (int i = 0; sorted.Length > 0; i++)
-        //        {
-        //            T temp = sorted.Get(0);
-        //            sorted.Delete(0);
-        //            insertKey(temp);
-        //        }
-        //    }
-        //}
 
         void FillHeapArray(AVLTreeNode<T> node)
         {
@@ -201,8 +142,6 @@ namespace DataStructures
 
         public IEnumerator<T> GetEnumerator()
         {
-
-            //Sort();
             FillHeapArray(binaryHeap.Root);
             var node = heapArray.First;
             while (node != null)
