@@ -17,6 +17,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         string session;
         private readonly IHostingEnvironment hostingEnvironment;
 
+        //Asignacion de claves de sesión
         const string SessionMunicipality = "_Municipality";
         const string SessionDepartment = "_Department";
 
@@ -25,27 +26,30 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             session = "Database.txt";
             this.hostingEnvironment = hostingEnvironment;
         }
-        // GET: PacientController
+        //Get de la vista Index
         public ActionResult Index()
         {
+            //Manda a la vista los datos de la session
             ViewBag.Department = HttpContext.Session.GetString(SessionDepartment);
             ViewBag.Municipality = HttpContext.Session.GetString(SessionMunicipality);
             return View();
         }
 
-        //GET of Simulation parameters
+        //Get de la view SMenu
         [HttpGet]
         public ActionResult SMenu()
         {
             return View();
         }
-        // POST: PacientController/SMenu
+        //Post de la view SMenu
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SMenu(IFormCollection collection)
         {
+            //Asignacion de la configuración para la calendarización
             Singleton.Instance.simmultaneous = int.Parse(collection["simmultaneous"]);
             Singleton.Instance.schedule = int.Parse(collection["schedule"]);
+            //Verifica si ya hay una fecha de inicio en la calendarización previa, si no la, asigna la indicada por el usuario
             if(Singleton.Instance.startingDate.CompareTo(new DateTime()) == 0)
             {
                 string d = collection["startingDate"];
@@ -55,6 +59,8 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 Singleton.Instance.startingDate = Singleton.Instance.startingDate.AddDays(int.Parse(date[2]) - 1);
                 Singleton.Instance.startingDate = Singleton.Instance.startingDate.AddHours(8);
             }
+            //Se comienza a generar la calendarización a todos los registros sin asignar fecha,
+            //finalmente devuleve un mensaje con el resultado del proceso
             bool verif = false;
             if (Singleton.Instance.HeapPacient.Length() > 0)
             {
@@ -83,26 +89,31 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return RedirectToAction(nameof(Simulation));
         }
 
-        //GET of waiting List
+        //Get de la view SIndex
         public ActionResult SIndex()
         {
+            //Genera la lista de espera con los registros de el municipio indicado y la manda a la vista
             Singleton.Instance.genWaitingList(HttpContext.Session.GetString(SessionMunicipality));
             return View(Singleton.Instance.HeapPacient);
         }
-        
 
+        //Get de la view Simulation
         public ActionResult Simulation()
         {
+            //Genera la lista de espera con los registros de el municipio indicado y la manda a la vista
             Singleton.Instance.genWaitingList(HttpContext.Session.GetString(SessionMunicipality));
             return View(Singleton.Instance.HeapPacient);
         }
+        //Get de la view VaccinatedList
         public ActionResult VaccinatedList()
         {
+            //Manda a la vista la lista de vacunados
             return View(Singleton.Instance.VaccinatedList);
         }
-
+        //Get de la view Percentage
         public ActionResult Percentage()
         {
+            //Si existen registros calcula el porcentaje de vacunados para mandarla a la vista
             if (Singleton.Instance.Data.Length > 0)
             {
                 double p = double.Parse(Singleton.Instance.VaccinatedList.Length.ToString()) / double.Parse(Singleton.Instance.Data.Length.ToString()) * 100;
@@ -110,21 +121,18 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             }
             return View();
         }
-
-        // GET: PacientController/Details/5
-        public ActionResult Details(int id)
-        {
-            PacientModel detailsPacient = null;
-            return View();
-        }
-
+        //Get de la view List
         public ActionResult List()
         {
+            //Manda a la vista todos los registros
             return View(Singleton.Instance.Data.GetAllElements());
         }
+        //Post de la view List
         [HttpPost]
         public ActionResult List(IFormCollection collection)
         {
+            //Este método realiza la búsqueda de un registro, determinado en primer lugar en base a que propiedad realizará
+            //la búsqueda, posterior pasará a realizar la búsqueda del elemento, mostrará un mensaje en caso de no encontrarlo
             if (collection["criteria"] == "Dpi")
             {
                 var criteria = Singleton.Instance.DpiTree.Find(x => x.value.CompareTo(long.Parse(collection["Search"])), Singleton.Instance.DpiTree.Root);
@@ -166,41 +174,45 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             }
             else
             {
+                //En caso de no elegir un criterio de búsqueda (Caso supuestamente imposible) regresará la vista con todos los elementos de nuevo
                 return View(Singleton.Instance.Data.GetAllElements());
             }
         }
 
         
 
-
+        //Método que marca que una persona no asistió a su cita
         public ActionResult NotAssist()
         {
+            //Obtiene el primer elemento en la lista, el cual es quien se marcará como ausente y muestra la vista de confirmación
             var result = Singleton.Instance.HeapPacient.getMin();
             return View(result);
         }
 
-        //This method is called when a person didn't assist in the scheduled hour in order to assign a new one with different date.
+        //Método que reasigna la fecha de vacunación de un registro
         public ActionResult SReschedule(PacientModel  pacient)
         {
             var x = Singleton.Instance.HeapPacient.extractMin();
             x.schedule = Singleton.Instance.NextDate(Singleton.Instance.HeapPacient.Length() - 1);
             Singleton.Instance.HeapPacient.insertKey(x);
             return RedirectToAction(nameof(Simulation));
-        }        
+        }
 
-        // GET: PacientController/Create
+        //Get de la view Create
         public ActionResult Create()
         {
+            //Manda a la vista los datos de la session
             ViewBag.depa = HttpContext.Session.GetString(SessionDepartment);
             ViewBag.muni = HttpContext.Session.GetString(SessionMunicipality);
             return View();
         }
-        // POST: PacientController/Create
+        //Post de la view Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
-
+            //Crea un nuevo Registro y le asigna una prioridad según los datos indicados, también
+            //valida si el dpi indicado es válido, de lo contrario mostrará un mensaje de error
             string pr = collection["priority"];
             int age = int.Parse(collection["age"]);
             long dpi = Convert.ToInt64(collection["DPI"]);
@@ -218,6 +230,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 };
                 if (pr == "Area de salud")
                 {
+                    //Si es del area de salud pasará a otra vista que pregunta mas datos para determinar la prioridad
                     return RedirectToAction(nameof(WorkArea), newPacient);
                 }
                 else if (pr == "Trabajador de funeraria o de institucion del adulto mayor" || pr == "Cuerpo de socorro")
@@ -273,14 +286,17 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                 return View();
             }
         }
+        //Get de la view WorkArea
         public ActionResult WorkArea(PacientModel pacient)
         {
+            //Manda los valores del nuevo registro
             return View(pacient);
         }
-
+        //Post de la view WorkArea
         [HttpPost]
         public ActionResult WorkArea(IFormCollection collection)
         {
+            //Obtiene los datos indicados por el usuario, asigna una prioridad en base a estos y lo añade a la lista de espera
             long dpi = long.Parse(collection["dpi"]);
             var pacient = new PacientModel
             {
@@ -316,13 +332,14 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: PacientController/Delete/5
+        //Get de la view Delete
         public ActionResult Delete()
         {
+            //Obtiene el primer elemento en la lista, el cual es quien se marcará como vacunado y muestra la vista de confirmación
             var result = Singleton.Instance.HeapPacient.getMin();
             return View("VaccinatedCheck", result);
         }
-
+        //Método que marca como vacunado un registro
         public ActionResult Vaccinated()
         {
             var x = Singleton.Instance.HeapPacient.extractMin();
@@ -332,7 +349,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
             return RedirectToAction(nameof(Simulation));
         }
 
-
+        //Metodo que actualiza el archivo de texto con los datos actuales en el programa
         public ActionResult Data()
         {
             Singleton.Instance.BuildData();

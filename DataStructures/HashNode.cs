@@ -8,10 +8,10 @@ namespace DataStructures
     public class HashNode<T, K> where T : IComparable where K : IComparable
     {
         #region Variables
-        //Properties
+        //Propiedades
         public DoubleLinkedList<T> value;
         public K key { get; set; }
-        //Pointers
+        //Punteros
         public HashNode<T, K> next;
         public HashNode<T, K> prev;
         #endregion
