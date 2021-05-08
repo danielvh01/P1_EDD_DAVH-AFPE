@@ -24,51 +24,66 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         {
             _logger = logger;
         }
+        //Get de la view Help
         public IActionResult Help()
         {
             return View();
         }
+        //Get de la view Index
         public IActionResult Index()
         {
             return View();
         }
+        //Get de la view Login
         public IActionResult Login()
         {
+            //Manda todos los departamentos a la vista de Login
             return View(Singleton.Instance.municipalities.GetAllKeys());
         }
-
+        //Get de la view LoginM
         public IActionResult LoginM(string department)
         {
+            //Asigna la variable de sesion Department
             HttpContext.Session.SetString(SessionDepartment,department);
+            //Manda a la vista todos los municipios del Departamento elegido por el usuario
             return View(Singleton.Instance.municipalities.GetAllContent(department));
         }
+        
         public IActionResult Session(string municipality)
         {
+            //Este método asigna la variable de sesión Municipality y realiza el inicio
+            //de sesión para la carga de datos
             HttpContext.Session.SetString(SessionMunicipality, municipality);
             Singleton.Instance.Login(HttpContext.Session.GetString(SessionMunicipality));
             return RedirectToAction(nameof(Index), "Pacient");
         }
-
+        //Get de la view Configuration
         public IActionResult Configuration()
         {
+            //Este método aplica las configuraciones básicas del programa, si hay unas previamente indicadas
+            //las cargará al programa, de lo contrario mostrará la vista para que el usuario pueda asignarlas
             if (System.IO.File.Exists("./Database.txt"))
             {
                 var lectorlinea = new StreamReader("./Database.txt");
                 string line = lectorlinea.ReadToEnd();
                 string[] obj = line.Split("\n");
+                //Recorre todo el archivo de texto y asigna las propiedades al programa
                 for (int i = 0; i < obj.Length; i++)
                 {
                     int spacer = obj[i].IndexOf(":");
+                    //Asigna la propiedad heapCapacity
                     if (obj[i].Substring(0, spacer) == "heapCapacity")
                     {
                         Singleton.Instance.heapCapacity = Convert.ToInt32(obj[i].Substring(spacer + 1));
                         Singleton.Instance.HeapPacient = new Heap<PacientModel>(Singleton.Instance.heapCapacity);
                     }
+                    //Asigna la propiedad hashCapacity
                     if (obj[i].Substring(0, spacer) == "hashCapacity")
                     {
                         Singleton.Instance.hashCapacity = Convert.ToInt32(obj[i].Substring(spacer + 1));
                         Singleton.Instance.Data = new HashTable<PacientModel, long>(Singleton.Instance.hashCapacity);
                     }
+                    //Carga todos los datos guardados previamente
                     if (obj[i].Substring(0, spacer) == "pacients")
                     {
                         string[] tasks = obj[i].Substring(spacer + 1).Split(";");
@@ -78,6 +93,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                             string[] obj2 = tasks[j].Split(",");
                             if (obj2.Length == 8)
                             {
+                                //Crea los objetos de tipo PacientModel
                                 var newPacient = new PacientModel
                                 {
                                     Name = obj2[0],
@@ -103,6 +119,7 @@ namespace P1_EDD_DAVH_AFPE.Controllers
                                         Singleton.Instance.startingDate = newPacient.schedule;
                                     }
                                 }
+                                //Carga el dato a el programa
                                 Singleton.Instance.AddDataBase(newPacient);
                             }
                         }
@@ -122,8 +139,11 @@ namespace P1_EDD_DAVH_AFPE.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Configuration(IFormCollection collection)
         {
+            //Si el programa se ejecuta por primera vez, crea todas las estructuras y asigna la configuración
+            //que el usuario indicó
             Singleton.Instance.HeapPacient = new Heap<PacientModel>(Singleton.Instance.heapCapacity);
             Singleton.Instance.Data = new HashTable<PacientModel, long>(Singleton.Instance.hashCapacity);
+            //Crea el archivo donde se guardarán los datos para las seisones futuras
             FileStream fs = new FileStream("./Database.txt", FileMode.Create, FileAccess.Write);
             Singleton.Instance.BuildData();
             StreamWriter sw = new StreamWriter(fs);
