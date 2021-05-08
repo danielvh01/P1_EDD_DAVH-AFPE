@@ -185,6 +185,23 @@ namespace DataStructures
             }
         }
 
+        public int getLenghtOf(K key)
+        {
+            var node = start;
+            while(node != null && node.key.CompareTo(key)!= 0)
+            {
+                node = node.next;
+            }
+            if(node != null)
+            {
+                return node.value.Length;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
         public IEnumerable<K> GetAllKeys()
         {
             DoubleLinkedList<K> result = new DoubleLinkedList<K>();

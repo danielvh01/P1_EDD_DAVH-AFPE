@@ -24,7 +24,7 @@ namespace P1_EDD_DAVH_AFPE
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);//You can set Time   
+                options.IdleTimeout = TimeSpan.FromMinutes(15);//You can set Time   
             });
             services.AddControllersWithViews();
         }
